@@ -19,7 +19,7 @@ class CmModuleService
     private function getCmEntryDetails($entity_cd, $doc_no)
     {
         try {
-            $results = DB::connection('BFIE')
+            $results = DB::connection('pakuwon')
                 ->table('mgr.pl_contract as plc')
                 ->select(
                     DB::raw("COALESCE(NULLIF(plc.works_descs, ''), 'No Work Description')"),
@@ -83,7 +83,7 @@ class CmModuleService
     private function getCmProgressDetails($entity_cd, $doc_no, $ref_no)
     {
         try {
-            $results = DB::connection('BFIE')
+            $results = DB::connection('pakuwon')
                 ->table('mgr.cm_progress as cp')
                 ->join('mgr.pl_contract as plc', function ($join) {
                     $join->on('cp.entity_cd', '=', 'plc.entity_cd')
@@ -154,7 +154,7 @@ class CmModuleService
     private function getCmVarianDetails($entity_cd, $doc_no, $ref_no)
     {
         try {
-            $results = DB::connection('BFIE')
+            $results = DB::connection('pakuwon')
                 ->table('mgr.cm_vo_hd as voh')
                 ->join('mgr.pl_contract as plc', function ($join) {
                     $join->on('voh.entity_cd', '=', 'plc.entity_cd')

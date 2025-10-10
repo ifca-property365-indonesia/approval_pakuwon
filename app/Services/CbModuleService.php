@@ -21,7 +21,7 @@ class CbModuleService
     private function getCbFupdDetails($entity_cd, $doc_no)
     {
         try {
-            $results = DB::connection('BFIE')
+            $results = DB::connection('pakuwon')
                 ->table('mgr.cb_pay_trx_bank_hd as hd')
                 ->join('mgr.cb_pay_trx_bank_dt as dt', function($join) {
                     $join->on('hd.entity_cd', '=', 'dt.entity_cd')
@@ -86,7 +86,7 @@ class CbModuleService
     private function getCbRpbDetails($entity_cd, $doc_no)
     {
         try {
-            $results = DB::connection('BFIE')
+            $results = DB::connection('pakuwon')
                 ->table('mgr.cb_pay_trx_rpb_hd as rpbhd')
                 ->select(
                     DB::raw("REPLACE(REPLACE(REPLACE(REPLACE(rpbhd.descs, CHAR(10), ''), CHAR(9), ''), CHAR(13), ''), '\"', '') as descs"),
@@ -148,7 +148,7 @@ class CbModuleService
     private function getCbRumDetails($entity_cd, $doc_no)
     {
         try {
-            $results = DB::connection('BFIE')
+            $results = DB::connection('pakuwon')
                 ->table('mgr.cb_cash_replenish_hd as rumhd')
                 ->select(
                     DB::raw("REPLACE(REPLACE(REPLACE(REPLACE(rumhd.descs, CHAR(10), ''), CHAR(9), ''), CHAR(13), ''), '\"', '') as descs"),
@@ -209,7 +209,7 @@ class CbModuleService
     private function getCbPpuDetails($entity_cd, $doc_no, $trx_type)
     {
         try {
-            $results = DB::connection('BFIE')
+            $results = DB::connection('pakuwon')
                 ->table('mgr.cb_ppu_ldg as ldg')
                 ->select(
                     'ldg.forex',

@@ -37,3 +37,6 @@ Route::GET('/porequest/{status}/{encrypt}', [PoRequest::class, 'processData']);
 Route::POST('/porequest/getaccess', [PoRequest::class, 'getaccess']);
 
 use App\Http\Controllers\LandfphController as Landfph;
+Route::POST('/fph', [Landfph::class, 'index']);
+Route::GET('/fph/{status}/{encrypt}', [Landfph::class, 'processData']);
+Route::POST('/fph/getaccess', [Landfph::class, 'getaccess']);

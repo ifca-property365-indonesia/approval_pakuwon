@@ -7,7 +7,7 @@
     <meta http-equiv="Content-Type" content="application/pdf">
     <meta name="x-apple-disable-message-reformatting">
     <title>IFCA - BTID</title>
-    <link rel="shortcut icon" type="image/x-icon" href="{{ url('public/images/BFIE_icon.ico') }}">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url('public/images/pakuwon_icon.ico') }}">
     
     <style>
         body {
@@ -59,7 +59,7 @@
                         <tbody>
                             <tr>
                                 <td style="text-align: center; padding-bottom:25px">
-                                    <img width = "120" src="{{ url('public/images/BFIE_logo.jpg') }}" alt="logo">
+                                    <img width = "120" src="{{ url('public/images/PWON-logo.png') }}" alt="logo">
                                         <p style="font-size: 16px; color: #026735; padding-top: 0px;">{{ $dataArray['entity_name'] }}</p>
                                 </td>
                             </tr>

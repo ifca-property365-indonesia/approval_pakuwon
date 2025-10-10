@@ -52,7 +52,7 @@ class MailDataController extends Controller
             'module'        => $data["type_module"],
         );
 
-        $query = DB::connection('BFIE')
+        $query = DB::connection('pakuwon')
         ->table('mgr.cb_cash_request_appr')
         ->where($where)
         ->whereIn('status', array("A", "R", "C"))
@@ -82,7 +82,7 @@ class MailDataController extends Controller
                 'module'        => $data["type_module"],
             );
     
-            $query2 = DB::connection('BFIE')
+            $query2 = DB::connection('pakuwon')
             ->table('mgr.cb_cash_request_appr')
             ->where($where2)
             ->get();

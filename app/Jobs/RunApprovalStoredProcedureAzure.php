@@ -42,7 +42,7 @@ class RunApprovalStoredProcedureAzure implements ShouldQueue
     public function handle(): void
     {
         try {
-            DB::connection('BFIE')->statement("
+            DB::connection('pakuwon')->statement("
                 SET NOCOUNT ON; 
                 EXEC mgr.x_send_mail_approval_azure_ins ?, ?, ?, ?, ?, ?, ?
             ", [

@@ -45,7 +45,7 @@ class GetApprControllers extends Controller
             }
 
             // 🌟 Query database
-            $approvals = DB::connection('BFIE')
+            $approvals = DB::connection('pakuwon')
             ->table('mgr.cb_cash_request_appr_azure as a')
             ->join('mgr.cf_approval_type as t', function($join) {
                 $join->on('a.type', '=', 't.type')
@@ -130,7 +130,7 @@ class GetApprControllers extends Controller
             $doc_no = $request->doc_no;
             $level_no = $request->level_no;
 
-            $approvals = DB::connection('BFIE')
+            $approvals = DB::connection('pakuwon')
             ->table('mgr.cb_cash_request_appr_azure as a')
             ->select(
                 'a.doc_no',

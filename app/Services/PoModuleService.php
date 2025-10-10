@@ -19,7 +19,7 @@ class PoModuleService
     private function getPoRequestDetails($entity_cd, $doc_no)
     {
         try {
-            $results = DB::connection('BFIE')
+            $results = DB::connection('pakuwon')
                 ->table('mgr.po_request_hd as h')
                 ->join('mgr.po_request_dt as d', function($join) {
                     $join->on('h.entity_cd','=','d.entity_cd')
@@ -86,7 +86,7 @@ class PoModuleService
     private function getPoOrderDetails($entity_cd, $doc_no)
     {
         try {
-            $results = DB::connection('BFIE')
+            $results = DB::connection('pakuwon')
                 ->table('mgr.po_orderhd as h')
                 ->join('mgr.po_orderdt as d', function ($join) {
                     $join->on('h.entity_cd', '=', 'd.entity_cd')
@@ -183,7 +183,7 @@ class PoModuleService
     private function getPoSelectionDetails($entity_cd, $doc_no, $ref_no)
     {
         try {
-            $results = DB::connection('BFIE')
+            $results = DB::connection('pakuwon')
                 ->table('mgr.po_quote_group as gr')
                 ->join('mgr.po_quote_hd as hd', function ($join) {
                     $join->on('gr.entity_cd', '=', 'hd.entity_cd')

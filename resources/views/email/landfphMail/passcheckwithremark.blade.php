@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="x-apple-disable-message-reformatting">
     <title>IFCA - BTID</title>
-    <link rel="shortcut icon" type="image/x-icon" href="{{ url('public/images/KuraKuraBali-iconew.ico') }}">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url('public/images/BFIE_icon.ico') }}">
     
     <style>
         body {
@@ -29,7 +29,7 @@
                         <tbody>
                             <tr>
                                 <td style="text-align: center; padding-bottom:25px">
-                                    <img width = "120" src="{{ url('public/images/PWON-logo.png') }}" alt="logo">
+                                    <img width = "120" src="{{ url('public/images/BFIE_logo.jpg') }}" alt="logo">
                                     <p style="font-size: 16px; color: #026735; padding-top: 0px;">PT. IFCA PROPERTY365 INDONESIA</p>
                                 </td>
                             </tr>
@@ -41,12 +41,22 @@
                                 <td style="text-align:center;padding: 50px 30px;">
                                     <img style="width:88px; margin-bottom:24px;" src="{{ url('public/images/double_approve.png') }}" alt="Verified">
                                     <p>Do you want to {{ $valuebt }} this request ?</p>
-                                    <form id="frmEditor" class="form-horizontal" method="POST" action="{{ url('/api/porequest/getaccess') }}" enctype="multipart/form-data">
+                                    <form id="frmEditor" class="form-horizontal" method="POST" action="{{ url('/api/fph/getaccess') }}" enctype="multipart/form-data">
                                     @csrf
                                     <input type="text" id="status" name="status" value="<?php echo $status?>" hidden>
                                     <input type="text" id="doc_no" name="doc_no" value="<?php echo $doc_no?>" hidden>
                                     <input type="text" id="encrypt" name="encrypt" value="<?php echo $encrypt?>" hidden>
                                     <input type="text" id="email" name="email" value="<?php echo $email?>" hidden>
+                                    <?php if ($status == 'R'): ?>
+                                        <p>Please provide the reasons for requesting this revision</p>
+                                    <?php elseif ($status == 'C'): ?>
+                                        <p>Please provide the reasons for requesting the cancellation of this revision</p>
+                                    <?php elseif ($status == 'A'): ?>
+                                        <p>Add Comment</p>
+                                    <?php endif; ?>
+                                    <div class="form-group">
+                                        <textarea class="form-control" id="reason" name="reason" rows="3"></textarea>
+                                    </div>
                                     <input type="submit" class="btn" style="background-color:<?php echo $bgcolor?>;color:#ffffff;display:inline-block;font-size:13px;font-weight:600;line-height:44px;text-align:center;text-decoration:none;text-transform: uppercase; padding: 0px 40px;margin: 10px" value=<?php echo $valuebt?>>
                                     </form>
                                 </td>

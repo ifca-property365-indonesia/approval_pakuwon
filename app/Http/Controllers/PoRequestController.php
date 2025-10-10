@@ -193,7 +193,7 @@ class PoRequestController extends Controller
             'module'        => $data["type_module"],
         );
 
-        $query = DB::connection('BFIE')
+        $query = DB::connection('pakuwon')
         ->table('mgr.cb_cash_request_appr')
         ->where($where)
         ->whereIn('status', ["A", "R", "C"])
@@ -224,7 +224,7 @@ class PoRequestController extends Controller
                 'module'        => $data["type_module"],
             );
     
-            $query2 = DB::connection('BFIE')
+            $query2 = DB::connection('pakuwon')
             ->table('mgr.cb_cash_request_appr')
             ->where($where2)
             ->get();
@@ -312,7 +312,7 @@ class PoRequestController extends Controller
             $descstatus = "Cancelled";
             $imagestatus = "reject.png";
         }
-        $pdo = DB::connection('BFIE')->getPdo();
+        $pdo = DB::connection('pakuwon')->getPdo();
         $sth = $pdo->prepare("EXEC mgr.x_send_mail_approval_po_request ?, ?, ?, ?, ?, ?, ?, ?, ?");
         $success = $sth->execute([
             $data["entity_cd"],
