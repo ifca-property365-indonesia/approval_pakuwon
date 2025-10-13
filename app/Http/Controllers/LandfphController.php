@@ -32,6 +32,12 @@ class LandfphController extends Controller
                 $link[] = $show;
             }
 
+            $file_name_data = explode(";", trim($request->file_name));
+            $link_file_name = [];
+            foreach ($file_name_data as $show_file_name) {
+                $link_file_name[] = $show_file_name;
+            }
+
             // dd($request->transaction_date);
 
             $total_amt = number_format($request->total_amt, 2, '.', ',');
@@ -50,11 +56,13 @@ class LandfphController extends Controller
                 'level_no'          => $request->level_no,
                 'entity_cd'         => $request->entity_cd,
                 'doc_no'            => $request->doc_no,
-                'nop_no'            => $request->nop_no,
+                'no_alas_hak'       => $request->no_alas_hak,
+                'name_alas_hak'       => $request->name_alas_hak,
+                'luas_alas_hak'       => $request->luas_alas_hak,
                 'entity_name'       => $request->entity_name,
-                'name_land'         => $request->name_land,
                 'name_owner'        => $request->name_owner,
                 'url_link'          => $link,
+                'file_name'          => $link_file_name,
                 'total_amt'         => $total_amt,
                 'book_amt'          => $book_amt,
                 'email_addr'        => $request->email_addr,

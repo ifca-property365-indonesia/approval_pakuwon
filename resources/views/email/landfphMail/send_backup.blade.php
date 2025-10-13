@@ -70,61 +70,59 @@
                             <tr>
                                 <td style="padding: 30px 30px">
                                     <h5 style="text-align:left;margin-bottom: 24px; color: #000000; font-size: 20px; font-weight: 400; line-height: 28px;">Dear {{ $dataArray['user_name'] }}, </h5>
-                                    <p style="text-align:left;margin-bottom: 15px; color: #000000; font-size: 16px;">Below is a request to purchase that requires your approval :</p>
+                                    <p style="text-align:left;margin-bottom: 15px; color: #000000; font-size: 16px;">Tolong berikan persetujuan untuk Form Penawaran Harga dengan detail :</p>
+                                    <table cellpadding="0" cellspacing="0" style="text-align:left;width:100%;max-width:800px;margin:0 auto;font-size: 14px;background-color:#e0e0e0; color: #000000;">
+                                        <tr>
+                                            <td>Nomor Dokumen</td>
+                                            <td> : </td>
+                                            <td> {{ $dataArray['doc_no'] }} </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Nama PT</td>
+                                            <td> : </td>
+                                            <td> {{ $dataArray['entity_name'] }} </td>
+                                        </tr>
+                                        <tr>
+                                            <td>No. ALas Hak</td>
+                                            <td> : </td>
+                                            <td> {{ $dataArray['no_alas_hak'] }} </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Nama Alas Hak</td>
+                                            <td> : </td>
+                                            <td> {{ $dataArray['name_alas_hak'] }} </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Luas Alas Hak</td>
+                                            <td> : </td>
+                                            <td> {{ $dataArray['luas_alas_hak'] }} </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Nama Pemilik</td>
+                                            <td>:</td>
+                                            <td>{{ $dataArray['name_owner'] }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Tanggal FPH</td>
+                                            <td>:</td>
+                                            <td>{{ $dataArray['transaction_date'] }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Harga yang disepakati</td>
+                                            <td>:</td>
+                                            <td style="text-align: right;">Rp. {{ $dataArray['total_amt'] }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Uang Tanda Jadi</td>
+                                            <td>:</td>
+                                            <td style="text-align: right;">Rp. {{ $dataArray['book_amt'] }}</td>
+                                        </tr>
+                                    </table>
+                
                     
-                                    <p style="text-align:left; margin-bottom: 15px; margin-top: 0; color: #000000; font-size: 16px; list-style-type: circle;">
-                                        Reason :<br>
-                                        <b>{{ $dataArray['req_hd_descs'] }}</b><br>
-                                        With a total estimated amount of {{ $dataArray['curr_cd'] }} {{ $dataArray['total_price'] }}<br>
-                                        RF No.: {{ $dataArray['req_hd_no'] }}<br>
-                                        Source: {{ $dataArray['source'] }}<br>
-                                    </p>
-
-                                    @php
-                                        $hasAttachment = false;
-                                    @endphp
-                    
-                                    @foreach($dataArray['url_file'] as $key => $url_file)
-                                        @if($url_file !== '' && $dataArray['file_name'][$key] !== '' && $url_file !== 'EMPTY' && $dataArray['file_name'][$key] !== 'EMPTY')
-                                            @if(!$hasAttachment)
-                                                @php
-                                                    $hasAttachment = true;
-                                                @endphp
-                                                <p style="text-align:left; margin-bottom: 15px; color: #000000; font-size: 16px;">
-                                                    <span>To view a detailed product list, description, and estimate price per item, please click on the link below :</span><br>
-                                            @endif
-                                            <a href="{{ $url_file }}" target="_blank">{{ $dataArray['file_name'][$key] }}</a><br>
-                                        @endif
-                                    @endforeach
-                    
-                                    @if($hasAttachment)
-                                        </p>
-                                    @endif
-                    
-                                    @php
-                                        $hasAttachment = false;
-                                    @endphp
-                    
-                                    @foreach($dataArray['doc_link'] as $key => $doc_link)
-                                        @if($doc_link !== '' && $doc_link !== 'EMPTY')
-                                            @if(!$hasAttachment)
-                                                @php
-                                                    $hasAttachment = true;
-                                                @endphp
-                                                <p style="text-align:left; margin-bottom: 15px; color: #000000; font-size: 16px;">
-                                                    <span>This request to purchase comes with additional supporting documents, such as detailed specifications, that you can access from the link below :</span><br>
-                                            @endif
-                                            <a href="{{ $doc_link }}" target="_blank">Additional Document Link</a><br>
-                                        @endif
-                                    @endforeach
-                    
-                                    @if($hasAttachment)
-                                        </p>
-                                    @endif
-                    
-                                    <a href="{{ url('api') }}/porequest/A/{{ $encryptedData }}" style="display: inline-block; font-size: 13px; font-weight: 600; line-height: 20px; text-align: center; text-decoration: none; text-transform: uppercase; padding: 10px 40px; background-color: #1ee0ac; border-radius: 4px; color: #ffffff;">Approve</a>
-                                    <a href="{{ url('api') }}/porequest/R/{{ $encryptedData }}" style="display: inline-block; font-size: 13px; font-weight: 600; line-height: 20px; text-align: center; text-decoration: none; text-transform: uppercase; padding: 10px 40px; background-color: #f4bd0e; border-radius: 4px; color: #ffffff;">Revise</a>
-                                    <a href="{{ url('api') }}/porequest/C/{{ $encryptedData }}" style="display: inline-block; font-size: 13px; font-weight: 600; line-height: 20px; text-align: center; text-decoration: none; text-transform: uppercase; padding: 10px 40px; background-color: #e85347; border-radius: 4px; color: #ffffff;">Reject</a>
+                                    <a href="{{ url('api') }}/fph/A/{{ $encryptedData }}" style="display: inline-block; font-size: 13px; font-weight: 600; line-height: 20px; text-align: center; text-decoration: none; text-transform: uppercase; padding: 10px 40px; background-color: #1ee0ac; border-radius: 4px; color: #ffffff;">Approve</a>
+                                    <a href="{{ url('api') }}/fph/R/{{ $encryptedData }}" style="display: inline-block; font-size: 13px; font-weight: 600; line-height: 20px; text-align: center; text-decoration: none; text-transform: uppercase; padding: 10px 40px; background-color: #f4bd0e; border-radius: 4px; color: #ffffff;">Revise</a>
+                                    <a href="{{ url('api') }}/fph/C/{{ $encryptedData }}" style="display: inline-block; font-size: 13px; font-weight: 600; line-height: 20px; text-align: center; text-decoration: none; text-transform: uppercase; padding: 10px 40px; background-color: #e85347; border-radius: 4px; color: #ffffff;">Reject</a>
                                     <br>
                                     <p style="text-align:left;margin-bottom: 15px; color: #000000; font-size: 16px;">
                                         In case you need some clarification, kindly approach : <br>
@@ -136,7 +134,7 @@
                                     <p style="text-align:left;margin-bottom: 15px; color: #000000; font-size: 16px;">
                                         <b>Thank you,</b><br>
                                         <a href="mailto:{{ $dataArray['sender_addr'] }}">
-                                            {{ $dataArray['sender'] }}
+                                            {{ $dataArray['sender_name'] }}
                                         </a>
                                     </p>
 
