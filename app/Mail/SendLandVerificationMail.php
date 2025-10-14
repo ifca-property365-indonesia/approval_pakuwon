@@ -6,7 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class SendPoRMail extends Mailable
+class SendLandVerificationMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -35,7 +35,7 @@ class SendPoRMail extends Mailable
     {
 
         return $this->subject($this->dataArray['subject'])
-                    ->view('email.por.send')
+                    ->view('email.landverificationMail.send')
                     ->with([
                         'encryptedData' => $this->encryptedData,
                         'dataArray' => $this->dataArray,

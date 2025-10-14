@@ -90,6 +90,7 @@ class LandfphController extends Controller
                 'usergroup'     => $request->usergroup,
                 'user_id'       => $request->user_id,
                 'supervisor'    => $request->supervisor,
+                'entity_name'   => $request->entity_name,
                 'type'          => 'F',
                 'type_module'   => 'LM',
                 'text'          => 'Land FPH',
@@ -112,7 +113,7 @@ class LandfphController extends Controller
 
             if (!empty($emailAddress)) {
                 $cacheFile = 'email_sent_' . $approveSeq . '_' . $entityCd . '_' . $docNo . '_' . $levelNo . '.txt';
-                $cacheFilePath = storage_path('app/mail_cache/send_LandFph/' . date('Ymd') . '/' . $cacheFile);
+                $cacheFilePath = storage_path('app/mail_cache/send_Land_Fph/' . date('Ymd') . '/' . $cacheFile);
                 $cacheDirectory = dirname($cacheFilePath);
 
                 if (!file_exists($cacheDirectory)) {
@@ -216,7 +217,8 @@ class LandfphController extends Controller
                 "Pesan" => $msg,
                 "St" => $st,
                 "notif" => $notif,
-                "image" => $image
+                "image" => $image,
+                "entity_name"   => $data["entity_name"],
             );
             return view("email.after", $msg1);
         } else {
@@ -246,7 +248,8 @@ class LandfphController extends Controller
                     "Pesan" => $msg,
                     "St" => $st,
                     "notif" => $notif,
-                    "image" => $image
+                    "image" => $image,
+                    "entity_name"   => $data["entity_name"],
                 );
                 return view("email.after", $msg1);
             } else {
@@ -266,21 +269,18 @@ class LandfphController extends Controller
                     $bgcolor = '#e85347';
                     $valuebt  = 'Cancel';
                 }
-                $dataArray = Crypt::decrypt($encrypt);
                 $data = array(
                     "status"    => $status,
-                    "doc_no"    => $dataArray["doc_no"],
-                    "email"     => $dataArray["email_address"],
+                    "doc_no"    => $data["doc_no"],
+                    "email"     => $data["email_address"],
                     "encrypt"   => $encrypt,
                     "name"      => $name,
                     "bgcolor"   => $bgcolor,
-                    "valuebt"   => $valuebt
+                    "valuebt"   => $valuebt,
+                    "link"      => "landfph",
+                    "entity_name"   => $data["entity_name"],
                 );
-                if ($status === "A") {
-                    return view('email/landfphMail/passchecknoremark', $data);
-                } else {
-                    return view('email/landfphMail/passcheckwithremark', $data);
-                }
+                return view('email/passcheckwithremark', $data);
             }
         }
     }
@@ -303,7 +303,7 @@ class LandfphController extends Controller
         $image = " ";
 
         if (trim($reasonget) == '') {
-            $reason = 'no reason (just Level 1)';
+            $reason = 'no reason';
         } else {
             $reason = $reasonget;
         }
@@ -342,7 +342,8 @@ class LandfphController extends Controller
             "Pesan" => $msg,
             "St" => $st,
             "notif" => $notif,
-            "image" => $image
+            "image" => $image,
+            'entity_name'   => $request->entity_name,
         );
         return view("email.after", $msg1);
     }

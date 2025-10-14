@@ -9,152 +9,154 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
-use App\Mail\SendPoRMail;
+use App\Mail\SendLandVerificationMail;
 use Exception;
+use Carbon\Carbon;
 
-class PoRequestController extends Controller
+class LandVerificationController extends Controller
 {
-    public function processModule($data) 
+    public function index(Request $request)
     {
-        if (strpos($data["req_hd_descs"], "\n") !== false) {
-            $req_hd_descs = str_replace("\n", ' (', $data["req_hd_descs"]) . ')';
-        } else {
-            $req_hd_descs = $data["req_hd_descs"];
-        }
+        $callback = [
+            'data'  => null,
+            'Error' => false,
+            'Pesan' => '',
+            'Status'=> 200
+        ];
 
-        if (strpos($data["source"], "\n") !== false) {
-            $source = str_replace("\n", ' (', $data["source"]) . ')';
-        } else {
-            $source = $data["source"];
-        }
-
-        $list_of_urls = explode('; ', $data["url_file"]);
-        $list_of_files = explode('; ', $data["file_name"]);
-        $list_of_doc = explode('; ', $data["document_link"]);
-        $list_of_approve = explode('; ', $data["approve_exist"]);
-
-        $url_data = [];
-        $file_data = [];
-        $doc_data = [];
-        $approve_data = [];
-
-        foreach ($list_of_urls as $url) {
-            $url_data[] = $url;
-        }
-
-        foreach ($list_of_files as $file) {
-            $file_data[] = $file;
-        }
-
-        foreach ($list_of_doc as $doc) {
-            $doc_data[] = $doc;
-        }
-
-        foreach ($list_of_approve as $approve) {
-            $approve_data[] = $approve;
-        }
-
-        $formattedNumber = number_format($data["total_price"], 2, '.', ',');
-        
-        $dataArray = array(
-            'sender'        => $data["sender"],
-            'entity_name'   => $data["entity_name"],
-            'descs'         => $data["descs"],
-            'email_address' => $data["email_addr"],
-            'sender_addr'   => $data["sender_addr"],
-            'user_name'     => $data["user_name"],
-            'clarify_user'  => $data["clarify_user"],
-            'clarify_email' => $data["clarify_email"],
-            'req_hd_descs'  => $data["req_hd_descs"],
-            'source'	    => $data["source"],
-            'req_hd_no'     => $data["req_hd_no"],
-            'curr_cd'       => $data["curr_cd"],
-            'total_price'   => $formattedNumber,
-            'url_file'      => $url_data,
-            'file_name'     => $file_data,
-            'doc_link'      => $doc_data,
-            'approve_list'  => $approve_data,
-            'module'        => "PoRequest",
-            'subject'       => "Need Approval for Purchase Requisition No.  ".$data['req_hd_no'],
-            'approve_seq'   => $data["approve_seq"],
-        );
-
-        $data2Encrypt = array(
-            'entity_cd'     => $data["entity_cd"],
-            'project_no'    => $data["project_no"],
-            'email_address' => $data["email_addr"],
-            'level_no'      => $data["level_no"],
-	        'approve_seq'   => $data["approve_seq"],
-            'doc_no'        => $data["doc_no"],
-            'usergroup'     => $data["usergroup"],
-            'user_id'       => $data["user_id"],
-            'supervisor'    => $data["supervisor"],
-            'type'          => 'Q',
-            'type_module'   => 'PO',
-            'text'          => 'Purchase Requisition'
-        );
-
-        // Melakukan enkripsi pada $dataArray
-        $encryptedData = Crypt::encrypt($data2Encrypt);
-    
         try {
-            $emailAddress = strtolower($data["email_addr"]);
-            $approveSeq = $data["approve_seq"];
-            $entityCd = $data["entity_cd"];
-            $docNo = $data["doc_no"];
-            $levelNo = $data["level_no"];
-            $app_url = 'porequest';
-            $type = 'Q';
-            $module = 'PO';
-        
+            // ====== Persiapan data ======
+            // Ambil dan bersihkan URL
+            $urlArray = array_filter(array_map('trim', explode(';', $request->url_link)), function($item) {
+                return strtoupper($item) !== 'EMPTY' && $item !== '';
+            });
+
+            // Ambil file name yang sesuai dengan URL
+            $fileArray = array_filter(array_map('trim', explode(';', $request->file_name)), function($item) {
+                return strtoupper($item) !== 'EMPTY' && $item !== '';
+            });
+
+            // Jika jumlah URL dan file_name tidak sama, pastikan pasangannya sama
+            $attachments = [];
+            foreach ($urlArray as $key => $url) {
+                if (isset($fileArray[$key])) {
+                    $attachments[] = [
+                        'url' => $url,
+                        'file_name' => $fileArray[$key]
+                    ];
+                }
+            }
+
+            $list_of_approve = explode('; ', $request->approve_exist);
+            $approve_data = [];
+            foreach ($list_of_approve as $approve) {
+                $approve_data[] = $approve;
+            }
+
+            $dataArray = [
+                'user_id'           => $request->user_id,
+                'level_no'          => $request->level_no,
+                'entity_cd'         => $request->entity_cd,
+                'doc_no'            => $request->doc_no,
+                'approve_seq'       => $request->approve_seq,
+                'nop_no'            => $request->nop_no,
+                'attachments'       => $attachments,
+                'entity_name'       => $request->entity_name,
+                'name_owner'        => $request->name_owner,
+                'own_descs'         => $request->own_descs,
+                'email_addr'        => $request->email_addr,
+                'user_name'         => $request->user_name,
+                'sender_addr'       => $request->sender_addr,
+                'sender_name'       => $request->sender_name,
+                'transaction_date'  => $request->transaction_date,
+                'descs'             => $request->descs,
+                "clarify_user"		=> $request->sender_name,
+                "clarify_email"		=> $request->sender_addr,
+                'approve_list'      => $approve_data,
+                'subject'           => "Need Approval for Land Verification No.  ".$request->doc_no,
+                'link'              => 'LandVerification',
+            ];
+
+            // dd($dataArray);
+
+            $data2Encrypt = [
+                'entity_cd'     => $request->entity_cd,
+                'email_address' => $request->email_addr,
+                'level_no'      => $request->level_no,
+                'approve_seq'   => $request->approve_seq,
+                'doc_no'        => $request->doc_no,
+                'entity_name'   => $request->entity_name,
+                'type'          => 'V',
+                'type_module'   => 'LM',
+                'text'          => 'Land Verification',
+            ];
+
+            $encryptedData = Crypt::encrypt($data2Encrypt);
+
+            // isi callback data secara konsisten
+            $callback['data'] = [
+                'payload'   => $dataArray,
+                'encrypted' => $encryptedData
+            ];
+
+            // ====== Proses kirim email ======
+            $emailAddress = strtolower($request->email_addr);
+            $approveSeq = $request->approve_seq;
+            $entityCd   = $request->entity_cd;
+            $docNo      = $request->doc_no;
+            $levelNo    = $request->level_no;
+
             if (!empty($emailAddress)) {
-                // Check if the email has been sent before for this document
                 $cacheFile = 'email_sent_' . $approveSeq . '_' . $entityCd . '_' . $docNo . '_' . $levelNo . '.txt';
-                $cacheFilePath = storage_path('app/mail_cache/send_porequeset/' . date('Ymd') . '/' . $cacheFile);
+                $cacheFilePath = storage_path('app/mail_cache/send_Land_Verification/' . date('Ymd') . '/' . $cacheFile);
                 $cacheDirectory = dirname($cacheFilePath);
-        
-                // Ensure the directory exists
+
                 if (!file_exists($cacheDirectory)) {
                     mkdir($cacheDirectory, 0755, true);
                 }
-        
-                // Acquire an exclusive lock
+
                 $lockFile = $cacheFilePath . '.lock';
                 $lockHandle = fopen($lockFile, 'w');
                 if (!flock($lockHandle, LOCK_EX)) {
-                    // Failed to acquire lock, handle appropriately
                     fclose($lockHandle);
                     throw new Exception('Failed to acquire lock');
                 }
-        
-                if (!file_exists($cacheFilePath)) {
-                    // Send email only if it has not been sent before
-                    Mail::to($emailAddress)->send(new SendPoRMail($encryptedData, $dataArray));
-        
-                    // Mark email as sent
-                    file_put_contents($cacheFilePath, 'sent');
-        
-                    // Log the success
-                    Log::channel('sendmailapproval')->info('Email Purchase Requisition doc_no '.$docNo.' Entity ' . $entityCd.' berhasil dikirim ke: ' . $emailAddress);
 
-                    // return 'Email berhasil dikirim ke: ' . $emailAddress;
-                    return 'success ' . $encryptedData;
+                if (!file_exists($cacheFilePath)) {
+                    // kirim email
+                    Mail::to($emailAddress)->send(new SendLandVerificationMail($encryptedData, $dataArray));
+
+                    file_put_contents($cacheFilePath, 'sent');
+                    Log::channel('sendmailapproval')->info("Email Land Verification doc_no $docNo Entity $entityCd berhasil dikirim ke: $emailAddress");
+
+                    $callback['Pesan'] = "Email berhasil dikirim ke: $emailAddress";
+                    $callback['Error'] = false;
+                    $callback['Status']= 200;
+
                 } else {
-                    // Email was already sent
-                    Log::channel('sendmailapproval')->info('Email Purchase Requisition doc_no '.$docNo.' Entity ' . $entityCd.' already sent to: ' . $emailAddress);
-                    return 'Email has already been sent to: ' . $emailAddress;
+                    Log::channel('sendmailapproval')->info("Email Land Verification doc_no $docNo Entity $entityCd sudah pernah dikirim ke: $emailAddress");
+
+                    $callback['Pesan'] = "Email sudah pernah dikirim ke: $emailAddress";
+                    $callback['Error'] = false;
+                    $callback['Status']= 201;
                 }
             } else {
-                // No email address provided
-                Log::channel('sendmail')->warning("No email address provided for document " . $docNo);
-                return "No email address provided";
+                Log::channel('sendmail')->warning("No email address provided for document $docNo");
+
+                $callback['Pesan'] = "No email address provided";
+                $callback['Error'] = true;
+                $callback['Status']= 400;
             }
+
         } catch (\Exception $e) {
-            // Error occurred
-            Log::channel('sendmail')->error('Gagal mengirim email: ' . $e->getMessage());
-            return "Gagal mengirim email: " . $e->getMessage();
+            Log::channel('sendmail')->error("Gagal mengirim email: " . $e->getMessage());
+
+            $callback['Pesan'] = "Gagal mengirim email: " . $e->getMessage();
+            $callback['Error'] = true;
+            $callback['Status']= 500;
         }
-        
+
+        return response()->json($callback, $callback['Status']);
     }
 
     public function processData($status='', $encrypt='')
@@ -210,7 +212,8 @@ class PoRequestController extends Controller
                 "Pesan" => $msg,
                 "St" => $st,
                 "notif" => $notif,
-                "image" => $image
+                "image" => $image,
+                "entity_name"   => $data["entity_name"],
             );
             return view("email.after", $msg1);
         } else {
@@ -240,7 +243,8 @@ class PoRequestController extends Controller
                     "Pesan" => $msg,
                     "St" => $st,
                     "notif" => $notif,
-                    "image" => $image
+                    "image" => $image,
+                    "entity_name"   => $data["entity_name"],
                 );
                 return view("email.after", $msg1);
             } else {
@@ -260,21 +264,18 @@ class PoRequestController extends Controller
                     $bgcolor = '#e85347';
                     $valuebt  = 'Cancel';
                 }
-                $dataArray = Crypt::decrypt($encrypt);
                 $data = array(
                     "status"    => $status,
-                    "doc_no"    => $dataArray["doc_no"],
-                    "email"     => $dataArray["email_address"],
+                    "doc_no"    => $data["doc_no"],
+                    "email"     => $data["email_address"],
                     "encrypt"   => $encrypt,
                     "name"      => $name,
                     "bgcolor"   => $bgcolor,
-                    "valuebt"   => $valuebt
+                    "valuebt"   => $valuebt,
+                    "link"      => "landverification",
+                    "entity_name"   => $data["entity_name"],
                 );
-                if ($dataArray["level_no"] > 1 && $status === "A") {
-                    return view('email/por/passchecknoremark', $data);
-                } else {
-                    return view('email/por/passcheckwithremark', $data);
-                }
+                return view('email/passcheckwithremark', $data);
             }
         }
     }
@@ -297,7 +298,7 @@ class PoRequestController extends Controller
         $image = " ";
 
         if (trim($reasonget) == '') {
-            $reason = 'no reason (just Level 1)';
+            $reason = 'no reason';
         } else {
             $reason = $reasonget;
         }
@@ -313,16 +314,12 @@ class PoRequestController extends Controller
             $imagestatus = "reject.png";
         }
         $pdo = DB::connection('pakuwon')->getPdo();
-        $sth = $pdo->prepare("EXEC mgr.x_send_mail_approval_po_request ?, ?, ?, ?, ?, ?, ?, ?, ?");
+        $sth = $pdo->prepare("EXEC mgr.xrl_send_mail_approval_land_Verification ?, ?, ?, ?, ?");
         $success = $sth->execute([
             $data["entity_cd"],
-            $data["project_no"],
             $data["doc_no"],
             $status,
             $data["level_no"],
-            $data["usergroup"],
-            $data["user_id"],
-            $data["supervisor"],
             $reason
         ]);
         if ($success) {
@@ -340,7 +337,8 @@ class PoRequestController extends Controller
             "Pesan" => $msg,
             "St" => $st,
             "notif" => $notif,
-            "image" => $image
+            "image" => $image,
+            'entity_name'   => $request->entity_name,
         );
         return view("email.after", $msg1);
     }
