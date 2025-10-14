@@ -3,22 +3,22 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Content;
+use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class StaffActionPoRMail extends Mailable
+class FeedbackMail extends Mailable
 {
     use Queueable, SerializesModels;
-
-    public $mailData; // ✅ tambahkan ini
 
     /**
      * Create a new message instance.
      *
-     * @param array $mailData
      * @return void
      */
-    public function __construct(string  $mailData)
+    public function __construct($mailData)
     {
         $this->mailData = $mailData;
     }
@@ -30,8 +30,8 @@ class StaffActionPoRMail extends Mailable
      */
     public function build()
     {
-        return $this->subject($this->mailData['subject'].' '.$this->mailData['descs'].' No. '.$this->mailData['doc_no'])
-                    ->view('email.staffaction.por')
+        return $this->subject($this->mailData['subject'].' '.$this->mailData['descs'])
+                    ->view('email.' . $this->mailData['folderlink'] . '.staffaction')
                     ->with(['data' => $this->mailData]);
     }
 }

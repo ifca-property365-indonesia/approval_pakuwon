@@ -66,36 +66,28 @@
           <tr>
             <td class="content" style="background-color:#e0e0e0; padding:30px; color:#000000; font-size:14px; line-height:22px;">
               <h5 style="font-size:20px; font-weight:400; margin:0 0 15px;">Dear {{ $dataArray['user_name'] }},</h5>
-              <p style="margin:0 0 15px;">Tolong berikan persetujuan untuk Verifikasi Dokumen Lahan dengan detail :</p>
+              <p style="margin:0 0 15px;">Tolong berikan persetujuan untuk SPK Pengukuran bidang tanah dengan detail :</p>
 
               <!-- Detail Table -->
               <table role="presentation" cellpadding="4" cellspacing="0" border="0" width="100%" style="font-size:14px; color:#000000;">
                 <tr><td width="40%">Nomor Dokumen</td><td width="2%">:</td><td>{{ $dataArray['doc_no'] }}</td></tr>
-                <tr><td>NOP</td><td>:</td><td>{{ $dataArray['nop_no'] }}</td></tr>
-                <tr><td>Nama Pemilik</td><td>:</td><td>{{ $dataArray['name_owner'] }}</td></tr>
-                <tr><td>Tipe Kepemilikan Tanah</td><td>:</td><td>{{ $dataArray['own_descs'] }}</td></tr>
-                <tr>
-                    <td>Tanggal Verifikasi Dokumen</td>
-                    <td>:</td>
-                    <td>{{ $dataArray['transaction_date'] }}</td>
-                </tr>
+                <tr><td>Nomor SPK Pengukuran</td><td>:</td><td>{{ $dataArray['ref_no'] }}</td></tr>
+                <tr><td>Petugas Pengukuran</td><td>:</td><td>{{ $dataArray['descs_officer'] }}</td></tr>
+                <tr><td>Tanggal Pengukuran</td><td>:</td><td>{{ $dataArray['transaction_date'] }}</td></tr>
               </table>
 
               <!-- Attachments -->
-              @if (!empty($dataArray['attachments']) && count($dataArray['attachments']) > 0)
-                  <p style="margin:20px 0 10px;">To view detail transaction, please click the link below:</p>
-                  @foreach($dataArray['attachments'] as $attachment)
-                      <a href="{{ $attachment['url'] }}" target="_blank" style="color:#026735; text-decoration:none;">
-                          {{ $attachment['file_name'] }}
-                      </a><br>
-                  @endforeach
-              @endif
+              @foreach($dataArray['attachments'] as $attachment)
+                <a href="{{ $attachment['url'] }}" target="_blank" style="color:#026735; text-decoration:none;">
+                    {{ $attachment['file_name'] }}
+                </a><br>
+              @endforeach
 
               <!-- Buttons -->
               <div style="text-align: center; margin: 20px 0;">
-                <a href="{{ url('api') }}/landverification/A/{{ $encryptedData }}" class="button" style="display:inline-block; font-size:13px; font-weight:600; text-transform:uppercase; text-decoration:none; background-color:#1ee0ac; color:#ffffff; padding:10px 30px; border-radius:3px;">Approve</a>
-                <a href="{{ url('api') }}/landverification/R/{{ $encryptedData }}" class="button" style="display:inline-block; font-size:13px; font-weight:600; text-transform:uppercase; text-decoration:none; background-color:#f4bd0e; color:#ffffff; padding:10px 30px; border-radius:3px;">Revise</a>
-                <a href="{{ url('api') }}/landverification/C/{{ $encryptedData }}" class="button" style="display:inline-block; font-size:13px; font-weight:600; text-transform:uppercase; text-decoration:none; background-color:#e85347; color:#ffffff; padding:10px 30px; border-radius:3px;">Reject</a>
+                <a href="{{ url('api') }}/{{ $dataArray['link'] }}/A/{{ $encryptedData }}" class="button" style="display:inline-block; font-size:13px; font-weight:600; text-transform:uppercase; text-decoration:none; background-color:#1ee0ac; color:#ffffff; padding:10px 30px; border-radius:3px;">Approve</a>
+                <a href="{{ url('api') }}/{{ $dataArray['link'] }}/R/{{ $encryptedData }}" class="button" style="display:inline-block; font-size:13px; font-weight:600; text-transform:uppercase; text-decoration:none; background-color:#f4bd0e; color:#ffffff; padding:10px 30px; border-radius:3px;">Revise</a>
+                <a href="{{ url('api') }}/{{ $dataArray['link'] }}/C/{{ $encryptedData }}" class="button" style="display:inline-block; font-size:13px; font-weight:600; text-transform:uppercase; text-decoration:none; background-color:#e85347; color:#ffffff; padding:10px 30px; border-radius:3px;">Reject</a>
               </div>
 
               <p style="margin:15px 0;">In case you need some clarification, kindly approach:<br>

@@ -82,16 +82,15 @@
               </table>
 
               <!-- Attachments -->
-              @php $hasAttachment = false; @endphp
-              @foreach($dataArray['url_link'] as $key => $url_link)
-                @if($url_link && $dataArray['file_name'][$key] && $url_link != 'EMPTY' && $dataArray['file_name'][$key] != 'EMPTY')
-                  @if(!$hasAttachment)
-                    @php $hasAttachment = true; @endphp
-                    <p style="margin:20px 0 10px;">To view detail transaction, please click the link below:</p>
-                  @endif
-                  <a href="{{ $url_link }}" target="_blank" style="color:#026735; text-decoration:none;">{{ $dataArray['file_name'][$key] }}</a><br>
-                @endif
-              @endforeach
+              @if (!empty($dataArray['attachments']) && count($dataArray['attachments']) > 0)
+                  <p style="margin:20px 0 10px;">To view detail transaction, please click the link below:</p>
+                  @foreach($dataArray['attachments'] as $attachment)
+                      <a href="{{ $attachment['url'] }}" target="_blank" style="color:#026735; text-decoration:none;">
+                          {{ $attachment['file_name'] }}
+                      </a><br>
+                  @endforeach
+              @endif
+
 
               <!-- Buttons -->
               <div style="text-align: center; margin: 20px 0;">
