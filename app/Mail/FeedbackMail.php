@@ -31,7 +31,7 @@ class FeedbackMail extends Mailable
     public function build()
     {
         return $this->subject($this->mailData['subject'].' '.$this->mailData['descs'])
-                    ->view('email.' . $this->mailData['folderlink'] . '.staffaction')
+                    ->view('email.additional.staffaction')
                     ->with(['data' => $this->mailData]);
     }
 }

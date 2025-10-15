@@ -74,6 +74,8 @@ class LandVerificationController extends Controller
                 "clarify_user"		=> $request->sender_name,
                 "clarify_email"		=> $request->sender_addr,
                 'approve_list'      => $approve_data,
+                "land_title_no"		=> $request->land_title_no,
+                "land_title_name"		=> $request->land_title_name,
                 'subject'           => "Need Approval for Land Verification No.  ".$request->doc_no,
                 'link'              => 'LandVerification',
             ];

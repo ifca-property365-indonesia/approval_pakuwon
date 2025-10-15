@@ -71,9 +71,9 @@
               <!-- Detail Table -->
               <table role="presentation" cellpadding="4" cellspacing="0" border="0" width="100%" style="font-size:14px; color:#000000;">
                 <tr><td width="40%">Nomor Dokumen</td><td width="2%">:</td><td>{{ $dataArray['doc_no'] }}</td></tr>
-                <tr><td>NOP</td><td>:</td><td>{{ $dataArray['nop_no'] }}</td></tr>
-                <tr><td>Nama Pemilik</td><td>:</td><td>{{ $dataArray['name_owner'] }}</td></tr>
-                <tr><td>Tipe Kepemilikan Tanah</td><td>:</td><td>{{ $dataArray['own_descs'] }}</td></tr>
+                <tr><td>No. Alas Hak</td><td>:</td><td>{{ $dataArray['land_title_no'] }}</td></tr>
+                <tr><td>Nama Alas Hak</td><td>:</td><td>{{ $dataArray['land_title_name'] }}</td></tr>
+                <tr><td>Jenis Alas Hak</td><td>:</td><td>{{ $dataArray['own_descs'] }}</td></tr>
                 <tr>
                     <td>Tanggal Verifikasi Dokumen</td>
                     <td>:</td>
