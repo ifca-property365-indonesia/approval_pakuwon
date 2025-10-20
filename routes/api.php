@@ -48,3 +48,28 @@ use App\Http\Controllers\LandMeasuringController as LandMeasuring;
 Route::POST('/landmeasuring', [LandMeasuring::class, 'index']);
 Route::GET('/landmeasuring/{status}/{encrypt}', [LandMeasuring::class, 'processData']);
 Route::POST('/landmeasuring/getaccess', [LandMeasuring::class, 'getaccess']);
+
+use App\Http\Controllers\LandMeasuringSftController as landmeasuringSft;
+Route::POST('/landmeasuringsft', [landmeasuringSft::class, 'index']);
+Route::GET('/landmeasuringsft/{status}/{encrypt}', [landmeasuringSft::class, 'processData']);
+Route::POST('/landmeasuringsft/getaccess', [landmeasuringSft::class, 'getaccess']);
+
+use App\Http\Controllers\LandSphController as LandSph;
+Route::POST('/landsph', [LandSph::class, 'index']);
+Route::GET('/landsph/{status}/{encrypt}', [LandSph::class, 'processData']);
+Route::POST('/landsph/getaccess', [LandSph::class, 'getaccess']);
+
+use App\Http\Controllers\LandMapController as LandMap;
+Route::POST('/landmap', [LandMap::class, 'index']);
+Route::GET('/landmap/{status}/{encrypt}', [LandMap::class, 'processData']);
+Route::POST('/landmap/getaccess', [LandMap::class, 'getaccess']);
+
+use App\Http\Controllers\LandSftProposeController as LandSftPropose;
+Route::POST('/landsftpropose', [LandSftPropose::class, 'index']);
+Route::GET('/landsftpropose/{status}/{encrypt}', [LandSftPropose::class, 'processData']);
+Route::POST('/landsftpropose/getaccess', [LandSftPropose::class, 'getaccess']);
+
+use App\Http\Controllers\LandSftBphtbController as LandSftBphtb;
+Route::POST('/landsftbphtb', [LandSftBphtb::class, 'index']);
+Route::GET('/landsftbphtb/{status}/{encrypt}', [LandSftBphtb::class, 'processData']);
+Route::POST('/landsftbphtb/getaccess', [LandSftBphtb::class, 'getaccess']);

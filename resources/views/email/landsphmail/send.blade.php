@@ -66,14 +66,35 @@
           <tr>
             <td class="content" style="background-color:#e0e0e0; padding:30px; color:#000000; font-size:14px; line-height:22px;">
               <h5 style="font-size:20px; font-weight:400; margin:0 0 15px;">Dear {{ $dataArray['user_name'] }},</h5>
-              <p style="margin:0 0 15px;">Tolong berikan persetujuan untuk SPK Pengukuran bidang tanah dengan detail :</p>
+              <p style="margin:0 0 15px;">Tolong berikan persetujuan untuk pengalihan Hak pada transaksi di bawah ini :</p>
 
               <!-- Detail Table -->
               <table role="presentation" cellpadding="4" cellspacing="0" border="0" width="100%" style="font-size:14px; color:#000000;">
                 <tr><td width="40%">Nomor Dokumen</td><td width="2%">:</td><td>{{ $dataArray['doc_no'] }}</td></tr>
-                <tr><td>Petugas Pengukuran</td><td>:</td><td>{{ $dataArray['descs_officer'] }}</td></tr>
-                <tr><td>Tanggal Pengukuran</td><td>:</td><td>{{ $dataArray['transaction_date'] }}</td></tr>
-                <tr><td>Keterangan</td><td>:</td><td>{{ $dataArray['measuring_descs'] }}</td></tr>
+                <tr><td>No. Alas Hak</td><td>:</td><td>{{ $dataArray['land_title_no'] }}</td></tr>
+                <tr><td>Nama Alas Hak</td><td>:</td><td>{{ $dataArray['land_title_name'] }}</td></tr>
+                <tr><td>Luas Tanah yang disepakati</td><td>:</td><td>{{ $dataArray['laf'] }} m&sup2;</td></tr>
+                <tr><td>Luas Bangunan yang disepakati</td><td>:</td><td>{{ $dataArray['baf'] }} m&sup2;</td></tr>
+                <tr>
+                    <td>Tanggal Penandatanganan SPH</td>
+                    <td>:</td>
+                    <td>{{ $dataArray['transaction_date'] }}</td>
+                </tr>
+                <tr>
+                    <td>Uang Tanda Jadi</td>
+                    <td>:</td>
+                    <td style="text-align: right;">Rp. {{ $dataArray['book_amt'] }}</td>
+                </tr>
+                <tr>
+                    <td>Pembayaran Bidang Tanah</td>
+                    <td>:</td>
+                    <td style="text-align: right;">Rp. {{ $dataArray['total_amt'] }}</td>
+                </tr>
+                <tr>
+                    <td>Nominal SPH</td>
+                    <td>:</td>
+                    <td style="text-align: right;">Rp. {{ $dataArray['sph_amt'] }}</td>
+                </tr>
               </table>
 
               <!-- Attachments -->

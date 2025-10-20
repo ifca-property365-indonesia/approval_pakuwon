@@ -13,7 +13,7 @@ use App\Mail\SendLandMail;
 use Exception;
 use Carbon\Carbon;
 
-class LandMeasuringController extends Controller
+class LandBoundaryController extends Controller
 {
     public function index(Request $request)
     {
@@ -58,23 +58,23 @@ class LandMeasuringController extends Controller
                 'level_no'          => $request->level_no,
                 'entity_cd'         => $request->entity_cd,
                 'doc_no'            => $request->doc_no,
-                'ref_no'            => $request->ref_no,
                 'approve_seq'       => $request->approve_seq,
-                'descs_officer'     => $request->descs_officer,
-                'measuring_descs'   => $request->measuring_descs,
-                'attachments'       => $attachments,
-                'entity_name'       => $request->entity_name,
                 'email_addr'        => $request->email_addr,
                 'user_name'         => $request->user_name,
                 'sender_addr'       => $request->sender_addr,
                 'sender_name'       => $request->sender_name,
-                'transaction_date'  => $request->transaction_date,
+                'entity_name'       => $request->entity_name,
+                'attachments'       => $attachments,
                 'descs'             => $request->descs,
+                'approve_list'      => $approve_data,
+                'transaction_date'  => $request->transaction_date,
+                'boundary_ref'      => $request->boundary_ref,
+                'officer_cd'        => $request->officer_cd,
+                'off_name'          => $request->off_name,
                 "clarify_user"		=> $request->sender_name,
                 "clarify_email"		=> $request->sender_addr,
-                'approve_list'      => $approve_data,
-                'subject'           => "Need Approval for Land Measuring No.  ".$request->doc_no,
-                'link'              => 'landmeasuring',
+                'subject'           => "Need Approval for Land Boundary No.  ".$request->doc_no,
+                'link'              => 'landboundary',
             ];
 
             // dd($dataArray);
@@ -86,9 +86,9 @@ class LandMeasuringController extends Controller
                 'approve_seq'   => $request->approve_seq,
                 'doc_no'        => $request->doc_no,
                 'entity_name'   => $request->entity_name,
-                'type'          => 'K',
+                'type'          => 'D',
                 'type_module'   => 'LM',
-                'text'          => 'Land Measuring',
+                'text'          => 'Land Boundary',
             ];
 
             $encryptedData = Crypt::encrypt($data2Encrypt);
@@ -108,7 +108,7 @@ class LandMeasuringController extends Controller
 
             if (!empty($email_address)) {
                 $cacheFile = 'email_sent_' . $approve_seq . '_' . $entity_cd . '_' . $doc_no . '_' . $level_no . '.txt';
-                $cacheFilePath = storage_path('app/mail_cache/send_Land_Measuring/' . date('Ymd') . '/' . $cacheFile);
+                $cacheFilePath = storage_path('app/mail_cache/send_Land_Boundary/' . date('Ymd') . '/' . $cacheFile);
                 $cacheDirectory = dirname($cacheFilePath);
 
                 if (!file_exists($cacheDirectory)) {
@@ -127,14 +127,14 @@ class LandMeasuringController extends Controller
                     Mail::to($email_address)->send(new SendLandMail($encryptedData, $dataArray));
 
                     file_put_contents($cacheFilePath, 'sent');
-                    Log::channel('sendmailapproval')->info("Email Land Measuring doc_no $doc_no Entity $entity_cd berhasil dikirim ke: $email_address");
+                    Log::channel('sendmailapproval')->info("Email Land Boundary doc_no $doc_no Entity $entity_cd berhasil dikirim ke: $email_address");
 
                     $callback['Pesan'] = "Email berhasil dikirim ke: $email_address";
                     $callback['Error'] = false;
                     $callback['Status']= 200;
 
                 } else {
-                    Log::channel('sendmailapproval')->info("Email Land Measuring doc_no $doc_no Entity $entity_cd sudah pernah dikirim ke: $email_address");
+                    Log::channel('sendmailapproval')->info("Email Land Boundary doc_no $doc_no Entity $entity_cd sudah pernah dikirim ke: $email_address");
 
                     $callback['Pesan'] = "Email sudah pernah dikirim ke: $email_address";
                     $callback['Error'] = false;
@@ -272,7 +272,7 @@ class LandMeasuringController extends Controller
                     "name"      => $name,
                     "bgcolor"   => $bgcolor,
                     "valuebt"   => $valuebt,
-                    "link"      => "landmeasuring",
+                    "link"      => "landboundary",
                     "entity_name"   => $data["entity_name"],
                 );
                 return view('email/passcheckwithremark', $data);
@@ -314,7 +314,7 @@ class LandMeasuringController extends Controller
             $imagestatus = "reject.png";
         }
         $pdo = DB::connection('pakuwon')->getPdo();
-        $sth = $pdo->prepare("EXEC mgr.xrl_send_mail_approval_land_measuring ?, ?, ?, ?, ?");
+        $sth = $pdo->prepare("EXEC mgr.xrl_send_mail_approval_land_boundary ?, ?, ?, ?, ?");
         $success = $sth->execute([
             $data["entity_cd"],
             $data["doc_no"],
@@ -323,12 +323,12 @@ class LandMeasuringController extends Controller
             $reason
         ]);
         if ($success) {
-            $msg = "You Have Successfully ".$descstatus." the Land Measuring No. ".$data["doc_no"];
+            $msg = "You Have Successfully ".$descstatus." the Land Boundary No. ".$data["doc_no"];
             $notif = $descstatus." !";
             $st = 'OK';
             $image = $imagestatus;
         } else {
-            $msg = "You Failed to ".$descstatus." the Land Measuring No.".$data["doc_no"];
+            $msg = "You Failed to ".$descstatus." the Land Boundary No.".$data["doc_no"];
             $notif = 'Fail to '.$descstatus.' !';
             $st = 'FAIL';
             $image = "reject.png";
