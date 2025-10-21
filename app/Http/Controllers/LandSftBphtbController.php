@@ -69,7 +69,7 @@ class LandSftBphtbController extends Controller
                 'attachments'       => $attachments,
                 'descs'             => $request->descs,
                 'approve_list'      => $approve_data,
-                'transaction_date'  => $request->transaction_date,
+                'transaction_date' => \Carbon\Carbon::parse($request->transaction_date)->format('d F Y'),
                 'bphtb_ref_no'      => $request->bphtb_ref_no,
                 'nib_no'            => $request->nib_no,
                 'nop_bphtb'         => $request->nop_bphtb,

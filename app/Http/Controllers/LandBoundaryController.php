@@ -67,7 +67,7 @@ class LandBoundaryController extends Controller
                 'attachments'       => $attachments,
                 'descs'             => $request->descs,
                 'approve_list'      => $approve_data,
-                'transaction_date'  => $request->transaction_date,
+                'transaction_date' => \Carbon\Carbon::parse($request->transaction_date)->format('d F Y'),
                 'boundary_ref'      => $request->boundary_ref,
                 'officer_cd'        => $request->officer_cd,
                 'off_name'          => $request->off_name,

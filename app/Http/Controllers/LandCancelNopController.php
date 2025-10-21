@@ -13,7 +13,7 @@ use App\Mail\SendLandMail;
 use Exception;
 use Carbon\Carbon;
 
-class LandSftShgbController extends Controller
+class LandCancelNopController extends Controller
 {
     public function index(Request $request)
     {
@@ -53,8 +53,6 @@ class LandSftShgbController extends Controller
                 $approve_data[] = $approve;
             }
 
-            $shgb_amt = number_format($request->shgb_amt, 2, '.', ',');
-
             $dataArray = [
                 'user_id'           => $request->user_id,
                 'level_no'          => $request->level_no,
@@ -69,15 +67,15 @@ class LandSftShgbController extends Controller
                 'attachments'       => $attachments,
                 'descs'             => $request->descs,
                 'approve_list'      => $approve_data,
-                'transaction_date' => \Carbon\Carbon::parse($request->transaction_date)->format('d F Y'),
-                'shgb_ref_no'       => $request->shgb_ref_no,
-                'nop_no_new'        => $request->nop_no_new,
-                'pbt_area_nib'      => $request->pbt_area_nib,
-                'shgb_amt'          => $shgb_amt,
+                'transaction_date'  => \Carbon\Carbon::parse($request->transaction_date)->format('d F Y'),
+                'sppt_name'         => $request->sppt_name,
+                'nop_no'            => $request->nop_no,
+                'owner_name'        => $request->owner_name,
+                'cancel_remarks'    => $request->cancel_remarks,
                 "clarify_user"		=> $request->sender_name,
                 "clarify_email"		=> $request->sender_addr,
-                'subject'           => "Need Approval for Land SFT SHGB No.  ".$request->doc_no,
-                'link'              => 'landsftshgb',
+                'subject'           => "Need Approval for Land Change NOP No.  ".$request->doc_no,
+                'link'              => 'landchangenop',
             ];
 
             // dd($dataArray);
@@ -89,9 +87,9 @@ class LandSftShgbController extends Controller
                 'approve_seq'   => $request->approve_seq,
                 'doc_no'        => $request->doc_no,
                 'entity_name'   => $request->entity_name,
-                'type'          => 'Z',
+                'type'          => 'O',
                 'type_module'   => 'LM',
-                'text'          => 'Land SFT SHGB',
+                'text'          => 'Land Change NOP',
             ];
 
             $encryptedData = Crypt::encrypt($data2Encrypt);
@@ -111,7 +109,7 @@ class LandSftShgbController extends Controller
 
             if (!empty($email_address)) {
                 $cacheFile = 'email_sent_' . $approve_seq . '_' . $entity_cd . '_' . $doc_no . '_' . $level_no . '.txt';
-                $cacheFilePath = storage_path('app/mail_cache/send_Land_SFT_SHGB/' . date('Ymd') . '/' . $cacheFile);
+                $cacheFilePath = storage_path('app/mail_cache/send_Land_Change_NOP/' . date('Ymd') . '/' . $cacheFile);
                 $cacheDirectory = dirname($cacheFilePath);
 
                 if (!file_exists($cacheDirectory)) {
@@ -130,14 +128,14 @@ class LandSftShgbController extends Controller
                     Mail::to($email_address)->send(new SendLandMail($encryptedData, $dataArray));
 
                     file_put_contents($cacheFilePath, 'sent');
-                    Log::channel('sendmailapproval')->info("Email Land SFT SHGB doc_no $doc_no Entity $entity_cd berhasil dikirim ke: $email_address");
+                    Log::channel('sendmailapproval')->info("Email Land Change NOP doc_no $doc_no Entity $entity_cd berhasil dikirim ke: $email_address");
 
                     $callback['Pesan'] = "Email berhasil dikirim ke: $email_address";
                     $callback['Error'] = false;
                     $callback['Status']= 200;
 
                 } else {
-                    Log::channel('sendmailapproval')->info("Email Land SFT SHGB doc_no $doc_no Entity $entity_cd sudah pernah dikirim ke: $email_address");
+                    Log::channel('sendmailapproval')->info("Email Land Change NOP doc_no $doc_no Entity $entity_cd sudah pernah dikirim ke: $email_address");
 
                     $callback['Pesan'] = "Email sudah pernah dikirim ke: $email_address";
                     $callback['Error'] = false;
@@ -275,7 +273,7 @@ class LandSftShgbController extends Controller
                     "name"      => $name,
                     "bgcolor"   => $bgcolor,
                     "valuebt"   => $valuebt,
-                    "link"      => "landsftshgb",
+                    "link"      => "landchangenop",
                     "entity_name"   => $data["entity_name"],
                 );
                 return view('email/passcheckwithremark', $data);
@@ -317,7 +315,7 @@ class LandSftShgbController extends Controller
             $imagestatus = "reject.png";
         }
         $pdo = DB::connection('pakuwon')->getPdo();
-        $sth = $pdo->prepare("EXEC mgr.xrl_send_mail_approval_land_sft_shgb ?, ?, ?, ?, ?");
+        $sth = $pdo->prepare("EXEC mgr.xrl_send_mail_approval_land_cancel_nop ?, ?, ?, ?, ?");
         $success = $sth->execute([
             $data["entity_cd"],
             $data["doc_no"],
@@ -326,12 +324,12 @@ class LandSftShgbController extends Controller
             $reason
         ]);
         if ($success) {
-            $msg = "You Have Successfully ".$descstatus." the Land SFT SHGB No. ".$data["doc_no"];
+            $msg = "You Have Successfully ".$descstatus." the Land Change NOP No. ".$data["doc_no"];
             $notif = $descstatus." !";
             $st = 'OK';
             $image = $imagestatus;
         } else {
-            $msg = "You Failed to ".$descstatus." the Land SFT SHGB No.".$data["doc_no"];
+            $msg = "You Failed to ".$descstatus." the Land Change NOP No.".$data["doc_no"];
             $notif = 'Fail to '.$descstatus.' !';
             $st = 'FAIL';
             $image = "reject.png";
