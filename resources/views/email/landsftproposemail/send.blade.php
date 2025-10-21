@@ -66,45 +66,16 @@
           <tr>
             <td class="content" style="background-color:#e0e0e0; padding:30px; color:#000000; font-size:14px; line-height:22px;">
               <h5 style="font-size:20px; font-weight:400; margin:0 0 15px;">Dear {{ $dataArray['user_name'] }},</h5>
-              <p style="margin:0 0 15px;">Tolong berikan persetujuan untuk Pengajuan Pembayaran dengan detail :</p>
+              <p style="margin:0 0 15px;">Tolong berikan persetujuan untuk Permohonan SK HAK dengan Detail :</p>
 
               <!-- Detail Table -->
               <table role="presentation" cellpadding="4" cellspacing="0" border="0" width="100%" style="font-size:14px; color:#000000;">
-                <tr>
-                  <th style="border: 1px solid #dddddd;text-align: center;padding: 8px;">Nomor Dokumen</th>
-                  <th style="border: 1px solid #dddddd;text-align: center;padding: 8px;">Nama Pemilik</th>
-                  <th style="border: 1px solid #dddddd;text-align: center;padding: 8px;">Rincian Pengajuan</th>
-                  <th style="border: 1px solid #dddddd;text-align: center;padding: 8px;">NOP</th>
-                  <th style="border: 1px solid #dddddd;text-align: center;padding: 8px;">Periode SPH</th>
-                  <th style="border: 1px solid #dddddd;text-align: center;padding: 8px;">Nominal Pengajuan</th>
-              </tr>
-              @if(isset($dataArray['type']) && is_array($dataArray['type']) && count($dataArray['type']) > 0)
-                  <!-- Find and display the first merge -->
-                  @if(isset($dataArray['type'][0]))
-                      <tr>
-                          <td style="border: 1px solid #dddddd;padding: 8px;">{{ $dataArray['doc_no'] }}</td>
-                          <td style="border: 1px solid #dddddd;padding: 8px;">-</td>
-                          <td style="border: 1px solid #dddddd;padding: 8px;">{{ $dataArray['type'][0] }}</td>
-                          <td style="border: 1px solid #dddddd;padding: 8px;">-</td>
-                          <td style="border: 1px solid #dddddd;padding: 8px;">{{ $dataArray['sph_trx_no'][0] }}</td>
-                          <td style="border: 1px solid #dddddd;padding: 8px;text-align: right;">Rp. {{ $dataArray['request_amt'][0] }}</td>
-                      </tr>  
-                  @endif
-
-                  <!-- Display other merges -->
-                  @for($i = 1; $i < count($dataArray['type']); $i++)
-                      @if(isset($dataArray['sph_trx_no'][$i]))
-                          <tr>
-                              <td style="border: 1px solid #dddddd;padding: 8px;">{{ $dataArray['doc_no'] }}</td>
-                              <td style="border: 1px solid #dddddd;padding: 8px;">-</td>
-                              <td style="border: 1px solid #dddddd;padding: 8px;">{{ $dataArray['type'][$i] }}</td>
-                              <td style="border: 1px solid #dddddd;padding: 8px;">-</td>
-                              <td style="border: 1px solid #dddddd;padding: 8px;">{{ $dataArray['sph_trx_no'][$i] }}</td>
-                              <td style="border: 1px solid #dddddd;padding: 8px;text-align: right;">Rp. {{ $dataArray['request_amt'][$i] }}</td>
-                          </tr>
-                      @endif
-                  @endfor
-              @endif
+                <tr><td width="40%">Nomor Dokumen</td><td width="2%">:</td><td>{{ $dataArray['doc_no'] }}</td></tr>
+                <tr><td>Nomor Permohonan SK</td><td>:</td><td>{{ $dataArray['ref_no'] }}</td></tr>
+                <tr><td>Nomor SK</td><td>:</td><td>{{ $dataArray['sk_no'] }}</td></tr>
+                <tr><td>Tanggal Pengajuan SK Pengukuran</td><td>:</td><td>{{ $dataArray['transaction_date'] }}</td></tr>
+                <tr><td>Biaya PNBP SK HAK</td><td>:</td><td style="text-align: right;">Rp. {{ $dataArray['sph_amt'] }}</td></tr>
+                
               </table>
 
               <!-- Attachments -->
