@@ -13,7 +13,7 @@ use App\Mail\SendLandMail;
 use Exception;
 use Carbon\Carbon;
 
-class LandMeasuringSftController extends Controller
+class LandChangeNameController extends Controller
 {
     public function index(Request $request)
     {
@@ -53,7 +53,17 @@ class LandMeasuringSftController extends Controller
                 $approve_data[] = $approve;
             }
 
-            $measuring_amt = number_format($request->measuring_amt, 2, '.', ',');
+            $list_payment_dt_descs = explode('; ', $request->payment_dt_descs);
+            $payment_dt_descs_data = [];
+            foreach ($list_payment_dt_descs as $payment_dt_descs) {
+                $payment_dt_descs_data[] = $payment_dt_descs;
+            }
+
+            $list_payment_amount = explode('; ', $request->payment_amount);
+            $payment_amount_data = [];
+            foreach ($list_payment_amount as $payment_amount) {
+                $payment_amount_data[] = $payment_amount;
+            }
 
             $dataArray = [
                 'user_id'           => $request->user_id,
@@ -61,22 +71,24 @@ class LandMeasuringSftController extends Controller
                 'entity_cd'         => $request->entity_cd,
                 'doc_no'            => $request->doc_no,
                 'approve_seq'       => $request->approve_seq,
-                'attachments'       => $attachments,
-                'entity_name'       => $request->entity_name,
                 'email_addr'        => $request->email_addr,
                 'user_name'         => $request->user_name,
                 'sender_addr'       => $request->sender_addr,
                 'sender_name'       => $request->sender_name,
-                'transaction_date' => \Carbon\Carbon::parse($request->transaction_date)->format('d F Y'),
-                'approve_list'      => $approve_data,
-                'kloter'            => $request->kloter,
-                'file_no'           => $request->file_no,
-                'nib_no'            => $request->nib_no,
-                'measuring_amt'     => $measuring_amt,
+                'entity_name'       => $request->entity_name,
+                'attachments'       => $attachments,
                 'clarify_user'		=> $request->sender_name,
                 'clarify_email'		=> $request->sender_addr,
-                'subject'           => 'Need Approval for Land Measuring SFT No.  '.$request->doc_no,
-                'link'              => 'landmeasuringsft',
+                'approve_list'      => $approve_data,
+                'change_no'        => $request->change_no,
+                'land_title_no'    => $request->land_title_no,
+                'land_title_area'   => $request->land_title_area,
+                'land_title_name'  => $request->land_title_name,
+                'land_title_pt'   => $request->land_title_pt,
+                'payment_dt_descs' => $payment_dt_descs_data,
+                'payment_amount'   => $payment_amount_data,
+                'subject'           => "Need Approval for Land Change Name No.  ".$request->change_no,
+                'link'              => 'landchangename',
             ];
 
             // dd($dataArray);
@@ -88,9 +100,9 @@ class LandMeasuringSftController extends Controller
                 'approve_seq'   => $request->approve_seq,
                 'doc_no'        => $request->doc_no,
                 'entity_name'   => $request->entity_name,
-                'type'          => 'A',
+                'type'          => '1',
                 'type_module'   => 'LM',
-                'text'          => 'Land Measuring SFT',
+                'text'          => 'Land Change Name',
             ];
 
             $encryptedData = Crypt::encrypt($data2Encrypt);
@@ -110,7 +122,7 @@ class LandMeasuringSftController extends Controller
 
             if (!empty($email_address)) {
                 $cacheFile = 'email_sent_' . $approve_seq . '_' . $entity_cd . '_' . $doc_no . '_' . $level_no . '.txt';
-                $cacheFilePath = storage_path('app/mail_cache/send_Land_Measuring_SFT/' . date('Ymd') . '/' . $cacheFile);
+                $cacheFilePath = storage_path('app/mail_cache/send_Land_Change Name/' . date('Ymd') . '/' . $cacheFile);
                 $cacheDirectory = dirname($cacheFilePath);
 
                 if (!file_exists($cacheDirectory)) {
@@ -129,14 +141,14 @@ class LandMeasuringSftController extends Controller
                     Mail::to($email_address)->send(new SendLandMail($encryptedData, $dataArray));
 
                     file_put_contents($cacheFilePath, 'sent');
-                    Log::channel('sendmailapproval')->info("Email Land Measuring doc_no $doc_no Entity $entity_cd berhasil dikirim ke: $email_address");
+                    Log::channel('sendmailapproval')->info("Email Land Change Name doc_no $doc_no Entity $entity_cd berhasil dikirim ke: $email_address");
 
                     $callback['Pesan'] = "Email berhasil dikirim ke: $email_address";
                     $callback['Error'] = false;
                     $callback['Status']= 200;
 
                 } else {
-                    Log::channel('sendmailapproval')->info("Email Land Measuring doc_no $doc_no Entity $entity_cd sudah pernah dikirim ke: $email_address");
+                    Log::channel('sendmailapproval')->info("Email Land Change Name doc_no $doc_no Entity $entity_cd sudah pernah dikirim ke: $email_address");
 
                     $callback['Pesan'] = "Email sudah pernah dikirim ke: $email_address";
                     $callback['Error'] = false;
@@ -274,7 +286,7 @@ class LandMeasuringSftController extends Controller
                     "name"      => $name,
                     "bgcolor"   => $bgcolor,
                     "valuebt"   => $valuebt,
-                    "link"      => "landmeasuringsft",
+                    "link"      => "landchangename",
                     "entity_name"   => $data["entity_name"],
                 );
                 return view('email/passcheckwithremark', $data);
@@ -316,7 +328,7 @@ class LandMeasuringSftController extends Controller
             $imagestatus = "reject.png";
         }
         $pdo = DB::connection('pakuwon')->getPdo();
-        $sth = $pdo->prepare("EXEC mgr.xrl_send_mail_approval_land_measuring_sft ?, ?, ?, ?, ?");
+        $sth = $pdo->prepare("EXEC mgr.xrl_send_mail_approval_land_change_name ?, ?, ?, ?, ?");
         $success = $sth->execute([
             $data["entity_cd"],
             $data["doc_no"],
@@ -325,12 +337,12 @@ class LandMeasuringSftController extends Controller
             $reason
         ]);
         if ($success) {
-            $msg = "You Have Successfully ".$descstatus." the Land Measuring SFT No. ".$data["doc_no"];
+            $msg = "You Have Successfully ".$descstatus." the Land Change Name No. ".$data["doc_no"];
             $notif = $descstatus." !";
             $st = 'OK';
             $image = $imagestatus;
         } else {
-            $msg = "You Failed to ".$descstatus." the Land Measuring SFT No.".$data["doc_no"];
+            $msg = "You Failed to ".$descstatus." the Land Change Name No.".$data["doc_no"];
             $notif = 'Fail to '.$descstatus.' !';
             $st = 'FAIL';
             $image = "reject.png";

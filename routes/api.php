@@ -49,11 +49,6 @@ Route::POST('/landmeasuring', [LandMeasuring::class, 'index']);
 Route::GET('/landmeasuring/{status}/{encrypt}', [LandMeasuring::class, 'processData']);
 Route::POST('/landmeasuring/getaccess', [LandMeasuring::class, 'getaccess']);
 
-use App\Http\Controllers\LandMeasuringSftController as landmeasuringSft;
-Route::POST('/landmeasuringsft', [landmeasuringSft::class, 'index']);
-Route::GET('/landmeasuringsft/{status}/{encrypt}', [landmeasuringSft::class, 'processData']);
-Route::POST('/landmeasuringsft/getaccess', [landmeasuringSft::class, 'getaccess']);
-
 use App\Http\Controllers\LandSphController as LandSph;
 Route::POST('/landsph', [LandSph::class, 'index']);
 Route::GET('/landsph/{status}/{encrypt}', [LandSph::class, 'processData']);
@@ -64,6 +59,11 @@ Route::POST('/landmap', [LandMap::class, 'index']);
 Route::GET('/landmap/{status}/{encrypt}', [LandMap::class, 'processData']);
 Route::POST('/landmap/getaccess', [LandMap::class, 'getaccess']);
 
+use App\Http\Controllers\LandMeasuringSftController as landmeasuringSft;
+Route::POST('/landmeasuringsft', [landmeasuringSft::class, 'index']);
+Route::GET('/landmeasuringsft/{status}/{encrypt}', [landmeasuringSft::class, 'processData']);
+Route::POST('/landmeasuringsft/getaccess', [landmeasuringSft::class, 'getaccess']);
+
 use App\Http\Controllers\LandSftProposeController as LandSftPropose;
 Route::POST('/landsftpropose', [LandSftPropose::class, 'index']);
 Route::GET('/landsftpropose/{status}/{encrypt}', [LandSftPropose::class, 'processData']);
@@ -73,3 +73,13 @@ use App\Http\Controllers\LandSftBphtbController as LandSftBphtb;
 Route::POST('/landsftbphtb', [LandSftBphtb::class, 'index']);
 Route::GET('/landsftbphtb/{status}/{encrypt}', [LandSftBphtb::class, 'processData']);
 Route::POST('/landsftbphtb/getaccess', [LandSftBphtb::class, 'getaccess']);
+
+use App\Http\Controllers\LandBoundaryController as LandBoundary;
+Route::POST('/landboundary', [LandBoundary::class, 'index']);
+Route::GET('/landboundary/{status}/{encrypt}', [LandBoundary::class, 'processData']);
+Route::POST('/landboundary/getaccess', [LandBoundary::class, 'getaccess']);
+
+use App\Http\Controllers\LandChangeNameController as LandChangeName;
+Route::POST('/landchangename', [LandChangeName::class, 'index']);
+Route::GET('/landchangename/{status}/{encrypt}', [LandChangeName::class, 'processData']);
+Route::POST('/landchangename/getaccess', [LandChangeName::class, 'getaccess']);

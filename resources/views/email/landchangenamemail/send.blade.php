@@ -66,17 +66,50 @@
           <tr>
             <td class="content" style="background-color:#e0e0e0; padding:30px; color:#000000; font-size:14px; line-height:22px;">
               <h5 style="font-size:20px; font-weight:400; margin:0 0 15px;">Dear {{ $dataArray['user_name'] }},</h5>
-              <p style="margin:0 0 15px;">Tolong berikan persetujuan untuk Proses Pengukuran BPN, dengan detail :</p>
+              <p style="margin:0 0 15px;">Tolong berikan persetujuan untuk proses balik nama sertifikat {{ $dataArray['change_no'] }} dengan detail :</p>
 
               <!-- Detail Table -->
               <table role="presentation" cellpadding="4" cellspacing="0" border="0" width="100%" style="font-size:14px; color:#000000;">
-                <tr><td width="40%">Nomor Dokumen</td><td width="2%">:</td><td>{{ $dataArray['doc_no'] }}</td></tr>
-                <tr><td>Kloter</td><td>:</td><td>{{ $dataArray['kloter'] }}</td></tr>
-                <tr><td>No Berkas</td><td>:</td><td>{{ $dataArray['file_no'] }}</td></tr>
-                <tr><td>Nomor Induk Bidang</td><td>:</td><td>{{ $dataArray['nib_no'] }}</td></tr>
-                <tr><td>Tanggal Pengukuran</td><td>:</td><td>{{ $dataArray['transaction_date'] }}</td></tr>
-                <tr><td>Biaya PNBP Pengukuran</td><td>:</td><td align="right">Rp. {{ $dataArray['measuring_amt'] }}</td></tr>
+                <tr>
+                  <td width="40%">Nomor Dokumen</td><td width="2%">:</td><td>{{ $dataArray['change_no'] }}</td>
+                </tr>
+                <tr>
+                  <td width="40%">No. Alas Hak</td><td width="2%">:</td><td>{{ $dataArray['land_title_no'] }}</td>
+                </tr>
+                <tr>
+                  <td width="40%">Luas Alas Hak</td><td width="2%">:</td><td>{{ $dataArray['land_title_area'] }}</td>
+                </tr>
+                <tr>
+                  <td width="40%">Nama Alas Hak (Awal)</td><td width="2%">:</td><td>{{ $dataArray['land_title_name'] }}</td>
+                </tr>
+                <tr>
+                  <td width="40%">Nama Alas Hak (Baru)</td><td width="2%">:</td><td>{{ $dataArray['land_title_pt'] }}</td>
+                </tr>
               </table>
+
+              <br>
+
+              <!-- Tabel Rincian Biaya -->
+              <table role="presentation" cellpadding="6" cellspacing="0" border="1" width="100%" style="font-size:14px; color:#000000; border-collapse:collapse; border:1px solid #cccccc;">
+                <tr style="background-color:#f2f2f2;">
+                  <td width="40%"><strong>Rincian Biaya</strong></td>
+                  <td width="2%">:</td>
+                  <td>
+                    <table role="presentation" cellpadding="4" cellspacing="0" border="0" width="100%" style="font-size:14px; color:#000000;">
+                      @foreach ($dataArray['payment_dt_descs'] as $index => $desc)
+                        <tr>
+                          <td width="5%">{{ $index + 1 }}</td>
+                          <td width="70%">{{ $desc }}</td>
+                          <td align="right" width="25%">
+                            Rp. {{ number_format((float) $dataArray['payment_amount'][$index] ?? 0, 0, ',', '.') }}
+                          </td>
+                        </tr>
+                      @endforeach
+                    </table>
+                  </td>
+                </tr>
+              </table>
+
 
               <!-- Attachments -->
               @if (!empty($dataArray['attachments']) && count($dataArray['attachments']) > 0)
