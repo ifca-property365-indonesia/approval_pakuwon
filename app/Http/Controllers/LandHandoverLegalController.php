@@ -13,7 +13,7 @@ use App\Mail\SendLandMail;
 use Exception;
 use Carbon\Carbon;
 
-class LandHandoverShgbController extends Controller
+class LandHandoverLegalController extends Controller
 {
     public function index(Request $request)
     {
@@ -75,8 +75,8 @@ class LandHandoverShgbController extends Controller
                 'handover_to'       => $request->handover_to,
                 "clarify_user"		=> $request->sender_name,
                 "clarify_email"		=> $request->sender_addr,
-                'subject'           => "Need Approval for Land Handover SHGB No.  ".$request->doc_no,
-                'link'              => 'landhandovershgb',
+                'subject'           => "Need Approval for Land Handover Legal No.  ".$request->doc_no,
+                'link'              => 'landhandoverlegal',
             ];
 
             // dd($dataArray);
@@ -88,9 +88,9 @@ class LandHandoverShgbController extends Controller
                 'approve_seq'   => $request->approve_seq,
                 'doc_no'        => $request->doc_no,
                 'entity_name'   => $request->entity_name,
-                'type'          => 'H',
+                'type'          => 'M',
                 'type_module'   => 'LM',
-                'text'          => 'Land Handover SHGB',
+                'text'          => 'Land Handover Legal',
             ];
 
             $encryptedData = Crypt::encrypt($data2Encrypt);
@@ -110,7 +110,7 @@ class LandHandoverShgbController extends Controller
 
             if (!empty($email_address)) {
                 $cacheFile = 'email_sent_' . $approve_seq . '_' . $entity_cd . '_' . $doc_no . '_' . $level_no . '.txt';
-                $cacheFilePath = storage_path('app/mail_cache/send_Land_Handover_SHGB/' . date('Ymd') . '/' . $cacheFile);
+                $cacheFilePath = storage_path('app/mail_cache/send_Land_Handover_Legal/' . date('Ymd') . '/' . $cacheFile);
                 $cacheDirectory = dirname($cacheFilePath);
 
                 if (!file_exists($cacheDirectory)) {
@@ -129,14 +129,14 @@ class LandHandoverShgbController extends Controller
                     Mail::to($email_address)->send(new SendLandMail($encryptedData, $dataArray));
 
                     file_put_contents($cacheFilePath, 'sent');
-                    Log::channel('sendmailapproval')->info("Email Land Handover SHGB doc_no $doc_no Entity $entity_cd berhasil dikirim ke: $email_address");
+                    Log::channel('sendmailapproval')->info("Email Land Handover Legal doc_no $doc_no Entity $entity_cd berhasil dikirim ke: $email_address");
 
                     $callback['Pesan'] = "Email berhasil dikirim ke: $email_address";
                     $callback['Error'] = false;
                     $callback['Status']= 200;
 
                 } else {
-                    Log::channel('sendmailapproval')->info("Email Land Handover SHGB doc_no $doc_no Entity $entity_cd sudah pernah dikirim ke: $email_address");
+                    Log::channel('sendmailapproval')->info("Email Land Handover Legal doc_no $doc_no Entity $entity_cd sudah pernah dikirim ke: $email_address");
 
                     $callback['Pesan'] = "Email sudah pernah dikirim ke: $email_address";
                     $callback['Error'] = false;
@@ -274,7 +274,7 @@ class LandHandoverShgbController extends Controller
                     "name"      => $name,
                     "bgcolor"   => $bgcolor,
                     "valuebt"   => $valuebt,
-                    "link"      => "landhandovershgb",
+                    "link"      => "landhandoverlegal",
                     "entity_name"   => $data["entity_name"],
                 );
                 return view('email/passcheckwithremark', $data);
@@ -316,7 +316,7 @@ class LandHandoverShgbController extends Controller
             $imagestatus = "reject.png";
         }
         $pdo = DB::connection('pakuwon')->getPdo();
-        $sth = $pdo->prepare("EXEC mgr.xrl_send_mail_approval_land_handover_shgb ?, ?, ?, ?, ?");
+        $sth = $pdo->prepare("EXEC mgr.xrl_send_mail_approval_land_handover_legal ?, ?, ?, ?, ?");
         $success = $sth->execute([
             $data["entity_cd"],
             $data["doc_no"],
@@ -325,12 +325,12 @@ class LandHandoverShgbController extends Controller
             $reason
         ]);
         if ($success) {
-            $msg = "You Have Successfully ".$descstatus." the Land Handover SHGB No. ".$data["doc_no"];
+            $msg = "You Have Successfully ".$descstatus." the Land Handover Legal No. ".$data["doc_no"];
             $notif = $descstatus." !";
             $st = 'OK';
             $image = $imagestatus;
         } else {
-            $msg = "You Failed to ".$descstatus." the Land Handover SHGB No.".$data["doc_no"];
+            $msg = "You Failed to ".$descstatus." the Land Handover Legal No.".$data["doc_no"];
             $notif = 'Fail to '.$descstatus.' !';
             $st = 'FAIL';
             $image = "reject.png";
