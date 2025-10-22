@@ -70,11 +70,11 @@
 
               <!-- Detail Table -->
               <table role="presentation" cellpadding="4" cellspacing="0" border="0" width="100%" style="font-size:14px; color:#000000;">
-                <tr><td width="40%">Nomor Dokumen</td><td width="2%">:</td><td>{{ $dataArray['doc_no'] }}</td></tr>
+                <tr><td width="50%">Nomor Dokumen</td><td width="5%">:</td><td>{{ $dataArray['doc_no'] }}</td></tr>
                 <tr><td>Nomor Permohonan SK</td><td>:</td><td>{{ $dataArray['ref_no'] }}</td></tr>
                 <tr><td>Nomor SK</td><td>:</td><td>{{ $dataArray['sk_no'] }}</td></tr>
-                <tr><td>Tanggal Pengajuan SK Pengukuran</td><td>:</td><td>{{ $dataArray['transaction_date'] }}</td></tr>
-                <tr><td>Biaya PNBP SK HAK</td><td>:</td><td style="text-align: right;">Rp. {{ $dataArray['sph_amt'] }}</td></tr>
+                <tr><td>Tanggal Pengajuan SK HAK</td><td>:</td><td>{{ $dataArray['transaction_date'] }}</td></tr>
+                <tr><td>Biaya PNBP SK HAK</td><td>:</td><td style="text-align: right;">Rp. {{ $dataArray['sk_amt'] }}</td></tr>
                 
               </table>
 

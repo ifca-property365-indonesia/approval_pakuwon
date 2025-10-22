@@ -72,6 +72,7 @@ class LandSftProposeController extends Controller
                 'ref_no'            => $request->ref_no,
                 'sk_no'             => $request->sk_no,
                 'sk_amt'            => $sk_amt,
+                'transaction_date'  => \Carbon\Carbon::parse($request->transaction_date)->format('d F Y'),
                 "clarify_user"		=> $request->sender_name,
                 "clarify_email"		=> $request->sender_addr,
                 'subject'           => "Need Approval for Land SFT Propose No.  ".$request->doc_no,

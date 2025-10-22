@@ -53,6 +53,12 @@ class LandSftBphtbController extends Controller
                 $approve_data[] = $approve;
             }
 
+            $list_of_land_title_no = explode('; ', $request->land_title_no);
+            $land_title_no_data = [];
+            foreach ($list_of_land_title_no as $land_title_no) {
+                $land_title_no_data[] = $land_title_no;
+            }
+
             $bphtb_amt = number_format($request->bphtb_amt, 2, '.', ',');
 
             $dataArray = [
@@ -74,6 +80,7 @@ class LandSftBphtbController extends Controller
                 'nib_no'            => $request->nib_no,
                 'nop_bphtb'         => $request->nop_bphtb,
                 'bphtb_amt'         => $bphtb_amt,
+                'land_title_no'     => $land_title_no_data,
                 "clarify_user"		=> $request->sender_name,
                 "clarify_email"		=> $request->sender_addr,
                 'subject'           => "Need Approval for Land SFT BPHTB No.  ".$request->doc_no,

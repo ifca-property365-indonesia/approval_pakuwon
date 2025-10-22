@@ -13,7 +13,7 @@ use App\Mail\SendLandMail;
 use Exception;
 use Carbon\Carbon;
 
-class LandChangeNameController extends Controller
+class LandSplitShgbController extends Controller
 {
     public function index(Request $request)
     {
@@ -53,42 +53,102 @@ class LandChangeNameController extends Controller
                 $approve_data[] = $approve;
             }
 
-            $list_payment_dt_descs = explode('; ', $request->payment_dt_descs);
-            $payment_dt_descs_data = [];
-            foreach ($list_payment_dt_descs as $payment_dt_descs) {
-                $payment_dt_descs_data[] = $payment_dt_descs;
+            $list_of_shgb_no = explode('; ', $request->shgb_no);
+            $shgb_no_data = [];
+            foreach ($list_of_shgb_no as $shgb_no) {
+                $shgb_no_data[] = $shgb_no;
             }
 
-            $list_payment_amount = explode('; ', $request->payment_amount);
-            $payment_amount_data = [];
-            foreach ($list_payment_amount as $payment_amount) {
-                $payment_amount_data[] = $payment_amount;
+            $list_of_shgb_no_bpn = explode('; ', $request->shgb_no_bpn);
+            $shgb_no_bpn_data = [];
+            foreach ($list_of_shgb_no_bpn as $shgb_no_bpn) {
+                $shgb_no_bpn_data[] = $shgb_no_bpn;
+            }
+
+            $list_of_nop_no = explode('; ', $request->nop_no);
+            $nop_no_data = [];
+            foreach ($list_of_nop_no as $nop_no) {
+                $nop_no_data[] = $nop_no;
+            }
+
+            $list_of_nib_no = explode('; ', $request->nib_no);
+            $nib_no_data = [];
+            foreach ($list_of_nib_no as $nib_no) {
+                $nib_no_data[] = $nib_no;
+            }
+
+            $list_of_shgb_date = explode('; ', $request->shgb_date);
+            $shgb_date_data = [];
+            foreach ($list_of_shgb_date as $shgb_date) {
+                $shgb_date_data[] = \Carbon\Carbon::parse($shgb_date)->format('d F Y');
+            }
+
+            $list_of_shgb_expired = explode('; ', $request->shgb_expired);
+            $shgb_expired_data = [];
+            foreach ($list_of_shgb_expired as $shgb_expired) {
+                $shgb_expired_data[] = \Carbon\Carbon::parse($shgb_expired)->format('d F Y');
+            }
+
+            $list_of_shgb_area = explode('; ', $request->shgb_area);
+            $shgb_area_data = [];
+            foreach ($list_of_shgb_area as $shgb_area) {
+                $shgb_area_data[] = number_format((float)$shgb_area, 2, '.', ',');
+            }
+
+            $list_of_split_status_hd = explode(';', $request->split_status_hd);
+            $split_status_hd_data = [];
+            foreach ($list_of_split_status_hd as $split_status_hd) {
+                $split_status_hd_data[] = $split_status_hd;
+            }
+            
+            $list_of_split_status_hdstr = explode(';', $request->split_status_hdstr);
+            $split_status_hdstr_data = [];
+            foreach ($list_of_split_status_hdstr as $split_status_hdstr) {
+                $split_status_hdstr_data[] = $split_status_hdstr;
+            }
+            
+            $list_of_split_status_dtstr = explode(';', $request->split_status_dtstr);
+            $split_status_dtstr_data = [];
+            foreach ($list_of_split_status_dtstr as $split_status_dtstr) {
+                $split_status_hd_data[] = $split_status_dtstr;
             }
 
             $dataArray = [
-                'user_id'           => $request->user_id,
-                'level_no'          => $request->level_no,
-                'entity_cd'         => $request->entity_cd,
-                'doc_no'            => $request->doc_no,
-                'approve_seq'       => $request->approve_seq,
-                'email_addr'        => $request->email_addr,
-                'user_name'         => $request->user_name,
-                'sender_addr'       => $request->sender_addr,
-                'sender_name'       => $request->sender_name,
-                'entity_name'       => $request->entity_name,
-                'attachments'       => $attachments,
-                'clarify_user'		=> $request->sender_name,
-                'clarify_email'		=> $request->sender_addr,
-                'approve_list'      => $approve_data,
-                'change_no'        => $request->change_no,
-                'land_title_no'    => $request->land_title_no,
-                'land_title_area'   => number_format($request->land_title_area, 2, '.', ','),
-                'land_title_name'  => $request->land_title_name,
-                'land_title_pt'   => $request->land_title_pt,
-                'payment_dt_descs' => $payment_dt_descs_data,
-                'payment_amount'   => $payment_amount_data,
-                'subject'           => "Need Approval for Land Change Name No.  ".$request->change_no,
-                'link'              => 'landchangename',
+                'user_id'               => $request->user_id,
+                'level_no'              => $request->level_no,
+                'entity_cd'             => $request->entity_cd,
+                'doc_no'                => $request->doc_no,
+                'approve_seq'           => $request->approve_seq,
+                'email_addr'            => $request->email_addr,
+                'user_name'             => $request->user_name,
+                'sender_addr'           => $request->sender_addr,
+                'sender_name'           => $request->sender_name,
+                'entity_name'           => $request->entity_name,
+                'attachments'           => $attachments,
+                'descs'                 => $request->descs,
+                'approve_list'          => $approve_data,
+                'shgb_no'               => $shgb_no_data,
+                'shgb_no_bpn'           => $shgb_no_bpn_data,
+                'nop_no'                => $nop_no_data,
+                'nib_no'                => $nib_no_data,
+                'shgb_date'             => $shgb_date_data,
+                'shgb_expired'          => $shgb_expired_data,
+                'shgb_area'             => $shgb_area_data,
+                'shgb_no_split'         => $request->shgb_no_split,
+                'shgb_no_bpn_split'     => $request->shgb_no_bpn_split,
+                'nop_no_split'          => $request->nop_no_split,
+                'nib_no_split'          => $request->nib_no_split,
+                'shgb_date_split'       => \Carbon\Carbon::parse($request->shgb_date_split)->format('d F Y'),
+                'shgb_expired_split'    => \Carbon\Carbon::parse($request->shgb_expired_split)->format('d F Y'),
+                'shgb_area_split'       => number_format((float)$request->shgb_area_split, 2, '.', ','),
+                'remaining_area'        => number_format((float)$request->remaining_area, 2, '.', ','),
+                'split_status_hd'       => $split_status_hd_data,
+                'split_status_hdstr'    => $split_status_hdstr_data,
+                'split_status_dtstr'    => $split_status_dtstr_data,
+                "clarify_user"		    => $request->clarify_user,
+                "clarify_email"		    => $request->clarify_email,
+                'subject'               => "Need Approval for ".$request->doc_no,
+                'link'                  => 'landsplitshgb',
             ];
 
             // dd($dataArray);
@@ -100,9 +160,9 @@ class LandChangeNameController extends Controller
                 'approve_seq'   => $request->approve_seq,
                 'doc_no'        => $request->doc_no,
                 'entity_name'   => $request->entity_name,
-                'type'          => '1',
+                'type'          => 'Q',
                 'type_module'   => 'LM',
-                'text'          => 'Land Change Name',
+                'text'          => 'Land Split SHGB',
             ];
 
             $encryptedData = Crypt::encrypt($data2Encrypt);
@@ -122,7 +182,7 @@ class LandChangeNameController extends Controller
 
             if (!empty($email_address)) {
                 $cacheFile = 'email_sent_' . $approve_seq . '_' . $entity_cd . '_' . $doc_no . '_' . $level_no . '.txt';
-                $cacheFilePath = storage_path('app/mail_cache/send_Land_Change Name/' . date('Ymd') . '/' . $cacheFile);
+                $cacheFilePath = storage_path('app/mail_cache/send_Land_Split SHGB/' . date('Ymd') . '/' . $cacheFile);
                 $cacheDirectory = dirname($cacheFilePath);
 
                 if (!file_exists($cacheDirectory)) {
@@ -141,14 +201,14 @@ class LandChangeNameController extends Controller
                     Mail::to($email_address)->send(new SendLandMail($encryptedData, $dataArray));
 
                     file_put_contents($cacheFilePath, 'sent');
-                    Log::channel('sendmailapproval')->info("Email Land Change Name doc_no $doc_no Entity $entity_cd berhasil dikirim ke: $email_address");
+                    Log::channel('sendmailapproval')->info("Email Land Split SHGB doc_no $doc_no Entity $entity_cd berhasil dikirim ke: $email_address");
 
                     $callback['Pesan'] = "Email berhasil dikirim ke: $email_address";
                     $callback['Error'] = false;
                     $callback['Status']= 200;
 
                 } else {
-                    Log::channel('sendmailapproval')->info("Email Land Change Name doc_no $doc_no Entity $entity_cd sudah pernah dikirim ke: $email_address");
+                    Log::channel('sendmailapproval')->info("Email Land Split SHGB doc_no $doc_no Entity $entity_cd sudah pernah dikirim ke: $email_address");
 
                     $callback['Pesan'] = "Email sudah pernah dikirim ke: $email_address";
                     $callback['Error'] = false;
@@ -286,7 +346,7 @@ class LandChangeNameController extends Controller
                     "name"      => $name,
                     "bgcolor"   => $bgcolor,
                     "valuebt"   => $valuebt,
-                    "link"      => "landchangename",
+                    "link"      => "landsplitshgb",
                     "entity_name"   => $data["entity_name"],
                 );
                 return view('email/passcheckwithremark', $data);
@@ -328,7 +388,7 @@ class LandChangeNameController extends Controller
             $imagestatus = "reject.png";
         }
         $pdo = DB::connection('pakuwon')->getPdo();
-        $sth = $pdo->prepare("EXEC mgr.xrl_send_mail_approval_land_change_name ?, ?, ?, ?, ?");
+        $sth = $pdo->prepare("EXEC mgr.xrl_send_mail_approval_land_split_shgb ?, ?, ?, ?, ?");
         $success = $sth->execute([
             $data["entity_cd"],
             $data["doc_no"],
@@ -337,12 +397,12 @@ class LandChangeNameController extends Controller
             $reason
         ]);
         if ($success) {
-            $msg = "You Have Successfully ".$descstatus." the Land Change Name No. ".$data["doc_no"];
+            $msg = "You Have Successfully ".$descstatus." the Land Split SHGB No. ".$data["doc_no"];
             $notif = $descstatus." !";
             $st = 'OK';
             $image = $imagestatus;
         } else {
-            $msg = "You Failed to ".$descstatus." the Land Change Name No.".$data["doc_no"];
+            $msg = "You Failed to ".$descstatus." the Land Split SHGB No.".$data["doc_no"];
             $notif = 'Fail to '.$descstatus.' !';
             $st = 'FAIL';
             $image = "reject.png";

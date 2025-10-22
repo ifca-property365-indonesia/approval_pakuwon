@@ -72,10 +72,23 @@
               <table role="presentation" cellpadding="4" cellspacing="0" border="0" width="100%" style="font-size:14px; color:#000000;">
                 <tr><td width="40%">Nomor Dokumen</td><td width="2%">:</td><td>{{ $dataArray['doc_no'] }}</td></tr>
                 <tr><td>Nomor BPHTB</td><td>:</td><td>{{ $dataArray['bphtb_ref_no'] }}</td></tr>
-                <tr><td>Nomor Induk Bidang</td><td>:</td><td>{{ $dataArray['nib_no'] }}</td></tr>
+                @foreach ($dataArray['land_title_no'] as $index => $title)
+                <tr>
+                  <td>
+                    {{ $index === 0 ? 'Nomor Alas Hak' : '' }}
+                  </td>
+                  <td>
+                    {{ $index === 0 ? ':' : '' }}
+                  </td>
+                  <td>
+                    {{ ($index + 1) . '. ' . $title }}
+                  </td>
+                </tr>
+                @endforeach
+
                 <tr><td>NOP BPHTB</td><td>:</td><td>{{ $dataArray['nop_bphtb'] }}</td></tr>
                 <tr><td>Tanggal BPTHB</td><td>:</td><td>{{ $dataArray['transaction_date'] }}</td></tr>
-                <tr><td>Nominal BPHTB</td><td>:</td><td>{{ $dataArray['bphtb_amt'] }}</td></tr>
+                <tr><td>Nominal BPHTB</td><td>:</td><td style="text-align: right;">Rp. {{ $dataArray['bphtb_amt'] }}</td></tr>
               </table>
 
               <!-- Attachments -->
@@ -91,9 +104,9 @@
 
               <!-- Buttons -->
               <div style="text-align: center; margin: 20px 0;">
-                <a href="{{ url('api') }}/landfph/A/{{ $encryptedData }}" class="button" style="display:inline-block; font-size:13px; font-weight:600; text-transform:uppercase; text-decoration:none; background-color:#1ee0ac; color:#ffffff; padding:10px 30px; border-radius:3px;">Approve</a>
-                <a href="{{ url('api') }}/landfph/R/{{ $encryptedData }}" class="button" style="display:inline-block; font-size:13px; font-weight:600; text-transform:uppercase; text-decoration:none; background-color:#f4bd0e; color:#ffffff; padding:10px 30px; border-radius:3px;">Revise</a>
-                <a href="{{ url('api') }}/landfph/C/{{ $encryptedData }}" class="button" style="display:inline-block; font-size:13px; font-weight:600; text-transform:uppercase; text-decoration:none; background-color:#e85347; color:#ffffff; padding:10px 30px; border-radius:3px;">Reject</a>
+                <a href="{{ url('api') }}/{{ $dataArray['link'] }}/A/{{ $encryptedData }}" class="button" style="display:inline-block; font-size:13px; font-weight:600; text-transform:uppercase; text-decoration:none; background-color:#1ee0ac; color:#ffffff; padding:10px 30px; border-radius:3px;">Approve</a>
+                <a href="{{ url('api') }}/{{ $dataArray['link'] }}/R/{{ $encryptedData }}" class="button" style="display:inline-block; font-size:13px; font-weight:600; text-transform:uppercase; text-decoration:none; background-color:#f4bd0e; color:#ffffff; padding:10px 30px; border-radius:3px;">Revise</a>
+                <a href="{{ url('api') }}/{{ $dataArray['link'] }}/C/{{ $encryptedData }}" class="button" style="display:inline-block; font-size:13px; font-weight:600; text-transform:uppercase; text-decoration:none; background-color:#e85347; color:#ffffff; padding:10px 30px; border-radius:3px;">Reject</a>
               </div>
 
               <p style="margin:15px 0;">In case you need some clarification, kindly approach:<br>
