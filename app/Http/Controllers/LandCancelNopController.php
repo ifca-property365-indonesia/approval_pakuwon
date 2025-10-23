@@ -72,10 +72,10 @@ class LandCancelNopController extends Controller
                 'nop_no'            => $request->nop_no,
                 'owner_name'        => $request->owner_name,
                 'cancel_remarks'    => $request->cancel_remarks,
-                "clarify_user"		=> $request->sender_name,
-                "clarify_email"		=> $request->sender_addr,
-                'subject'           => "Need Approval for Land Change NOP No.  ".$request->doc_no,
-                'link'              => 'landchangenop',
+                'clarify_user'		=> $request->sender_name,
+                'clarify_email'		=> $request->sender_addr,
+                'subject'           => "Need Approval for Land Cancel NOP No.  ".$request->doc_no,
+                'link'              => 'landcancelnop',
             ];
 
             // dd($dataArray);
@@ -89,7 +89,7 @@ class LandCancelNopController extends Controller
                 'entity_name'   => $request->entity_name,
                 'type'          => 'O',
                 'type_module'   => 'LM',
-                'text'          => 'Land Change NOP',
+                'text'          => 'Land Cancel NOP',
             ];
 
             $encryptedData = Crypt::encrypt($data2Encrypt);
@@ -109,7 +109,7 @@ class LandCancelNopController extends Controller
 
             if (!empty($email_address)) {
                 $cacheFile = 'email_sent_' . $approve_seq . '_' . $entity_cd . '_' . $doc_no . '_' . $level_no . '.txt';
-                $cacheFilePath = storage_path('app/mail_cache/send_Land_Change_NOP/' . date('Ymd') . '/' . $cacheFile);
+                $cacheFilePath = storage_path('app/mail_cache/send_Land_Ccancel_NOP/' . date('Ymd') . '/' . $cacheFile);
                 $cacheDirectory = dirname($cacheFilePath);
 
                 if (!file_exists($cacheDirectory)) {
@@ -128,14 +128,14 @@ class LandCancelNopController extends Controller
                     Mail::to($email_address)->send(new SendLandMail($encryptedData, $dataArray));
 
                     file_put_contents($cacheFilePath, 'sent');
-                    Log::channel('sendmailapproval')->info("Email Land Change NOP doc_no $doc_no Entity $entity_cd berhasil dikirim ke: $email_address");
+                    Log::channel('sendmailapproval')->info("Email Land Cancel NOP doc_no $doc_no Entity $entity_cd berhasil dikirim ke: $email_address");
 
                     $callback['Pesan'] = "Email berhasil dikirim ke: $email_address";
                     $callback['Error'] = false;
                     $callback['Status']= 200;
 
                 } else {
-                    Log::channel('sendmailapproval')->info("Email Land Change NOP doc_no $doc_no Entity $entity_cd sudah pernah dikirim ke: $email_address");
+                    Log::channel('sendmailapproval')->info("Email Land Cancel NOP doc_no $doc_no Entity $entity_cd sudah pernah dikirim ke: $email_address");
 
                     $callback['Pesan'] = "Email sudah pernah dikirim ke: $email_address";
                     $callback['Error'] = false;
@@ -273,7 +273,7 @@ class LandCancelNopController extends Controller
                     "name"      => $name,
                     "bgcolor"   => $bgcolor,
                     "valuebt"   => $valuebt,
-                    "link"      => "landchangenop",
+                    "link"      => "landcancelnop",
                     "entity_name"   => $data["entity_name"],
                 );
                 return view('email/passcheckwithremark', $data);
@@ -324,12 +324,12 @@ class LandCancelNopController extends Controller
             $reason
         ]);
         if ($success) {
-            $msg = "You Have Successfully ".$descstatus." the Land Change NOP No. ".$data["doc_no"];
+            $msg = "You Have Successfully ".$descstatus." the Land Cancel NOP No. ".$data["doc_no"];
             $notif = $descstatus." !";
             $st = 'OK';
             $image = $imagestatus;
         } else {
-            $msg = "You Failed to ".$descstatus." the Land Change NOP No.".$data["doc_no"];
+            $msg = "You Failed to ".$descstatus." the Land Cancel NOP No.".$data["doc_no"];
             $notif = 'Fail to '.$descstatus.' !';
             $st = 'FAIL';
             $image = "reject.png";

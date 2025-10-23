@@ -71,8 +71,8 @@ class LandBoundaryController extends Controller
                 'boundary_ref'      => $request->boundary_ref,
                 'officer_cd'        => $request->officer_cd,
                 'off_name'          => $request->off_name,
-                "clarify_user"		=> $request->sender_name,
-                "clarify_email"		=> $request->sender_addr,
+                'clarify_user'		=> $request->sender_name,
+                'clarify_email'		=> $request->sender_addr,
                 'subject'           => "Need Approval for Land Boundary No.  ".$request->doc_no,
                 'link'              => 'landboundary',
             ];

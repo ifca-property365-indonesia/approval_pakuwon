@@ -71,10 +71,10 @@ class LandHandoverShgbController extends Controller
                 'shgb_no'           => $request->shgb_no,
                 'nop_no'            => $request->nop_no,
                 'shgb_name'         => $request->shgb_name,
-                'shgb_area'         => $request->shgb_area,
+                'shgb_area'         => number_format($request->shgb_area, 2, '.', ','),
                 'handover_to'       => $request->handover_to,
-                "clarify_user"		=> $request->sender_name,
-                "clarify_email"		=> $request->sender_addr,
+                'clarify_user'		=> $request->sender_name,
+                'clarify_email'		=> $request->sender_addr,
                 'subject'           => "Need Approval for Land Handover SHGB No.  ".$request->doc_no,
                 'link'              => 'landhandovershgb',
             ];

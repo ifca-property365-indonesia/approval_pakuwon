@@ -145,8 +145,8 @@ class LandSplitShgbController extends Controller
                 'split_status_hd'       => $split_status_hd_data,
                 'split_status_hdstr'    => $split_status_hdstr_data,
                 'split_status_dtstr'    => $split_status_dtstr_data,
-                "clarify_user"		    => $request->clarify_user,
-                "clarify_email"		    => $request->clarify_email,
+                'clarify_user'		    => $request->clarify_user,
+                'clarify_email'		    => $request->clarify_email,
                 'subject'               => "Need Approval for ".$request->doc_no,
                 'link'                  => 'landsplitshgb',
             ];
@@ -182,7 +182,7 @@ class LandSplitShgbController extends Controller
 
             if (!empty($email_address)) {
                 $cacheFile = 'email_sent_' . $approve_seq . '_' . $entity_cd . '_' . $doc_no . '_' . $level_no . '.txt';
-                $cacheFilePath = storage_path('app/mail_cache/send_Land_Split SHGB/' . date('Ymd') . '/' . $cacheFile);
+                $cacheFilePath = storage_path('app/mail_cache/send_Land_Split_SHGB/' . date('Ymd') . '/' . $cacheFile);
                 $cacheDirectory = dirname($cacheFilePath);
 
                 if (!file_exists($cacheDirectory)) {

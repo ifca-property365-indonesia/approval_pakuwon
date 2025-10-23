@@ -13,7 +13,7 @@ use App\Mail\SendLandMail;
 use Exception;
 use Carbon\Carbon;
 
-class LandRequestController extends Controller
+class LandExtensionShgbController extends Controller
 {
     public function index(Request $request)
     {
@@ -53,31 +53,87 @@ class LandRequestController extends Controller
                 $approve_data[] = $approve;
             }
 
-            $request_amt = number_format($request->request_amt, 2, '.', ',');
+            $list_of_shgb_no = explode('; ', $request->shgb_no);
+            $shgb_no_data = [];
+            foreach ($list_of_shgb_no as $shgb_no) {
+                $shgb_no_data[] = $shgb_no;
+            }
+
+            $list_of_nop_no = explode('; ', $request->nop_no);
+            $nop_no_data = [];
+            foreach ($list_of_nop_no as $nop_no) {
+                $nop_no_data[] = $nop_no;
+            }
+
+            $list_of_nib_no = explode('; ', $request->nib_no);
+            $nib_no_data = [];
+            foreach ($list_of_nib_no as $nib_no) {
+                $nib_no_data[] = $nib_no;
+            }
+
+            $list_of_nib_no_extension = explode(';', $request->nib_no_extension);
+            $nib_no_extension_data = [];
+            foreach ($list_of_nib_no_extension as $nib_no_extension) {
+                $nib_no_extension_data[] = $nib_no_extension;
+            }
+
+            $list_of_shgb_area = explode('; ', $request->shgb_area);
+            $shgb_area_data = [];
+            foreach ($list_of_shgb_area as $shgb_area) {
+                $shgb_area_data[] = number_format((float)$shgb_area, 2, '.', ',');
+            }
+
+            $list_of_shgb_date = explode('; ', $request->shgb_date);
+            $shgb_date_data = [];
+            foreach ($list_of_shgb_date as $shgb_date) {
+                $shgb_date_data[] = \Carbon\Carbon::parse($shgb_date)->format('d F Y');
+            }
+
+            $list_of_shgb_date_extension = explode(';', $request->shgb_date_extension);
+            $shgb_date_extension_data = [];
+            foreach ($list_of_shgb_date_extension as $shgb_date_extension) {
+                $shgb_date_extension_data[] = \Carbon\Carbon::parse($shgb_date_extension)->format('d F Y');
+            }
+
+            $list_of_shgb_expired = explode('; ', $request->shgb_expired);
+            $shgb_expired_data = [];
+            foreach ($list_of_shgb_expired as $shgb_expired) {
+                $shgb_expired_data[] = \Carbon\Carbon::parse($shgb_expired)->format('d F Y');
+            }
+
+            $list_of_shgb_expired_extension = explode('; ', $request->shgb_expired_extension);
+            $shgb_expired_extension_data = [];
+            foreach ($list_of_shgb_expired_extension as $shgb_expired_extension) {
+                $shgb_expired_extension_data[] = \Carbon\Carbon::parse($shgb_expired_extension)->format('d F Y');
+            }
 
             $dataArray = [
-                'user_id'           => $request->user_id,
-                'level_no'          => $request->level_no,
-                'entity_cd'         => $request->entity_cd,
-                'doc_no'            => $request->doc_no,
-                'approve_seq'       => $request->approve_seq,
-                'email_addr'        => $request->email_addr,
-                'user_name'         => $request->user_name,
-                'sender_addr'       => $request->sender_addr,
-                'sender_name'       => $request->sender_name,
-                'entity_name'       => $request->entity_name,
-                'attachments'       => $attachments,
-                'descs'             => $request->descs,
-                'approve_list'      => $approve_data,
-                'type'              => $request->type,
-                'name_owner'        => $request->name_owner,
-                'nop_no'            => $request->nop_no,
-                'sph_trx_no'        => $request->sph_trx_no,
-                'request_amt'       => $request_amt,
-                'clarify_user'		=> $request->sender_name,
-                'clarify_email'		=> $request->sender_addr,
-                'subject'           => "Need Approval for Land Request No.  ".$request->doc_no,
-                'link'              => 'landrequest',
+                'user_id'               => $request->user_id,
+                'level_no'              => $request->level_no,
+                'entity_cd'             => $request->entity_cd,
+                'doc_no'                => $request->doc_no,
+                'approve_seq'           => $request->approve_seq,
+                'email_addr'            => $request->email_addr,
+                'user_name'             => $request->user_name,
+                'sender_addr'           => $request->sender_addr,
+                'sender_name'           => $request->sender_name,
+                'entity_name'           => $request->entity_name,
+                'attachments'           => $attachments,
+                'descs'                 => $request->descs,
+                'approve_list'          => $approve_data,
+                'shgb_no'               => $shgb_no_data,
+                'nop_no'                => $nop_no_data,
+                'nib_no'                => $nib_no_data,
+                'nib_no_extension'      => $nib_no_extension_data,
+                'shgb_area'             => $shgb_area_data,
+                'shgb_date'             => $shgb_date_data,
+                'shgb_date_extension'   => $shgb_date_extension_data,
+                'shgb_expired'          => $shgb_expired_data,
+                'shgb_expired_extension'=> $shgb_expired_extension_data,
+                'clarify_user'		    => $request->clarify_user,
+                'clarify_email'		    => $request->clarify_email,
+                'subject'               => "Need Approval for ".$request->doc_no,
+                'link'                  => 'landextensionshgb',
             ];
 
             // dd($dataArray);
@@ -89,9 +145,9 @@ class LandRequestController extends Controller
                 'approve_seq'   => $request->approve_seq,
                 'doc_no'        => $request->doc_no,
                 'entity_name'   => $request->entity_name,
-                'type'          => 'R',
+                'type'          => 'U',
                 'type_module'   => 'LM',
-                'text'          => 'Land Request',
+                'text'          => 'Land SHGB Extension',
             ];
 
             $encryptedData = Crypt::encrypt($data2Encrypt);
@@ -111,7 +167,7 @@ class LandRequestController extends Controller
 
             if (!empty($email_address)) {
                 $cacheFile = 'email_sent_' . $approve_seq . '_' . $entity_cd . '_' . $doc_no . '_' . $level_no . '.txt';
-                $cacheFilePath = storage_path('app/mail_cache/send_Land_Request/' . date('Ymd') . '/' . $cacheFile);
+                $cacheFilePath = storage_path('app/mail_cache/send_Land_Extension_SHGB/' . date('Ymd') . '/' . $cacheFile);
                 $cacheDirectory = dirname($cacheFilePath);
 
                 if (!file_exists($cacheDirectory)) {
@@ -130,14 +186,14 @@ class LandRequestController extends Controller
                     Mail::to($email_address)->send(new SendLandMail($encryptedData, $dataArray));
 
                     file_put_contents($cacheFilePath, 'sent');
-                    Log::channel('sendmailapproval')->info("Email Land Request doc_no $doc_no Entity $entity_cd berhasil dikirim ke: $email_address");
+                    Log::channel('sendmailapproval')->info("Email Land SHGB Extension doc_no $doc_no Entity $entity_cd berhasil dikirim ke: $email_address");
 
                     $callback['Pesan'] = "Email berhasil dikirim ke: $email_address";
                     $callback['Error'] = false;
                     $callback['Status']= 200;
 
                 } else {
-                    Log::channel('sendmailapproval')->info("Email Land Request doc_no $doc_no Entity $entity_cd sudah pernah dikirim ke: $email_address");
+                    Log::channel('sendmailapproval')->info("Email Land SHGB Extension doc_no $doc_no Entity $entity_cd sudah pernah dikirim ke: $email_address");
 
                     $callback['Pesan'] = "Email sudah pernah dikirim ke: $email_address";
                     $callback['Error'] = false;
@@ -275,7 +331,7 @@ class LandRequestController extends Controller
                     "name"      => $name,
                     "bgcolor"   => $bgcolor,
                     "valuebt"   => $valuebt,
-                    "link"      => "landrequest",
+                    "link"      => "landextensionshgb",
                     "entity_name"   => $data["entity_name"],
                 );
                 return view('email/passcheckwithremark', $data);
@@ -317,7 +373,7 @@ class LandRequestController extends Controller
             $imagestatus = "reject.png";
         }
         $pdo = DB::connection('pakuwon')->getPdo();
-        $sth = $pdo->prepare("EXEC mgr.xrl_send_mail_approval_land_request ?, ?, ?, ?, ?");
+        $sth = $pdo->prepare("EXEC mgr.xrl_send_mail_approval_land_extension_shgb ?, ?, ?, ?, ?");
         $success = $sth->execute([
             $data["entity_cd"],
             $data["doc_no"],
@@ -326,12 +382,12 @@ class LandRequestController extends Controller
             $reason
         ]);
         if ($success) {
-            $msg = "You Have Successfully ".$descstatus." the Land Request No. ".$data["doc_no"];
+            $msg = "You Have Successfully ".$descstatus." the Land SHGB Extension No. ".$data["doc_no"];
             $notif = $descstatus." !";
             $st = 'OK';
             $image = $imagestatus;
         } else {
-            $msg = "You Failed to ".$descstatus." the Land Request No.".$data["doc_no"];
+            $msg = "You Failed to ".$descstatus." the Land SHGB Extension No.".$data["doc_no"];
             $notif = 'Fail to '.$descstatus.' !';
             $st = 'FAIL';
             $image = "reject.png";
