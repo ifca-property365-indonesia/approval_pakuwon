@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: laravel_app
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+    volumes:
+      - .:/var/www/html
+    environment:
+      APP_NAME: ${APP_NAME}
+      APP_ENV: ${APP_ENV}
+      APP_KEY: ${APP_KEY}
+      APP_DEBUG: ${APP_DEBUG}
+      APP_URL: ${APP_URL}
+
+      # 🔹 gunakan konfigurasi koneksi eksternal kamu
+      DB_CONNECTION: ${DB_CONNECTION2}
+      DB_HOST: ${DB_HOST2}
+      DB_PORT: ${DB_PORT2}
+      DB_DATABASE: ${DB_DATABASE2}
+      DB_USERNAME: ${DB_USERNAME2}
+      DB_PASSWORD: ${DB_PASSWORD2}
