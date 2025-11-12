@@ -15,20 +15,28 @@ RUN curl -sSL https://packages.microsoft.com/keys/microsoft.asc | apt-key add - 
 # Aktifkan mod_rewrite
 RUN a2enmod rewrite
 
+# Ubah DocumentRoot ke folder public Laravel
+RUN sed -i 's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/public|' /etc/apache2/sites-available/000-default.conf
+
 # Copy source code
 COPY . /var/www/html
 
 WORKDIR /var/www/html
 
-# Copy composer
+# Copy composer dari image composer resmi
 COPY --from=composer:2.6 /usr/bin/composer /usr/bin/composer
 
 # Install dependency Laravel
 RUN composer install --no-dev --optimize-autoloader
 
-# Permission
+# Permission untuk storage & cache
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
-EXPOSE 80
+# Gunakan port dari Cloud Run
+ENV PORT=8080
+RUN sed -i "s/Listen 80/Listen ${PORT}/" /etc/apache2/ports.conf
+RUN sed -i "s/:80>/:${PORT}>/" /etc/apache2/sites-available/000-default.conf
+
+EXPOSE ${PORT}
 
 CMD ["apache2-foreground"]
