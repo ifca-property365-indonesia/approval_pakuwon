@@ -9,11 +9,14 @@ RUN apt-get update && apt-get install -y \
 
 
 # Install driver MSSQL (SQLSRV dan PDO_SQLSRV)
-RUN curl -sSL https://packages.microsoft.com/keys/microsoft.asc | apt-key add - && \
+RUN curl -sSL https://packages.microsoft.com/keys/microsoft.asc -o microsoft.asc && \
+    gpg --dearmor microsoft.asc && \
+    mv microsoft.asc.gpg /etc/apt/trusted.gpg.d/microsoft.gpg && \
     curl -sSL https://packages.microsoft.com/config/debian/12/prod.list -o /etc/apt/sources.list.d/mssql-release.list && \
     apt-get update && ACCEPT_EULA=Y apt-get install -y msodbcsql18 unixodbc-dev && \
     pecl install sqlsrv pdo_sqlsrv && \
     docker-php-ext-enable sqlsrv pdo_sqlsrv
+
 
 # Aktifkan mod_rewrite
 RUN a2enmod rewrite
