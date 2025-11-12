@@ -2,8 +2,11 @@ FROM php:8.2-apache
 
 # Install dependencies dan ekstensi dasar Laravel
 RUN apt-get update && apt-get install -y \
-    git zip unzip libpng-dev libjpeg-dev libfreetype6-dev libxml2-dev curl gnupg \
-    && docker-php-ext-install pdo mbstring exif pcntl bcmath gd
+    git zip unzip curl gnupg \
+    libpng-dev libjpeg-dev libfreetype6-dev libxml2-dev libonig-dev \
+    && docker-php-ext-install pdo mbstring exif pcntl bcmath gd \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
 
 # Install driver MSSQL (SQLSRV dan PDO_SQLSRV)
 RUN curl -sSL https://packages.microsoft.com/keys/microsoft.asc | apt-key add - && \
