@@ -33,6 +33,7 @@ WORKDIR /var/www/html
 COPY --from=composer:2.6 /usr/bin/composer /usr/bin/composer
 
 # Install dependency Laravel
+COPY .env.production /var/www/html/.env
 RUN composer install --no-dev --optimize-autoloader
 
 # Permission untuk storage & cache
