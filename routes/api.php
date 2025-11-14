@@ -31,6 +31,7 @@ Route::POST('/feedbackland', [StaffAction::class, 'feedback_land']);
 use App\Http\Controllers\GetApprControllers as GetAppr;
 Route::POST('/getappr', [GetAppr::class, 'Index']);
 Route::POST('/getapprDetail', [GetAppr::class, 'Detail']);
+Route::POST('/Gettotaldata', [GetAppr::class, 'GetTotalData']);
 
 use App\Http\Controllers\LandfphController as Landfph;
 Route::POST('/landfph', [Landfph::class, 'index']);

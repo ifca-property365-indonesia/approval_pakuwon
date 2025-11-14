@@ -182,4 +182,46 @@ class GetApprControllers extends Controller
             return response()->json(['success'=>false,'message'=>'Terjadi kesalahan server','error'=>$e->getMessage()],500);
         }
     }
+
+    public function GetTotalData(Request $request)
+    {
+        try {
+            $user_id = $request->user_id;
+
+            $result = DB::connection('pakuwon')->select("
+                SELECT status, COUNT(*) AS total
+                FROM (
+                    SELECT status FROM mgr.cb_cash_request_appr_azure WHERE user_id = ?
+                    UNION ALL
+                    SELECT status FROM mgr.cb_cash_request_appr_his WHERE user_id = ?
+                ) AS t
+                GROUP BY status
+            ", [$user_id, $user_id]);
+
+            // Default nilai
+            $output = [
+                'total_A' => 0,
+                'total_R' => 0,
+                'total_C' => 0,
+                'total_P' => 0,
+            ];
+
+            // Mapping hasil SQL ke output
+            foreach ($result as $row) {
+                $statusKey = 'total_' . $row->status;
+                if (isset($output[$statusKey])) {
+                    $output[$statusKey] = $row->total;
+                }
+            }
+
+            return response()->json(['success' => true, 'total' => $output], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false, 
+                'message' => 'Terjadi kesalahan server', 
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
 }
