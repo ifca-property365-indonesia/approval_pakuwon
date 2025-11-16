@@ -153,7 +153,7 @@ class LandRequestController extends Controller
                     throw new Exception('Failed to acquire lock');
                 }
 
-                // if (!file_exists($cacheFilePath)) {
+                if (!file_exists($cacheFilePath)) {
                     // kirim email
                     Mail::to($email_address)->send(new SendLandMail($encryptedData, $dataArray));
 
@@ -164,13 +164,13 @@ class LandRequestController extends Controller
                     $callback['Error'] = false;
                     $callback['Status']= 200;
 
-                // } else {
-                //     Log::channel('sendmailapproval')->info("Email Land Request doc_no $doc_no Entity $entity_cd sudah pernah dikirim ke: $email_address");
+                } else {
+                    Log::channel('sendmailapproval')->info("Email Land Request doc_no $doc_no Entity $entity_cd sudah pernah dikirim ke: $email_address");
 
-                //     $callback['Pesan'] = "Email sudah pernah dikirim ke: $email_address";
-                //     $callback['Error'] = false;
-                //     $callback['Status']= 201;
-                // }
+                    $callback['Pesan'] = "Email sudah pernah dikirim ke: $email_address";
+                    $callback['Error'] = false;
+                    $callback['Status']= 201;
+                }
             } else {
                 Log::channel('sendmail')->warning("No email address provided for document $doc_no");
 
