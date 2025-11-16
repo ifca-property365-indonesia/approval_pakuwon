@@ -55,6 +55,11 @@ Route::POST('/landsph', [LandSph::class, 'index']);
 Route::GET('/landsph/{status}/{encrypt}', [LandSph::class, 'processData']);
 Route::POST('/landsph/getaccess', [LandSph::class, 'getaccess']);
 
+use App\Http\Controllers\LandRequestController as LandRequest;
+Route::POST('/landrequest', [LandRequest::class, 'index']);
+Route::GET('/landrequest/{status}/{encrypt}', [LandRequest::class, 'processData']);
+Route::POST('/landrequest/getaccess', [LandRequest::class, 'getaccess']);
+
 use App\Http\Controllers\LandMapController as LandMap;
 Route::POST('/landmap', [LandMap::class, 'index']);
 Route::GET('/landmap/{status}/{encrypt}', [LandMap::class, 'processData']);

@@ -53,7 +53,35 @@ class LandRequestController extends Controller
                 $approve_data[] = $approve;
             }
 
-            $request_amt = number_format($request->request_amt, 2, '.', ',');
+            $list_of_request_amt = explode(';', $request->request_amt);
+            $request_amt_data = [];
+            foreach ($list_of_request_amt as $request_amt) {
+                $request_amt_data[] = number_format($request_amt, 2, '.', ',');
+            }
+
+            $list_of_name_owner = explode(';', $request->name_owner);
+            $name_owner_data = [];
+            foreach ($list_of_name_owner as $name_owner) {
+                $name_owner_data[] = $name_owner;
+            }
+
+            $list_of_nop_no = explode(';', $request->nop_no);
+            $nop_no_data = [];
+            foreach ($list_of_nop_no as $nop_no) {
+                $nop_no_data[] = $nop_no;
+            }
+
+            $list_of_sph_trx_no = explode(';', $request->sph_trx_no);
+            $sph_trx_no_data = [];
+            foreach ($list_of_sph_trx_no as $sph_trx_no) {
+                $sph_trx_no_data[] = $sph_trx_no;
+            }
+
+            $list_of_type = explode(';', $request->type);
+            $type_data = [];
+            foreach ($list_of_type as $type) {
+                $type_data[] = $type;
+            }
 
             $dataArray = [
                 'user_id'           => $request->user_id,
@@ -69,11 +97,11 @@ class LandRequestController extends Controller
                 'attachments'       => $attachments,
                 'descs'             => $request->descs,
                 'approve_list'      => $approve_data,
-                'type'              => $request->type,
-                'name_owner'        => $request->name_owner,
-                'nop_no'            => $request->nop_no,
-                'sph_trx_no'        => $request->sph_trx_no,
-                'request_amt'       => $request_amt,
+                'type'              => $type_data,
+                'name_owner'        => $name_owner_data,
+                'nop_no'            => $nop_no_data,
+                'sph_trx_no'        => $sph_trx_no_data,
+                'request_amt'       => $request_amt_data,
                 'clarify_user'		=> $request->sender_name,
                 'clarify_email'		=> $request->sender_addr,
                 'subject'           => "Need Approval for Land Request No.  ".$request->doc_no,
@@ -125,7 +153,7 @@ class LandRequestController extends Controller
                     throw new Exception('Failed to acquire lock');
                 }
 
-                if (!file_exists($cacheFilePath)) {
+                // if (!file_exists($cacheFilePath)) {
                     // kirim email
                     Mail::to($email_address)->send(new SendLandMail($encryptedData, $dataArray));
 
@@ -136,13 +164,13 @@ class LandRequestController extends Controller
                     $callback['Error'] = false;
                     $callback['Status']= 200;
 
-                } else {
-                    Log::channel('sendmailapproval')->info("Email Land Request doc_no $doc_no Entity $entity_cd sudah pernah dikirim ke: $email_address");
+                // } else {
+                //     Log::channel('sendmailapproval')->info("Email Land Request doc_no $doc_no Entity $entity_cd sudah pernah dikirim ke: $email_address");
 
-                    $callback['Pesan'] = "Email sudah pernah dikirim ke: $email_address";
-                    $callback['Error'] = false;
-                    $callback['Status']= 201;
-                }
+                //     $callback['Pesan'] = "Email sudah pernah dikirim ke: $email_address";
+                //     $callback['Error'] = false;
+                //     $callback['Status']= 201;
+                // }
             } else {
                 Log::channel('sendmail')->warning("No email address provided for document $doc_no");
 
