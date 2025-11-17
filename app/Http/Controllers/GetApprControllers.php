@@ -265,6 +265,7 @@ class GetApprControllers extends Controller
                     'a.trx_type',
                 )
                 ->where('a.user_id', $user_id)
+                ->where('a.status', $status)
                 ->distinct()
                 ->get();
 
