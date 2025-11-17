@@ -245,51 +245,58 @@ class GetApprControllers extends Controller
 
             $user_id = $request->user_id;
             $status = $request->status;
-            if ($status === "A") {
-                $table = 'mgr.cb_cash_request_appr';
-            } else {
-                $table = 'mgr.cb_cash_request_appr_his';
-            }
 
+            // Tentukan tabel
+            $table = ($status === "A")
+                ? 'mgr.cb_cash_request_appr'
+                : 'mgr.cb_cash_request_appr_his';
+
+            // Ambil data utama
             $approvals = DB::connection('pakuwon')
-            ->table($table.' as a')
-            ->select(
-                'a.doc_no',
-                'a.entity_cd',
-                'a.level_no',
-                'a.type',
-                'a.module',
-                'a.ref_no',
-                'a.trx_type',
-            )
-            ->where('a.user_id', $user_id)
-            ->distinct()
-            ->get();
+                ->table($table.' as a')
+                ->select(
+                    'a.doc_no',
+                    'a.entity_cd',
+                    'a.level_no',
+                    'a.type',
+                    'a.status',
+                    'a.module',
+                    'a.ref_no',
+                    'a.trx_type',
+                )
+                ->where('a.user_id', $user_id)
+                ->distinct()
+                ->get();
 
+            // Isi data tambahan
             $data = $approvals->map(function($item) use ($poModuleService, $cbModuleService, $cmModuleService) {
                 $item->additional = collect([]);
+
                 try {
-                    if($item->module === 'PO') {
+                    if ($item->module === 'PO') {
                         $item->additional = $poModuleService->getDetails($item->type, $item->entity_cd, $item->doc_no, $item->ref_no);
-                    } else if($item->module === 'CB') {
+                    } elseif ($item->module === 'CB') {
                         $item->additional = $cbModuleService->getDetails($item->type, $item->entity_cd, $item->doc_no, $item->trx_type);
-                    } else if($item->module === 'CM') {
-                        $item->additional = $cmModuleService->getDetails($item->type, $item->entity_cd, $item->doc_no);
-                    } else  {
+                    } else {
                         $item->additional = $cmModuleService->getDetails($item->type, $item->entity_cd, $item->doc_no);
                     }
                 } catch (\Exception $e) {
                     \Log::error("Detail sub-query error for doc_no {$item->doc_no}: ".$e->getMessage());
                 }
+
                 return $item;
             });
 
-            return response()->json(['success'=>true, 'data'=>$data], 200);
+            return response()->json([
+                'success' => true,
+                'total' => $data->count(), // 🔥 Tambahkan total disini
+                'data' => $data
+            ], 200);
 
         } catch (\Exception $e) {
             return response()->json([
-                'success' => false, 
-                'message' => 'Terjadi kesalahan server', 
+                'success' => false,
+                'message' => 'Terjadi kesalahan server',
                 'error' => $e->getMessage()
             ], 500);
         }
