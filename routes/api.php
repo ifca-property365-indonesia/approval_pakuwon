@@ -32,6 +32,7 @@ use App\Http\Controllers\GetApprControllers as GetAppr;
 Route::POST('/getappr', [GetAppr::class, 'Index']);
 Route::POST('/getapprDetail', [GetAppr::class, 'Detail']);
 Route::POST('/Gettotaldata', [GetAppr::class, 'GetTotalData']);
+Route::POST('/Gethistory', [GetAppr::class, 'GetHistory']);
 
 use App\Http\Controllers\LandfphController as Landfph;
 Route::POST('/landfph', [Landfph::class, 'index']);
