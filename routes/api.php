@@ -91,6 +91,11 @@ Route::POST('/landchangename', [LandChangeName::class, 'index']);
 Route::GET('/landchangename/{status}/{encrypt}', [LandChangeName::class, 'processData']);
 Route::POST('/landchangename/getaccess', [LandChangeName::class, 'getaccess']);
 
+use App\Http\Controllers\LandCheckingCertificateController as LandCheckingCertificate;
+Route::POST('/landcheckingcertificate', [LandCheckingCertificate::class, 'index']);
+Route::GET('/landcheckingcertificate/{status}/{encrypt}', [LandCheckingCertificate::class, 'processData']);
+Route::POST('/landcheckingcertificate/getaccess', [LandCheckingCertificate::class, 'getaccess']);
+
 use App\Http\Controllers\LandSftShgbController as LandSftShgb;
 Route::POST('/landsftshgb', [LandSftShgb::class, 'index']);
 Route::GET('/landsftshgb/{status}/{encrypt}', [LandSftShgb::class, 'processData']);

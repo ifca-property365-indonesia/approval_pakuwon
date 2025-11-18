@@ -13,7 +13,7 @@ use App\Mail\SendLandMail;
 use Exception;
 use Carbon\Carbon;
 
-class LandChangeNameController extends Controller
+class LandCheckingCertificateController extends Controller
 {
     public function index(Request $request)
     {
@@ -53,10 +53,10 @@ class LandChangeNameController extends Controller
                 $approve_data[] = $approve;
             }
 
-            $list_payment_dt_descs = explode('; ', $request->payment_dt_descs);
-            $payment_dt_descs_data = [];
-            foreach ($list_payment_dt_descs as $payment_dt_descs) {
-                $payment_dt_descs_data[] = $payment_dt_descs;
+            $list_rincian_biaya = explode('; ', $request->rincian_biaya);
+            $rincian_biaya_data = [];
+            foreach ($list_rincian_biaya as $rincian_biaya) {
+                $rincian_biaya_data[] = $rincian_biaya;
             }
 
             $list_payment_amount = explode('; ', $request->payment_amount);
@@ -64,6 +64,8 @@ class LandChangeNameController extends Controller
             foreach ($list_payment_amount as $payment_amount) {
                 $payment_amount_data[] = $payment_amount;
             }
+
+            // $shgb_expired_extension_data[] = \Carbon\Carbon::parse($shgb_expired_extension)->format('d F Y');
 
             $dataArray = [
                 'user_id'           => $request->user_id,
@@ -80,18 +82,18 @@ class LandChangeNameController extends Controller
                 'clarify_user'		=> $request->sender_name,
                 'clarify_email'		=> $request->sender_addr,
                 'approve_list'      => $approve_data,
-                'change_no'        => $request->change_no,
-                'land_title_no'    => $request->land_title_no,
+                'checking_no'       => $request->checking_no,
+                'land_title_no'     => $request->land_title_no,
                 'land_title_area'   => number_format($request->land_title_area, 2, '.', ','),
-                'land_title_name'  => $request->land_title_name,
-                'land_title_pt'   => $request->land_title_pt,
-                'payment_dt_descs' => $payment_dt_descs_data,
-                'payment_amount'   => $payment_amount_data,
-                'subject'           => "Need Approval for Land Change Name No.  ".$request->change_no,
-                'link'              => 'landchangename',
+                'land_title_name'   => $request->land_title_name,
+                'notaris_name'      => $request->notaris_name,
+                'checking_date'     => \Carbon\Carbon::parse($request->checking_date)->format('d F Y'),
+                'rincian_biaya'     => $rincian_biaya_data,
+                'payment_amount'    => $payment_amount_data,
+                'subject'           => "Need Approval for Land Checking Certificate No.  ".$request->checking_no,
+                'link'              => 'landcheckingcertificate',
             ];
 
-            // dd($dataArray);
 
             $data2Encrypt = [
                 'entity_cd'     => $request->entity_cd,
@@ -100,9 +102,10 @@ class LandChangeNameController extends Controller
                 'approve_seq'   => $request->approve_seq,
                 'doc_no'        => $request->doc_no,
                 'entity_name'   => $request->entity_name,
-                'type'          => '1',
+                'type'          => '2',
                 'type_module'   => 'LM',
-                'text'          => 'Land Change Name',
+                'request_type'  => 'H7',
+                'text'          => 'Land Checking Certificate',
             ];
 
             $encryptedData = Crypt::encrypt($data2Encrypt);
@@ -122,7 +125,7 @@ class LandChangeNameController extends Controller
 
             if (!empty($email_address)) {
                 $cacheFile = 'email_sent_' . $approve_seq . '_' . $entity_cd . '_' . $doc_no . '_' . $level_no . '.txt';
-                $cacheFilePath = storage_path('app/mail_cache/send_Land_Change_Name/' . date('Ymd') . '/' . $cacheFile);
+                $cacheFilePath = storage_path('app/mail_cache/send_Land_Checking_Certificate/' . date('Ymd') . '/' . $cacheFile);
                 $cacheDirectory = dirname($cacheFilePath);
 
                 if (!file_exists($cacheDirectory)) {
@@ -141,14 +144,14 @@ class LandChangeNameController extends Controller
                     Mail::to($email_address)->send(new SendLandMail($encryptedData, $dataArray));
 
                     file_put_contents($cacheFilePath, 'sent');
-                    Log::channel('sendmailapproval')->info("Email Land Change Name doc_no $doc_no Entity $entity_cd berhasil dikirim ke: $email_address");
+                    Log::channel('sendmailapproval')->info("Email Land Checking Certificate doc_no $doc_no Entity $entity_cd berhasil dikirim ke: $email_address");
 
                     $callback['Pesan'] = "Email berhasil dikirim ke: $email_address";
                     $callback['Error'] = false;
                     $callback['Status']= 200;
 
                 } else {
-                    Log::channel('sendmailapproval')->info("Email Land Change Name doc_no $doc_no Entity $entity_cd sudah pernah dikirim ke: $email_address");
+                    Log::channel('sendmailapproval')->info("Email Land Checking Certificate doc_no $doc_no Entity $entity_cd sudah pernah dikirim ke: $email_address");
 
                     $callback['Pesan'] = "Email sudah pernah dikirim ke: $email_address";
                     $callback['Error'] = false;
@@ -206,6 +209,7 @@ class LandChangeNameController extends Controller
             'approve_seq'   => $data["approve_seq"],
             'level_no'      => $data["level_no"],
             'type'          => $data["type"],
+            'request_type'  => $data["request_type"],
             'module'        => $data["type_module"],
         );
 
@@ -238,6 +242,7 @@ class LandChangeNameController extends Controller
                 'approve_seq'   => $data["approve_seq"],
                 'level_no'      => $data["level_no"],
                 'type'          => $data["type"],
+                'request_type'  => $data["request_type"],
                 'module'        => $data["type_module"],
             );
     
@@ -286,7 +291,7 @@ class LandChangeNameController extends Controller
                     "name"      => $name,
                     "bgcolor"   => $bgcolor,
                     "valuebt"   => $valuebt,
-                    "link"      => "landchangename",
+                    "link"      => "landcheckingcertificate",
                     "entity_name"   => $data["entity_name"],
                 );
                 return view('email/passcheckwithremark', $data);
@@ -328,7 +333,7 @@ class LandChangeNameController extends Controller
             $imagestatus = "reject.png";
         }
         $pdo = DB::connection('pakuwon')->getPdo();
-        $sth = $pdo->prepare("EXEC mgr.xrl_send_mail_approval_land_change_name ?, ?, ?, ?, ?");
+        $sth = $pdo->prepare("EXEC mgr.xrl_send_mail_approval_land_checking_certificate ?, ?, ?, ?, ?");
         $success = $sth->execute([
             $data["entity_cd"],
             $data["doc_no"],
@@ -337,12 +342,12 @@ class LandChangeNameController extends Controller
             $reason
         ]);
         if ($success) {
-            $msg = "You Have Successfully ".$descstatus." the Land Change Name No. ".$data["doc_no"];
+            $msg = "You Have Successfully ".$descstatus." the Land Checking Certificate No. ".$data["doc_no"];
             $notif = $descstatus." !";
             $st = 'OK';
             $image = $imagestatus;
         } else {
-            $msg = "You Failed to ".$descstatus." the Land Change Name No.".$data["doc_no"];
+            $msg = "You Failed to ".$descstatus." the Land Checking Certificate No.".$data["doc_no"];
             $notif = 'Fail to '.$descstatus.' !';
             $st = 'FAIL';
             $image = "reject.png";
