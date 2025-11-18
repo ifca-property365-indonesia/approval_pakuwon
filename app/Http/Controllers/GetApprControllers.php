@@ -196,11 +196,19 @@ class GetApprControllers extends Controller
             $result = DB::connection('pakuwon')->select("
                 SELECT status, COUNT(*) AS total
                 FROM (
-                    SELECT status FROM mgr.cb_cash_request_appr_azure WHERE user_id = ?
+                    -- Ambil status P dan A dari tabel aktif (mgr.cb_cash_request_appr)
+                    SELECT status 
+                    FROM mgr.cb_cash_request_appr 
+                    WHERE user_id = ? AND status IN ('P', 'A')
+
                     UNION ALL
-                    SELECT status FROM mgr.cb_cash_request_appr_his WHERE user_id = ?
+
+                    -- Ambil status C dan R dari tabel riwayat (mgr.cb_cash_request_appr_his)
+                    SELECT status 
+                    FROM mgr.cb_cash_request_appr_his 
+                    WHERE user_id = ? AND status IN ('C', 'R')
                 ) AS t
-                GROUP BY status
+                GROUP BY status;
             ", [$user_id, $user_id]);
 
             // Default nilai
