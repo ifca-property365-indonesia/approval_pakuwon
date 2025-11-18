@@ -57,8 +57,10 @@ class GetApprControllers extends Controller
                 'a.type',
                 'a.descs',
                 'a.module',
-                'a.ref_no', 
+                'a.ref_no',
                 'a.trx_type',
+                // ✅ Tambahkan doc_date dengan format DD-MM-YYYY (SQL Server Style 105)
+                DB::raw("CONVERT(VARCHAR(10), a.doc_date, 105) as doc_date"),
                 't.descs as approval_descs',
                 DB::raw("MAX(CASE WHEN a.app_status = 'A' THEN a.app_url END) as link_approval"),
                 DB::raw("MAX(CASE WHEN a.app_status = 'R' THEN a.app_url END) as link_revise"),
@@ -83,7 +85,9 @@ class GetApprControllers extends Controller
                 'a.module',
                 'a.ref_no',
                 'a.trx_type',
-                't.descs'
+                't.descs',
+                // ✅ Tambahkan kolom doc_date yang di-format ke dalam GROUP BY
+                DB::raw("CONVERT(VARCHAR(10), a.doc_date, 105)")
             )
             ->get();
 
@@ -184,63 +188,6 @@ class GetApprControllers extends Controller
         }
     }
 
-    public function GetTotalData_old(Request $request)
-    {
-        try {
-            // Validasi wajib
-            if (!$request->has('user_id')) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'user_id wajib dikirim',
-                ], 400);
-            }
-            $user_id = $request->user_id;
-
-            $result = DB::connection('pakuwon')->select("
-                SELECT status, COUNT(*) AS total
-                FROM (
-                    -- Ambil status P dan A dari tabel aktif (mgr.cb_cash_request_appr)
-                    SELECT status 
-                    FROM mgr.cb_cash_request_appr 
-                    WHERE user_id = ? AND status IN ('P', 'A')
-
-                    UNION ALL
-
-                    -- Ambil status C dan R dari tabel riwayat (mgr.cb_cash_request_appr_his)
-                    SELECT status 
-                    FROM mgr.cb_cash_request_appr_his 
-                    WHERE user_id = ? AND status IN ('C', 'R')
-                ) AS t
-                GROUP BY status;
-            ", [$user_id, $user_id]);
-
-            // Default nilai
-            $output = [
-                'total_A' => 0,
-                'total_R' => 0,
-                'total_C' => 0,
-                'total_P' => 0,
-            ];
-
-            // Mapping hasil SQL ke output
-            foreach ($result as $row) {
-                $statusKey = 'total_' . $row->status;
-                if (isset($output[$statusKey])) {
-                    $output[$statusKey] = $row->total;
-                }
-            }
-
-            return response()->json(['success' => true, 'total' => $output], 200);
-
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false, 
-                'message' => 'Terjadi kesalahan server', 
-                'error' => $e->getMessage()
-            ], 500);
-        }
-    }
-
     public function GetHistory(Request $request, PoModuleService $poModuleService, CbModuleService $cbModuleService, CmModuleService $cmModuleService)
     {
         try {
@@ -257,7 +204,7 @@ class GetApprControllers extends Controller
 
             // Tentukan tabel
             $table = ($status === "A")
-                ? 'mgr.cb_cash_request_appr'
+                ? 'mgr.cb_cash_request_appr_azure'
                 : 'mgr.cb_cash_request_appr_his';
 
             // Ambil data utama
