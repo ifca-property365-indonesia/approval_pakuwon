@@ -116,7 +116,7 @@ class GetApprControllers extends Controller
         try {
             // validasi request (sama seperti sebelumnya)
             $entity_cd = $request->entity_cd;
-            $email_addr = $request->email_addr;
+            $user_id = $request->user_id;
             $doc_no = $request->doc_no;
             $level_no = $request->level_no;
 
@@ -135,7 +135,7 @@ class GetApprControllers extends Controller
                 DB::raw("MAX(CASE WHEN a.app_status = 'C' THEN a.app_url END) as link_reject")
             )
             // ->where('a.status','P')
-            ->where('a.email_addr',$email_addr)
+            ->where('a.user_id',$user_id)
             ->where('a.entity_cd',$entity_cd)
             ->where('a.doc_no',$doc_no)
             ->where('a.level_no',$level_no)
