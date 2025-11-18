@@ -33,11 +33,10 @@ class GetApprControllers extends Controller
                 ], 400);
             }
 
-            $entity_cd = $request->entity_cd;
             $user_id = $request->user_id;
 
             // 🚨 Blokir juga kalau kosong
-            if (empty($entity_cd) || empty($user_id)) {
+            if (empty($user_id)) {
                 return response()->json([
                     'success' => false,
                     'message' => 'user_id wajib diisi'
@@ -66,7 +65,6 @@ class GetApprControllers extends Controller
             )
             ->where('a.status','P')
             ->where('a.user_id',$user_id)
-            ->where('a.entity_cd',$entity_cd)
             ->whereRaw('a.level_no = (
                 select min(b.level_no)
                 from mgr.cb_cash_request_appr_azure b
