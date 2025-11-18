@@ -181,7 +181,7 @@ class GetApprControllers extends Controller
         }
     }
 
-    public function GetTotalData(Request $request)
+    public function GetTotalData_old(Request $request)
     {
         try {
             // Validasi wajib
@@ -306,6 +306,117 @@ class GetApprControllers extends Controller
                 'message' => 'Terjadi kesalahan server',
                 'error' => $e->getMessage()
             ], 500);
+        }
+    }
+
+    public function GetTotalData(Request $request)
+    {
+        try {
+            // ✅ Daftar field yang diperbolehkan
+            $allowedKeys = ['user_id'];
+            $requestKeys = array_keys($request->all());
+            $extraKeys = array_diff($requestKeys, $allowedKeys);
+
+            if (!empty($extraKeys)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Request hanya boleh berisi user_id',
+                    'invalid_fields' => array_values($extraKeys)
+                ], 400);
+            }
+
+            $user_id = $request->user_id;
+
+            if (empty($user_id)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'user_id wajib diisi'
+                ], 400);
+            }
+
+            // --- 1. Query untuk STATUS 'P' (Pending) dari `...appr_azure` ---
+
+            $query_pending = DB::connection('pakuwon')
+            ->table('mgr.cb_cash_request_appr_azure as a')
+            ->join('mgr.cf_approval_type as t', function($join) {
+                $join->on('a.type', '=', 't.type')
+                     ->on('a.module', '=', 't.module');
+            })
+            ->where('a.status','P') 
+            ->where('a.user_id',$user_id)
+            ->whereRaw('a.level_no = (
+                select min(b.level_no)
+                from mgr.cb_cash_request_appr_azure b
+                where b.doc_no = a.doc_no
+                and b.entity_cd = a.entity_cd
+                and b.user_id = a.user_id
+                and b.status = \'P\'
+            )');
+
+            // Ambil hasil GROUP BY yang unik (Status P)
+            $groupedPendingData = $query_pending
+            ->select('a.doc_no', 'a.entity_cd', 'a.level_no', 'a.type', 'a.module')
+            ->groupBy('a.doc_no', 'a.entity_cd', 'a.level_no', 'a.type', 'a.module', 'a.ref_no', 'a.trx_type', 't.descs')
+            ->get();
+
+            $total_pending = (string) $groupedPendingData->count();
+
+
+            // --- 2. Query untuk STATUS 'A' (Approved) dari `...appr_azure` ---
+
+            $query_approved = DB::connection('pakuwon')
+            ->table('mgr.cb_cash_request_appr_azure as a')
+            ->join('mgr.cf_approval_type as t', function($join) {
+                $join->on('a.type', '=', 't.type')
+                     ->on('a.module', '=', 't.module');
+            })
+            ->where('a.status','A') 
+            ->where('a.user_id',$user_id); 
+
+            // Ambil hasil GROUP BY yang unik (Status A)
+            $groupedApprovedData = $query_approved
+            ->select('a.doc_no', 'a.entity_cd', 'a.level_no', 'a.type', 'a.module')
+            ->groupBy('a.doc_no', 'a.entity_cd', 'a.level_no', 'a.type', 'a.module', 'a.ref_no', 'a.trx_type', 't.descs')
+            ->get();
+
+            $total_approved = (string) $groupedApprovedData->count();
+
+
+            // --- 3. Query untuk STATUS 'R' dan 'C' dari `...appr_his` ---
+
+            $query_history = DB::connection('pakuwon')
+            ->table('mgr.cb_cash_request_appr_his as a') // Tabel History
+            ->join('mgr.cf_approval_type as t', function($join) {
+                $join->on('a.type', '=', 't.type')
+                     ->on('a.module', '=', 't.module');
+            })
+            ->whereIn('a.status',['R', 'C']) // Status Revise atau Cancel/Reject
+            ->where('a.user_id',$user_id);
+
+            // Ambil hasil GROUP BY yang unik (Status R dan C)
+            $groupedHistoryData = $query_history
+            ->select('a.doc_no', 'a.entity_cd', 'a.level_no', 'a.type', 'a.module', 'a.status')
+            ->groupBy('a.doc_no', 'a.entity_cd', 'a.level_no', 'a.type', 'a.module', 'a.ref_no', 'a.trx_type', 't.descs', 'a.status')
+            ->get();
+
+            // Filter dan hitung total data untuk status 'R' dan 'C'
+            $total_revised = (string) $groupedHistoryData->where('status', 'R')->count();
+            $total_rejected = (string) $groupedHistoryData->where('status', 'C')->count();
+
+
+            // Mengembalikan semua total data dengan format JSON yang diminta
+            return response()->json([
+                'success' => true,
+                'total' => [
+                    'total_P' => $total_pending,      // Status 'P' dari `...appr_azure`
+                    'total_A' => $total_approved,    // Status 'A' dari `...appr_azure`
+                    'total_R' => $total_revised,      // Status 'R' dari `...appr_his`
+                    'total_C' => $total_rejected     // Status 'C' dari `...appr_his`
+                ]
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json(['success'=>false,'message'=>'Terjadi kesalahan server','error'=>$e->getMessage()],500);
         }
     }
 }
