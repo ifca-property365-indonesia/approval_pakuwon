@@ -19,7 +19,7 @@ class GetApprControllers extends Controller
     {
         try {
             // ✅ Daftar field yang diperbolehkan
-            $allowedKeys = ['entity_cd', 'email_addr'];
+            $allowedKeys = ['user_id'];
 
             // 🚨 Cek kalau ada field di luar allowedKeys
             $requestKeys = array_keys($request->all());
@@ -28,19 +28,19 @@ class GetApprControllers extends Controller
             if (!empty($extraKeys)) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Request hanya boleh berisi entity_cd dan email_addr',
+                    'message' => 'Request hanya boleh berisi user_id',
                     'invalid_fields' => array_values($extraKeys)
                 ], 400);
             }
 
             $entity_cd = $request->entity_cd;
-            $email_addr = $request->email_addr;
+            $user_id = $request->user_id;
 
             // 🚨 Blokir juga kalau kosong
-            if (empty($entity_cd) || empty($email_addr)) {
+            if (empty($entity_cd) || empty($user_id)) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'entity_cd dan email_addr wajib diisi'
+                    'message' => 'user_id wajib diisi'
                 ], 400);
             }
 
@@ -65,14 +65,14 @@ class GetApprControllers extends Controller
                 DB::raw("MAX(CASE WHEN a.app_status = 'C' THEN a.app_url END) as link_reject")
             )
             ->where('a.status','P')
-            ->where('a.email_addr',$email_addr)
+            ->where('a.user_id',$user_id)
             ->where('a.entity_cd',$entity_cd)
             ->whereRaw('a.level_no = (
                 select min(b.level_no)
                 from mgr.cb_cash_request_appr_azure b
                 where b.doc_no = a.doc_no
                 and b.entity_cd = a.entity_cd
-                and b.email_addr = a.email_addr
+                and b.user_id = a.user_id
                 and b.status = \'P\'
             )')
             ->groupBy(
