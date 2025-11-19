@@ -24,21 +24,21 @@
     }
     /* Mobile responsive */
     @media screen and (max-width: 600px) {
-      .main-container {
+    .container {
         width: 100% !important;
-      }
-      .button {
-        display: block !important;
-        width: 100% !important;
-        margin-bottom: 10px !important;
-      }
-      .content {
-        padding: 20px !important;
-      }
     }
+    .content {
+        padding: 20px !important;
+    }
+    .button {
+        display:block !important;
+        width:100% !important;
+        margin-bottom:10px !important;
+    }
+}
   </style>
 </head>
-
+</style>
 <body style="margin:0; padding:0; background-color:#ffffff; font-family: Arial, Helvetica, sans-serif;">
 
   <!-- Background Table -->
@@ -46,13 +46,14 @@
     <tr>
       <td align="center" style="padding:40px 0;">
 
-        <!--[if mso]>
-        <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0">
-        <tr><td>
-        <![endif]-->
+        <!-- Outlook Wrapper Fixed 600px --> 
+          <!--[if mso]> <table role="presentation" width="1024" cellpadding="0" cellspacing="0" border="0" align="center"> 
+            <tr><td> 
+          <![endif]-->
 
         <!-- Main Container -->
-        <table role="presentation" width="100%" class="main-container" style="max-width:600px; background-color:#ffffff; border-collapse:collapse;">
+        <table role="presentation" align="center" cellpadding="0" cellspacing="0" border="0" width="1024" style="width:2048px; max-width:600px; background-color:#ffffff; border-collapse:collapse;">
+
           
           <!-- Header -->
           <tr>
@@ -129,8 +130,8 @@
         </table>
 
         <!--[if mso]>
-        </td></tr></table>
-        <![endif]-->
+</td></tr></table>
+<![endif]-->
 
       </td>
     </tr>
