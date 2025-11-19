@@ -68,67 +68,60 @@
               <h5 style="font-size:20px; font-weight:400; margin:0 0 15px;">Dear {{ $dataArray['user_name'] }},</h5>
               <p style="margin:0 0 15px;">Tolong berikan persetujuan untuk proses Pemecahan SHGB {{ $dataArray['shgb_no_split'] }} dengan detail :</p>
 
+              @php
+                  // Helper kecil untuk menghindari htmlspecialchars error
+                  function safeVal($val) {
+                      return is_array($val) ? implode(', ', $val) : ($val ?? '-');
+                  }
+              @endphp
+
               <!-- Detail Table -->
               <table role="presentation" cellpadding="4" cellspacing="0" border="0" width="100%" style="font-size:14px; color:#000000;">
-                <tr>
-                  <th style="border: 1px solid #dddddd;text-align: center;padding: 8px;">No. SHGB</th>
-                  <th style="border: 1px solid #dddddd;text-align: center;padding: 8px;">No. SHGB BPN</th>
-                  <th style="border: 1px solid #dddddd;text-align: center;padding: 8px;">No. SPPT</th>
-                  <th style="border: 1px solid #dddddd;text-align: center;padding: 8px;">No. NIB</th>
-                  <th style="border: 1px solid #dddddd;text-align: center;padding: 8px;">Tanggal Terbit</th>
-                  <th style="border: 1px solid #dddddd;text-align: center;padding: 8px;">Tanggal Expired</th>
-                  <th style="border: 1px solid #dddddd;text-align: center;padding: 8px;">Luas Awal SHGB (M&sup2;)</th>
-                  <th style="border: 1px solid #dddddd;text-align: center;padding: 8px;">Luas Akhir SHGB (M&sup2;)</th>
-                  <th style="border: 1px solid #dddddd;text-align: center;padding: 8px;">Induk / Pecahan</th>
-                  <th style="border: 1px solid #dddddd;text-align: center;padding: 8px;">Keterangan</th>
-                </tr>
-                <tr>
-                  <th style="border: 1px solid #dddddd;text-align: center;padding: 8px;">{{ $dataArray['shgb_no_split'] }} </th>
-                  <th style="border: 1px solid #dddddd;text-align: center;padding: 8px;">{{ $dataArray['shgb_no_bpn_split'] }} </th>
-                  <th style="border: 1px solid #dddddd;text-align: center;padding: 8px;">{{ $dataArray['nop_no_split'] }} </th>
-                  <th style="border: 1px solid #dddddd;text-align: center;padding: 8px;">{{ $dataArray['nib_no_split'] }} </th>
-                  <th style="border: 1px solid #dddddd;text-align: center;padding: 8px;">{{ $dataArray['shgb_date_split'] }} </th>
-                  <th style="border: 1px solid #dddddd;text-align: center;padding: 8px;">{{ $dataArray['shgb_expired_split'] }} </th>
-                  <th style="border: 1px solid #dddddd;text-align: center;padding: 8px;">{{ $dataArray['shgb_area_split'] }} </th>
-                  <th style="border: 1px solid #dddddd;text-align: center;padding: 8px;">{{ $dataArray['remaining_area'] }} </th>
-                  <th style="border: 1px solid #dddddd;text-align: center;padding: 8px;">{{ $dataArray['split_status_hdstr'] }} </th>
-                  <th style="border: 1px solid #dddddd;text-align: center;padding: 8px;"></th>
-                </tr>
-               @if(isset($dataArray['shgb_no']) && is_array($dataArray['shgb_no']) && count($dataArray['shgb_no']) > 0)
-                  <!-- Find and display the first merge -->
-                  @if(isset($dataArray['shgb_no'][0]))
-                      <tr>
-                          <td style="border: 1px solid #000;padding: 5px;">{{ $dataArray['shgb_no'][0] }} </td>
-                          <td style="border: 1px solid #000;padding: 5px;"> {{ $dataArray['shgb_no_bpn'][0] }} </td>
-                          <td style="border: 1px solid #000;padding: 5px;"> {{ $dataArray['nop_no'][0] }} </td>
-                          <td style="border: 1px solid #000;padding: 5px;">{{ $dataArray['nib_no'][0] }} </td>
-                          <td style="border: 1px solid #000;padding: 5px;">{{ $dataArray['shgb_date'][0] }} </td>
-                          <td style="border: 1px solid #000;padding: 5px;">{{ $dataArray['shgb_expired'][0] }} </td>
-                          <td style="border: 1px solid #000;padding: 5px;"> </td>
-                          <td style="border: 1px solid #000;padding: 5px;"> {{ $dataArray['shgb_area'][0] }}</td>
-                          <td style="border: 1px solid #000;padding: 5px;">{{ $dataArray['split_status_dt'][0] }}</td>
-                          <td style="border: 1px solid #000;padding: 5px;">{{ $dataArray['split_descs_data'][0] }}</td>
-                      </tr>    
+                  <tr>
+                      <th style="border: 1px solid #dddddd;text-align: center;padding: 8px;">No. SHGB</th>
+                      <th style="border: 1px solid #dddddd;text-align: center;padding: 8px;">No. SHGB BPN</th>
+                      <th style="border: 1px solid #dddddd;text-align: center;padding: 8px;">No. SPPT</th>
+                      <th style="border: 1px solid #dddddd;text-align: center;padding: 8px;">No. NIB</th>
+                      <th style="border: 1px solid #dddddd;text-align: center;padding: 8px;">Tanggal Terbit</th>
+                      <th style="border: 1px solid #dddddd;text-align: center;padding: 8px;">Tanggal Expired</th>
+                      <th style="border: 1px solid #dddddd;text-align: center;padding: 8px;">Luas Awal SHGB (M&sup2;)</th>
+                      <th style="border: 1px solid #dddddd;text-align: center;padding: 8px;">Luas Akhir SHGB (M&sup2;)</th>
+                      <th style="border: 1px solid #dddddd;text-align: center;padding: 8px;">Induk / Pecahan</th>
+                      <th style="border: 1px solid #dddddd;text-align: center;padding: 8px;">Keterangan</th>
+                  </tr>
+
+                  <!-- Header Row -->
+                  <tr>
+                      <td style="border: 1px solid #dddddd;text-align: center;padding: 8px;">{{ safeVal($dataArray['shgb_no_split'] ?? '') }}</td>
+                      <td style="border: 1px solid #dddddd;text-align: center;padding: 8px;">{{ safeVal($dataArray['shgb_no_bpn_split'] ?? '') }}</td>
+                      <td style="border: 1px solid #dddddd;text-align: center;padding: 8px;">{{ safeVal($dataArray['nop_no_split'] ?? '') }}</td>
+                      <td style="border: 1px solid #dddddd;text-align: center;padding: 8px;">{{ safeVal($dataArray['nib_no_split'] ?? '') }}</td>
+                      <td style="border: 1px solid #dddddd;text-align: center;padding: 8px;">{{ safeVal($dataArray['shgb_date_split'] ?? '') }}</td>
+                      <td style="border: 1px solid #dddddd;text-align: center;padding: 8px;">{{ safeVal($dataArray['shgb_expired_split'] ?? '') }}</td>
+                      <td style="border: 1px solid #dddddd;text-align: center;padding: 8px;">{{ safeVal($dataArray['shgb_area_split'] ?? '') }}</td>
+                      <td style="border: 1px solid #dddddd;text-align: center;padding: 8px;">{{ safeVal($dataArray['remaining_area'] ?? '') }}</td>
+                      <td style="border: 1px solid #dddddd;text-align: center;padding: 8px;">{{ safeVal($dataArray['split_status_hdstr'] ?? '') }}</td>
+                      <td style="border: 1px solid #dddddd;text-align: center;padding: 8px;"></td>
+                  </tr>
+
+                  <!-- Detail Rows -->
+                  @if(isset($dataArray['shgb_no']) && is_array($dataArray['shgb_no']) && count($dataArray['shgb_no']) > 0)
+                      @foreach($dataArray['shgb_no'] as $i => $no)
+                          <tr>
+                              <td style="border: 1px solid #000;padding: 5px;">{{ safeVal($no) }}</td>
+                              <td style="border: 1px solid #000;padding: 5px;">{{ safeVal($dataArray['shgb_no_bpn'][$i] ?? '') }}</td>
+                              <td style="border: 1px solid #000;padding: 5px;">{{ safeVal($dataArray['nop_no'][$i] ?? '') }}</td>
+                              <td style="border: 1px solid #000;padding: 5px;">{{ safeVal($dataArray['nib_no'][$i] ?? '') }}</td>
+                              <td style="border: 1px solid #000;padding: 5px;">{{ safeVal($dataArray['shgb_date'][$i] ?? '') }}</td>
+                              <td style="border: 1px solid #000;padding: 5px;">{{ safeVal($dataArray['shgb_expired'][$i] ?? '') }}</td>
+                              <td style="border: 1px solid #000;padding: 5px;"></td>
+                              <td style="border: 1px solid #000;padding: 5px;">{{ safeVal($dataArray['shgb_area'][$i] ?? '') }}</td>
+                              <td style="border: 1px solid #000;padding: 5px;">{{ safeVal($dataArray['split_status_dt'][$i] ?? '') }}</td>
+                              <td style="border: 1px solid #000;padding: 5px;">{{ safeVal($dataArray['split_descs_data'][$i] ?? '') }}</td>
+                          </tr>
+                      @endforeach
                   @endif
 
-                  <!-- Display other merges -->
-                  @for($i = 1; $i < count($dataArray['shgb_no']); $i++)
-                      @if(isset($dataArray['shgb_no'][$i], $dataArray['shgb_no_bpn'][$i], $dataArray['nop_no'][$i], $dataArray['nib_no'][$i], $dataArray['shgb_date'][$i], $dataArray['shgb_expired'][$i], $dataArray['shgb_area'][$i]))
-                          <tr>
-                              <td style="border: 1px solid #000;padding: 5px;">{{ $dataArray['shgb_no'][$i] }} </td>
-                              <td style="border: 1px solid #000;padding: 5px;"> {{ $dataArray['shgb_no_bpn'][$i] }} </td>
-                              <td style="border: 1px solid #000;padding: 5px;"> {{ $dataArray['nop_no'][$i] }} </td>
-                              <td style="border: 1px solid #000;padding: 5px;">{{ $dataArray['nib_no'][$i] }} </td>
-                              <td style="border: 1px solid #000;padding: 5px;">{{ $dataArray['shgb_date'][$i] }} </td>
-                              <td style="border: 1px solid #000;padding: 5px;">{{ $dataArray['shgb_expired'][$i] }} </td>
-                              <td style="border: 1px solid #000;padding: 5px;"> </td>
-                              <td style="border: 1px solid #000;padding: 5px;"> {{ $dataArray['shgb_area'][$i] }}</td>
-                              <td style="border: 1px solid #000;padding: 5px;">{{ $dataArray['split_status_dt'][$i] }}</td>
-                              <td style="border: 1px solid #000;padding: 5px;">{{ $dataArray['split_descs_data'][$i] }}</td>
-                          </tr>
-                      @endif
-                  @endfor
-              @endif
               </table>
 
               <!-- Attachments -->
