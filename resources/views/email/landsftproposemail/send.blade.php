@@ -49,7 +49,9 @@
         <!-- Outlook Wrapper Fixed 600px --> <!--[if mso]> <table role="presentation" width="1024" cellpadding="0" cellspacing="0" border="0" align="center"> <tr><td> <![endif]-->
 
         <!-- Main Container -->
-        <table role="presentation" align="center" cellpadding="0" cellspacing="0" border="0" width="1024" style="width:2048px; max-width:600px; background-color:#ffffff; border-collapse:collapse;">
+        <table role="presentation" align="center" cellpadding="0" cellspacing="0" border="0"
+  width="600"
+  style="width:600px; max-width:2048px; background-color:#ffffff; border-collapse:collapse;">
 
           
           <!-- Header -->
