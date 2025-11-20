@@ -50,8 +50,8 @@
 
         <!-- Main Container -->
         <table role="presentation" align="center" cellpadding="0" cellspacing="0" border="0"
-  width="600"
-  style="width:600px; max-width:2048px; background-color:#ffffff; border-collapse:collapse;">
+  width="860"
+  style="width:860px; max-width:2048px; background-color:#ffffff; border-collapse:collapse;">
 
           
           <!-- Header -->
@@ -72,10 +72,10 @@
               <table role="presentation" cellpadding="4" cellspacing="0" border="0" width="100%" style="font-size:14px; color:#000000;">
                 <tr>
                   <th style="border: 1px solid #000000;text-align: center;padding: 8px;">Nomor Dokumen</th>
-                  <th style="border: 1px solid #000000;text-align: center;padding: 8px;">Nama Pemilik</th>
+                  <!-- <th style="border: 1px solid #000000;text-align: center;padding: 8px;">Nama Pemilik</th> -->
                   <th style="border: 1px solid #000000;text-align: center;padding: 8px;">Rincian Pengajuan</th>
-                  <th style="border: 1px solid #000000;text-align: center;padding: 8px;">NOP</th>
-                  <th style="border: 1px solid #000000;text-align: center;padding: 8px;">Periode SPH</th>
+                  <!-- <th style="border: 1px solid #000000;text-align: center;padding: 8px;">NOP</th> -->
+                  <!-- <th style="border: 1px solid #000000;text-align: center;padding: 8px;">Periode SPH</th> -->
                   <th style="border: 1px solid #000000;text-align: center;padding: 8px;">Nominal Pengajuan</th>
                 </tr>
                @if(isset($dataArray['type']) && is_array($dataArray['type']) && count($dataArray['type']) > 0)
@@ -84,10 +84,10 @@
                   @if(isset($dataArray['type'][0]))
                       <tr>
                           <td style="border: 1px solid #000;padding: 5px;"> {{ $dataArray['doc_no'] }} </td>
-                          <td style="border: 1px solid #000;padding: 5px;"> {{ $dataArray['name_owner'][0] }} </td>
+                          <!-- <td style="border: 1px solid #000;padding: 5px;"> {{ $dataArray['name_owner'][0] }} </td> -->
                           <td style="border: 1px solid #000;padding: 5px;"> {{ $dataArray['type'][0] }} </td>
-                          <td style="border: 1px solid #000;padding: 5px;"> {{ $dataArray['nop_no'][0] }} </td>
-                          <td style="border: 1px solid #000;padding: 5px;"> {{ $dataArray['sph_trx_no'][0] }} </td>
+                          <!-- <td style="border: 1px solid #000;padding: 5px;"> {{ $dataArray['nop_no'][0] }} </td> -->
+                          <!-- <td style="border: 1px solid #000;padding: 5px;"> {{ $dataArray['sph_trx_no'][0] }} </td> -->
                           <td style="border: 1px solid #000;padding: 5px;"> {{ $dataArray['request_amt'][0] }} </td>
                       </tr>    
                   @endif
@@ -97,10 +97,10 @@
                       @if(isset($dataArray['type'][$i]))
                           <tr>
                             <td style="border: 1px solid #000;padding: 5px;"> {{ $dataArray['doc_no'] }} </td>
-                            <td style="border: 1px solid #000;padding: 5px;"> {{ $dataArray['name_owner'][$i] }} </td>
+                            <!-- <td style="border: 1px solid #000;padding: 5px;"> {{ $dataArray['name_owner'][$i] }} </td> -->
                             <td style="border: 1px solid #000;padding: 5px;"> {{ $dataArray['type'][$i] }} </td>
-                            <td style="border: 1px solid #000;padding: 5px;"> {{ $dataArray['nop_no'][$i] }} </td>
-                            <td style="border: 1px solid #000;padding: 5px;"> {{ $dataArray['sph_trx_no'][$i] }} </td>
+                            <!-- <td style="border: 1px solid #000;padding: 5px;"> {{ $dataArray['nop_no'][$i] }} </td> -->
+                            <!-- <td style="border: 1px solid #000;padding: 5px;"> {{ $dataArray['sph_trx_no'][$i] }} </td> -->
                             <td style="border: 1px solid #000;padding: 5px;"> {{ $dataArray['request_amt'][$i] }} </td>
                           </tr>
                       @endif
