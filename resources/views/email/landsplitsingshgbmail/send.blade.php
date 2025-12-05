@@ -150,6 +150,39 @@
                 @endif
               </table>
 
+              <!-- Detail Table -->
+              <table role="presentation" cellpadding="4" cellspacing="0" border="0" width="100%" style="font-size:14px; color:#000000;">
+                  <tr>
+                      <th style="border: 1px solid #dddddd;text-align: center;padding: 8px;">No. SHGB / NIB Induk</th>
+                      <th style="border: 1px solid #dddddd;text-align: center;padding: 8px;">Keterangan Unit</th>
+                      <th style="border: 1px solid #dddddd;text-align: center;padding: 8px;">No. SHGB / NIB Unit</th>
+                      <th style="border: 1px solid #dddddd;text-align: center;padding: 8px;">Luas SHGB / NIB Unit</th>
+                  </tr>
+
+                  <!-- Header Row -->
+                  <tr>
+                      <td style="border: 1px solid #dddddd;text-align: center;padding: 8px;">{{ safeVal($dataArray['shgb_no'] ?? '') }}</td>
+                      <td style="border: 1px solid #dddddd;text-align: center;padding: 8px;">{{ safeVal($dataArray['lot_descs'] ?? '') }}</td>
+                      <td style="border: 1px solid #dddddd;text-align: center;padding: 8px;">{{ safeVal($dataArray['shgb_no_split'] ?? '') }}</td>
+                      <td style="border: 1px solid #dddddd;text-align: center;padding: 8px;">{{ safeVal($dataArray['land_area_aloc'] ?? '') }}</td>
+                      <td style="border: 1px solid #dddddd;text-align: center;padding: 8px;"></td>
+                  </tr>
+
+                  <!-- Detail Rows -->
+                  @if(isset($dataArray['shgb_no']) && is_array($dataArray['shgb_no']) && count($dataArray['shgb_no']) > 0)
+                      @foreach($dataArray['shgb_no'] as $i => $no)
+                          <tr>
+                              <td style="border: 1px solid #000;padding: 5px;">{{ safeVal($dataArray['shgb_no'][$i] ?? '') }}</td>
+                              <td style="border: 1px solid #000;padding: 5px;">{{ safeVal($dataArray['lot_descs'][$i] ?? '') }}</td>
+                              <td style="border: 1px solid #000;padding: 5px;">{{ safeVal($dataArray['shgb_no_split'][$i] ?? '') }}</td>
+                              <td style="border: 1px solid #000;padding: 5px;">{{ safeVal($dataArray['land_area_aloc'][$i] ?? '') }}</td>
+                              <td style="border: 1px solid #dddddd;text-align: center;padding: 8px;"></td>
+                          </tr>
+                      @endforeach
+                  @endif
+
+              </table>
+
               <!-- Attachments -->
               @if (!empty($dataArray['attachments']) && count($dataArray['attachments']) > 0)
                   <p style="margin:20px 0 10px;">To view detail transaction, please click the link below:</p>
