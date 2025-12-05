@@ -307,64 +307,65 @@ class LandSplitSingShgbController extends Controller
 
     public function getaccess(Request $request)
     {
-        $data = Crypt::decrypt($request->encrypt);
+        dd($request->all());
+        // $data = Crypt::decrypt($request->encrypt);
 
-        $status = $request->status;
+        // $status = $request->status;
 
-        $reasonget = $request->reason;
+        // $reasonget = $request->reason;
 
-        $descstatus = " ";
-        $imagestatus = " ";
+        // $descstatus = " ";
+        // $imagestatus = " ";
 
-        $msg = " ";
-        $msg1 = " ";
-        $notif = " ";
-        $st = " ";
-        $image = " ";
+        // $msg = " ";
+        // $msg1 = " ";
+        // $notif = " ";
+        // $st = " ";
+        // $image = " ";
 
-        if (trim($reasonget) == '') {
-            $reason = 'no reason';
-        } else {
-            $reason = $reasonget;
-        }
+        // if (trim($reasonget) == '') {
+        //     $reason = 'no reason';
+        // } else {
+        //     $reason = $reasonget;
+        // }
 
-        if ($status == "A") {
-            $descstatus = "Approved";
-            $imagestatus = "approved.png";
-        } else if ($status == "R") {
-            $descstatus = "Revised";
-            $imagestatus = "revise.png";
-        } else {
-            $descstatus = "Cancelled";
-            $imagestatus = "reject.png";
-        }
-        $pdo = DB::connection('pakuwon')->getPdo();
-        $sth = $pdo->prepare("EXEC mgr.xrl_send_mail_approval_land_splitsing_shgb ?, ?, ?, ?, ?");
-        $success = $sth->execute([
-            $data["entity_cd"],
-            $data["doc_no"],
-            $status,
-            $data["level_no"],
-            $reason
-        ]);
-        if ($success) {
-            $msg = "You Have Successfully ".$descstatus." the Land Splitsing SHGB No. ".$data["doc_no"];
-            $notif = $descstatus." !";
-            $st = 'OK';
-            $image = $imagestatus;
-        } else {
-            $msg = "You Failed to ".$descstatus." the Land Splitsing SHGB No.".$data["doc_no"];
-            $notif = 'Fail to '.$descstatus.' !';
-            $st = 'FAIL';
-            $image = "reject.png";
-        }
-        $msg1 = array(
-            "Pesan" => $msg,
-            "St" => $st,
-            "notif" => $notif,
-            "image" => $image,
-            'entity_name'   => $request->entity_name,
-        );
-        return view("email.after", $msg1);
+        // if ($status == "A") {
+        //     $descstatus = "Approved";
+        //     $imagestatus = "approved.png";
+        // } else if ($status == "R") {
+        //     $descstatus = "Revised";
+        //     $imagestatus = "revise.png";
+        // } else {
+        //     $descstatus = "Cancelled";
+        //     $imagestatus = "reject.png";
+        // }
+        // $pdo = DB::connection('pakuwon')->getPdo();
+        // $sth = $pdo->prepare("EXEC mgr.xrl_send_mail_approval_land_splitsing_shgb ?, ?, ?, ?, ?");
+        // $success = $sth->execute([
+        //     $data["entity_cd"],
+        //     $data["doc_no"],
+        //     $status,
+        //     $data["level_no"],
+        //     $reason
+        // ]);
+        // if ($success) {
+        //     $msg = "You Have Successfully ".$descstatus." the Land Splitsing SHGB No. ".$data["doc_no"];
+        //     $notif = $descstatus." !";
+        //     $st = 'OK';
+        //     $image = $imagestatus;
+        // } else {
+        //     $msg = "You Failed to ".$descstatus." the Land Splitsing SHGB No.".$data["doc_no"];
+        //     $notif = 'Fail to '.$descstatus.' !';
+        //     $st = 'FAIL';
+        //     $image = "reject.png";
+        // }
+        // $msg1 = array(
+        //     "Pesan" => $msg,
+        //     "St" => $st,
+        //     "notif" => $notif,
+        //     "image" => $image,
+        //     'entity_name'   => $request->entity_name,
+        // );
+        // return view("email.after", $msg1);
     }
 }
