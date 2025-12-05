@@ -130,3 +130,8 @@ use App\Http\Controllers\LandExtensionShgbController as LandExtensionShgb;
 Route::POST('/landextensionshgb', [LandExtensionShgb::class, 'index']);
 Route::GET('/landextensionshgb/{status}/{encrypt}', [LandExtensionShgb::class, 'processData']);
 Route::POST('/landextensionshgb/getaccess', [LandExtensionShgb::class, 'getaccess']);
+
+use App\Http\Controllers\LandSplitSingShgbController as LandSplitSingShgb;
+Route::POST('/landsplitsingshgb', [LandSplitSingShgb::class, 'index']);
+Route::GET('/landsplitsingshgb/{status}/{encrypt}', [LandSplitSingShgb::class, 'processData']);
+Route::POST('/landsplitsingshgb/getaccess', [LandSplitSingShgb::class, 'getaccess']);
