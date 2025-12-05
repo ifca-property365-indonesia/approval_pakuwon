@@ -93,10 +93,14 @@
                   <td width="30%">Project</td><td width="2%">:</td><td>{{ $dataArray['project_name_epr'] }}</td>
                 </tr>
                 <tr>
-                  <td width="30%">Luas Efektif Project</td><td width="2%">:</td><td>{{ $dataArray['project_area_epr'] }}</td>
+                  <td width="30%">Luas Efektif Project</td>
+                  <td width="2%">:</td>
+                  <td>{{ $dataArray['project_area_epr'] }} m²</td>
                 </tr>
                 <tr>
-                  <td width="30%">Luas Alokasi Splitsing</td><td width="2%">:</td><td>{{ $dataArray['allocation_area'] }}</td>
+                  <td width="30%">Luas Alokasi Splitsing</td>
+                  <td width="2%">:</td>
+                  <td>{{ $dataArray['allocation_area'] }} m²</td>
                 </tr>
                 @php
                   $count = count($dataArray['payment_descs']);
