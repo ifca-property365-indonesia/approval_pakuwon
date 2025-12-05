@@ -102,7 +102,7 @@ class LandSplitSingShgbController extends Controller
                 'link'                  => 'landsplitsingshgb',
             ];
 
-            dd($dataArray);
+            // dd($dataArray);
 
             $data2Encrypt = [
                 'entity_cd'     => $request->entity_cd,
