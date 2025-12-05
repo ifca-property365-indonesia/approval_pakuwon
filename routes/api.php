@@ -24,9 +24,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // Route::GET('/processdata/{module}/{status}/{encrypt}', [MailData::class, 'processData']);
 // Route::POST('/getaccess', [MailData::class, 'getAccess']);
 
-use App\Http\Controllers\StaffActionController as StaffAction;
-Route::POST('/fileexist', [StaffAction::class, 'fileexist']);
-Route::POST('/feedbackland', [StaffAction::class, 'feedback_land']);
+// use App\Http\Controllers\StaffActionController as StaffAction;
+// Route::POST('/fileexist', [StaffAction::class, 'fileexist']);
+// Route::POST('/feedbackland', [StaffAction::class, 'feedback_land']);
 
 use App\Http\Controllers\GetApprControllers as GetAppr;
 Route::POST('/getappr', [GetAppr::class, 'Index']);
