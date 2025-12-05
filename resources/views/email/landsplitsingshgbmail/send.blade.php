@@ -167,7 +167,6 @@
                               <td style="border: 1px solid #000;padding: 5px;">{{ safeVal($dataArray['lot_descs'][$i] ?? '') }}</td>
                               <td style="border: 1px solid #000;padding: 5px;">{{ safeVal($dataArray['shgb_no_split'][$i] ?? '') }}</td>
                               <td style="border: 1px solid #000;padding: 5px;">{{ safeVal($dataArray['land_area_aloc'][$i] ?? '') }}</td>
-                              <td style="border: 1px solid #000;text-align: center;padding: 8px;"></td>
                           </tr>
                       @endforeach
                   @endif
