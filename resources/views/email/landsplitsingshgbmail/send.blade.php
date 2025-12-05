@@ -46,12 +46,12 @@
     <tr>
       <td align="center" style="padding:40px 0;">
 
-        <!-- Outlook Wrapper Fixed 1024 --> <!--[if mso]> <table role="presentation" width="1024" cellpadding="0" cellspacing="0" border="0" align="center"> <tr><td> <![endif]-->
+        <!-- Outlook Wrapper Fixed 800 --> <!--[if mso]> <table role="presentation" width="800" cellpadding="0" cellspacing="0" border="0" align="center"> <tr><td> <![endif]-->
 
         <!-- Main Container -->
         <table role="presentation" align="center" cellpadding="0" cellspacing="0" border="0"
-  width="1024"
-  style="width:1024; max-width:2048px; background-color:#ffffff; border-collapse:collapse;">
+  width="800"
+  style="width:800; max-width:2048px; background-color:#ffffff; border-collapse:collapse;">
 
           
           <!-- Header -->
