@@ -339,6 +339,8 @@ class LandSplitSingShgbController extends Controller
             $imagestatus = "reject.png";
         }
         $pdo = DB::connection('pakuwon')->getPdo();
+
+        dd("aaa");
         // $sth = $pdo->prepare("EXEC mgr.xrl_send_mail_approval_land_splitsing_shgb ?, ?, ?, ?, ?");
         // $success = $sth->execute([
         //     $data["entity_cd"],
