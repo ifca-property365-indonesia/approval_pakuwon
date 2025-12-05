@@ -145,8 +145,8 @@ class LandSplitShgbController extends Controller
                 'split_status_hd'       => $split_status_hd_data,
                 'split_status_hdstr'    => $split_status_hdstr_data,
                 'split_status_dtstr'    => $split_status_dtstr_data,
-                'clarify_user'		    => $request->clarify_user,
-                'clarify_email'		    => $request->clarify_email,
+                'clarify_user'		    => $request->sender_name,
+                'clarify_email'		    => $request->sender_addr,
                 'subject'               => "Need Approval for ".$request->doc_no,
                 'link'                  => 'landsplitshgb',
             ];

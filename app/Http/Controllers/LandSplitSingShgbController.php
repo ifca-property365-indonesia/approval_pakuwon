@@ -85,8 +85,8 @@ class LandSplitSingShgbController extends Controller
                 'approve_list'          => $approve_data,
                 'payment_descs'         => $payment_descs_data,
                 'payment_amount'        => $payment_amount_data,
-                'clarify_user'		    => $request->clarify_user,
-                'clarify_email'		    => $request->clarify_email,
+                'clarify_user'		    => $request->sender_name,
+                'clarify_email'		    => $request->sender_addr,
                 'subject'               => "Need Approval for ".$request->doc_no,
                 'link'                  => 'landsplitsingshgb',
             ];
