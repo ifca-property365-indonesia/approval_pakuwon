@@ -136,7 +136,7 @@
                   <td></td>
                   <td></td>
                   <td>
-                      <table role="presentation" cellpadding="4" cellspacing="0" border="0" width="100%" style="font-size:14px; font-weight:bold; color:#000000; border-top:1px solid #ccc;">
+                      <table role="presentation" cellpadding="4" cellspacing="0" border="0" width="100%" style="font-size:14px; font-weight:bold; color:#000000;">
                           <tr>
                               <td width="5%"></td>
                               <td width="70%">Total</td>
