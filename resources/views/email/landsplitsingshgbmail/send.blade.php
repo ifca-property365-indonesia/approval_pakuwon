@@ -159,15 +159,6 @@
                       <th style="border: 1px solid #dddddd;text-align: center;padding: 8px;">Luas SHGB / NIB Unit</th>
                   </tr>
 
-                  <!-- Header Row -->
-                  <tr>
-                      <td style="border: 1px solid #dddddd;text-align: center;padding: 8px;">{{ safeVal($dataArray['shgb_no'] ?? '') }}</td>
-                      <td style="border: 1px solid #dddddd;text-align: center;padding: 8px;">{{ safeVal($dataArray['lot_descs'] ?? '') }}</td>
-                      <td style="border: 1px solid #dddddd;text-align: center;padding: 8px;">{{ safeVal($dataArray['shgb_no_split'] ?? '') }}</td>
-                      <td style="border: 1px solid #dddddd;text-align: center;padding: 8px;">{{ safeVal($dataArray['land_area_aloc'] ?? '') }}</td>
-                      <td style="border: 1px solid #dddddd;text-align: center;padding: 8px;"></td>
-                  </tr>
-
                   <!-- Detail Rows -->
                   @if(isset($dataArray['shgb_no']) && is_array($dataArray['shgb_no']) && count($dataArray['shgb_no']) > 0)
                       @foreach($dataArray['shgb_no'] as $i => $no)
