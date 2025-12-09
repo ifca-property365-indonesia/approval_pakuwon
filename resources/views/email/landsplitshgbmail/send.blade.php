@@ -78,46 +78,46 @@
               <!-- Detail Table -->
               <table role="presentation" cellpadding="4" cellspacing="0" border="0" width="100%" style="font-size:14px; color:#000000;">
                   <tr>
-                      <th style="border: 1px solid #dddddd;text-align: center;padding: 8px;">No. SHGB</th>
-                      <th style="border: 1px solid #dddddd;text-align: center;padding: 8px;">No. SHGB BPN</th>
-                      <th style="border: 1px solid #dddddd;text-align: center;padding: 8px;">No. SPPT</th>
-                      <th style="border: 1px solid #dddddd;text-align: center;padding: 8px;">No. NIB</th>
-                      <th style="border: 1px solid #dddddd;text-align: center;padding: 8px;">Tanggal Terbit</th>
-                      <th style="border: 1px solid #dddddd;text-align: center;padding: 8px;">Tanggal Expired</th>
-                      <th style="border: 1px solid #dddddd;text-align: center;padding: 8px;">Luas Awal SHGB (M&sup2;)</th>
-                      <th style="border: 1px solid #dddddd;text-align: center;padding: 8px;">Luas Akhir SHGB (M&sup2;)</th>
-                      <th style="border: 1px solid #dddddd;text-align: center;padding: 8px;">Induk / Pecahan</th>
-                      <th style="border: 1px solid #dddddd;text-align: center;padding: 8px;">Keterangan</th>
+                      <th style="border: 1px solid #000;text-align: center;padding: 8px;">No. SHGB</th>
+                      <th style="border: 1px solid #000;text-align: center;padding: 8px;">No. SHGB BPN</th>
+                      <th style="border: 1px solid #000;text-align: center;padding: 8px;">No. SPPT</th>
+                      <th style="border: 1px solid #000;text-align: center;padding: 8px;">No. NIB</th>
+                      <th style="border: 1px solid #000;text-align: center;padding: 8px;">Tanggal Terbit</th>
+                      <th style="border: 1px solid #000;text-align: center;padding: 8px;">Tanggal Expired</th>
+                      <th style="border: 1px solid #000;text-align: center;padding: 8px;">Luas Awal SHGB (M&sup2;)</th>
+                      <th style="border: 1px solid #000;text-align: center;padding: 8px;">Luas Akhir SHGB (M&sup2;)</th>
+                      <th style="border: 1px solid #000;text-align: center;padding: 8px;">Induk / Pecahan</th>
+                      <th style="border: 1px solid #000;text-align: center;padding: 8px;">Keterangan</th>
                   </tr>
 
                   <!-- Header Row -->
                   <tr>
-                      <td style="border: 1px solid #dddddd;text-align: center;padding: 8px;">{{ safeVal($dataArray['shgb_no_split'] ?? '') }}</td>
-                      <td style="border: 1px solid #dddddd;text-align: center;padding: 8px;">{{ safeVal($dataArray['shgb_no_bpn_split'] ?? '') }}</td>
-                      <td style="border: 1px solid #dddddd;text-align: center;padding: 8px;">{{ safeVal($dataArray['nop_no_split'] ?? '') }}</td>
-                      <td style="border: 1px solid #dddddd;text-align: center;padding: 8px;">{{ safeVal($dataArray['nib_no_split'] ?? '') }}</td>
-                      <td style="border: 1px solid #dddddd;text-align: center;padding: 8px;">{{ safeVal($dataArray['shgb_date_split'] ?? '') }}</td>
-                      <td style="border: 1px solid #dddddd;text-align: center;padding: 8px;">{{ safeVal($dataArray['shgb_expired_split'] ?? '') }}</td>
-                      <td style="border: 1px solid #dddddd;text-align: center;padding: 8px;">{{ safeVal($dataArray['shgb_area_split'] ?? '') }}</td>
-                      <td style="border: 1px solid #dddddd;text-align: center;padding: 8px;">{{ safeVal($dataArray['remaining_area'] ?? '') }}</td>
-                      <td style="border: 1px solid #dddddd;text-align: center;padding: 8px;">{{ safeVal($dataArray['split_status_hdstr'] ?? '') }}</td>
-                      <td style="border: 1px solid #dddddd;text-align: center;padding: 8px;"></td>
+                      <td style="border: 1px solid #000;text-align: center;padding: 8px;">{{ safeVal($dataArray['shgb_no_split'] ?? '') }}</td>
+                      <td style="border: 1px solid #000;text-align: center;padding: 8px;">{{ safeVal($dataArray['shgb_no_bpn_split'] ?? '') }}</td>
+                      <td style="border: 1px solid #000;text-align: center;padding: 8px;">{{ safeVal($dataArray['nop_no_split'] ?? '') }}</td>
+                      <td style="border: 1px solid #000;text-align: center;padding: 8px;">{{ safeVal($dataArray['nib_no_split'] ?? '') }}</td>
+                      <td style="border: 1px solid #000;text-align: center;padding: 8px;">{{ safeVal($dataArray['shgb_date_split'] ?? '') }}</td>
+                      <td style="border: 1px solid #000;text-align: center;padding: 8px;">{{ safeVal($dataArray['shgb_expired_split'] ?? '') }}</td>
+                      <td style="border: 1px solid #000;text-align: center;padding: 8px;">{{ safeVal($dataArray['shgb_area_split'] ?? '') }}</td>
+                      <td style="border: 1px solid #000;text-align: center;padding: 8px;">{{ safeVal($dataArray['remaining_area'] ?? '') }}</td>
+                      <td style="border: 1px solid #000;text-align: center;padding: 8px;">{{ safeVal($dataArray['split_status_hdstr'] ?? '') }}</td>
+                      <td style="border: 1px solid #000;text-align: center;padding: 8px;"></td>
                   </tr>
 
                   <!-- Detail Rows -->
                   @if(isset($dataArray['shgb_no']) && is_array($dataArray['shgb_no']) && count($dataArray['shgb_no']) > 0)
                       @foreach($dataArray['shgb_no'] as $i => $no)
                           <tr>
-                              <td style="border: 1px solid #000;padding: 5px;">{{ safeVal($no) }}</td>
-                              <td style="border: 1px solid #000;padding: 5px;">{{ safeVal($dataArray['shgb_no_bpn'][$i] ?? '') }}</td>
-                              <td style="border: 1px solid #000;padding: 5px;">{{ safeVal($dataArray['nop_no'][$i] ?? '') }}</td>
-                              <td style="border: 1px solid #000;padding: 5px;">{{ safeVal($dataArray['nib_no'][$i] ?? '') }}</td>
-                              <td style="border: 1px solid #000;padding: 5px;">{{ safeVal($dataArray['shgb_date'][$i] ?? '') }}</td>
-                              <td style="border: 1px solid #000;padding: 5px;">{{ safeVal($dataArray['shgb_expired'][$i] ?? '') }}</td>
-                              <td style="border: 1px solid #000;padding: 5px;"></td>
-                              <td style="border: 1px solid #000;padding: 5px;">{{ safeVal($dataArray['shgb_area'][$i] ?? '') }}</td>
-                              <td style="border: 1px solid #000;padding: 5px;">{{ safeVal($dataArray['split_status_dt'][$i] ?? '') }}</td>
-                              <td style="border: 1px solid #000;padding: 5px;">{{ safeVal($dataArray['split_descs_data'][$i] ?? '') }}</td>
+                              <td style="border: 1px solid #000;text-align: center;padding: 8px;">{{ safeVal($no) }}</td>
+                              <td style="border: 1px solid #000;text-align: center;padding: 8px;">{{ safeVal($dataArray['shgb_no_bpn'][$i] ?? '') }}</td>
+                              <td style="border: 1px solid #000;text-align: center;padding: 8px;">{{ safeVal($dataArray['nop_no'][$i] ?? '') }}</td>
+                              <td style="border: 1px solid #000;text-align: center;padding: 8px;">{{ safeVal($dataArray['nib_no'][$i] ?? '') }}</td>
+                              <td style="border: 1px solid #000;text-align: center;padding: 8px;">{{ safeVal($dataArray['shgb_date'][$i] ?? '') }}</td>
+                              <td style="border: 1px solid #000;text-align: center;padding: 8px;">{{ safeVal($dataArray['shgb_expired'][$i] ?? '') }}</td>
+                              <td style="border: 1px solid #000;text-align: center;padding: 8px;"></td>
+                              <td style="border: 1px solid #000;text-align: center;padding: 8px;">{{ safeVal($dataArray['shgb_area'][$i] ?? '') }}</td>
+                              <td style="border: 1px solid #000;text-align: center;padding: 8px;">{{ safeVal($dataArray['split_status_dtstr'][$i] ?? '') }}</td>
+                              <td style="border: 1px solid #000;text-align: center;padding: 8px;">{{ safeVal($dataArray['split_descs_data'][$i] ?? '') }}</td>
                           </tr>
                       @endforeach
                   @endif

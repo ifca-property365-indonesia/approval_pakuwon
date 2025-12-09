@@ -107,10 +107,10 @@ class LandSplitShgbController extends Controller
                 $split_status_hdstr_data[] = $split_status_hdstr;
             }
             
-            $list_of_split_status_dtstr = explode(';', $request->split_status_dtstr);
+            $list_of_split_status_dtstr = explode('; ', $request->split_status_dtstr);
             $split_status_dtstr_data = [];
             foreach ($list_of_split_status_dtstr as $split_status_dtstr) {
-                $split_status_hd_data[] = $split_status_dtstr;
+                $split_status_dtstr_data[] = $split_status_dtstr;  // ✅ benar: isi ke variabel yang sama
             }
 
             $dataArray = [
