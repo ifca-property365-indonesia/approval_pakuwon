@@ -18,3 +18,7 @@ use App\Http\Controllers\EnvController;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/time-test', function () {
+    return now();
+});
