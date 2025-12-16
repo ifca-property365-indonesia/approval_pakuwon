@@ -380,7 +380,6 @@ class LandRequestController extends Controller
             "image" => $image,
             'entity_name'   => $request->entity_name,
         );
-        dd('kesini');
         return view("email.after", $msg1);
     }
 }
