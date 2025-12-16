@@ -109,35 +109,6 @@
                   @endforeach
               @endif
 
-              <!-- Buttons -->
-              <div style="text-align:center; margin:20px 0; font-size:0;">
-                <a href="{{ config('app.url') }}/api/{{ $dataArray['link'] }}/A/{{ $encryptedData }}"
-                  style="display:inline-block; width:32%; max-width:32%;
-                          font-size:13px; font-weight:600; text-transform:uppercase;
-                          text-decoration:none; background-color:#1ee0ac; color:#ffffff;
-                          padding:12px 0; border-radius:3px; margin:0 0.5%;">
-                  Approve
-                </a>
-
-                <a href="{{ config('app.url') }}/api/{{ $dataArray['link'] }}/R/{{ $encryptedData }}"
-                  style="display:inline-block; width:32%; max-width:32%;
-                          font-size:13px; font-weight:600; text-transform:uppercase;
-                          text-decoration:none; background-color:#f4bd0e; color:#ffffff;
-                          padding:12px 0; border-radius:3px; margin:0 0.5%;">
-                  Revise
-                </a>
-
-                <a href="{{ config('app.url') }}/api/{{ $dataArray['link'] }}/C/{{ $encryptedData }}"
-                  style="display:inline-block; width:32%; max-width:32%;
-                          font-size:13px; font-weight:600; text-transform:uppercase;
-                          text-decoration:none; background-color:#e85347; color:#ffffff;
-                          padding:12px 0; border-radius:3px; margin:0 0.5%;">
-                  Reject
-                </a>
-              </div>
-
-
-
               <p style="margin:15px 0;">In case you need some clarification, kindly approach:<br>
                 <a href="mailto:{{ $dataArray['clarify_email'] }}" style="color:#026735;">{{ $dataArray['clarify_user'] }}</a>
               </p>
