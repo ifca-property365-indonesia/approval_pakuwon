@@ -71,8 +71,7 @@
               <!-- Detail Table -->
               <table role="presentation" cellpadding="4" cellspacing="0" border="0" width="100%" style="font-size:14px; color:#000000;">
                 <tr><td width="40%">Nomor Dokumen</td><td width="2%">:</td><td>{{ $dataArray['doc_no'] }}</td></tr>
-                <tr><td>Kloter</td><td>:</td><td>{{ $dataArray['kloter'] }}</td></tr>
-                <tr><td>No Berkas</td><td>:</td><td>{{ $dataArray['file_no'] }}</td></tr>
+                <tr><td>No. Berkas</td><td>:</td><td>{{ $dataArray['kloter'] }}</td></tr>
                 <tr><td>Nomor Induk Bidang</td><td>:</td><td>{{ $dataArray['nib_no'] }}</td></tr>
                 <tr><td>Tanggal Pengukuran</td><td>:</td><td>{{ $dataArray['transaction_date'] }}</td></tr>
                 <tr><td>Biaya PNBP Pengukuran</td><td>:</td><td align="right">Rp. {{ $dataArray['measuring_amt'] }}</td></tr>
