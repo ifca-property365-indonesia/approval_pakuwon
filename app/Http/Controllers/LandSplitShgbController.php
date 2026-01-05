@@ -80,13 +80,13 @@ class LandSplitShgbController extends Controller
             $list_of_shgb_date = explode('; ', $request->shgb_date);
             $shgb_date_data = [];
             foreach ($list_of_shgb_date as $shgb_date) {
-                $shgb_date_data[] = \Carbon\Carbon::parse($shgb_date)->format('d F Y');
+                $shgb_date_data[] = \Carbon\Carbon::parse($shgb_date)->format('d/m/Y');
             }
 
             $list_of_shgb_expired = explode('; ', $request->shgb_expired);
             $shgb_expired_data = [];
             foreach ($list_of_shgb_expired as $shgb_expired) {
-                $shgb_expired_data[] = \Carbon\Carbon::parse($shgb_expired)->format('d F Y');
+                $shgb_expired_data[] = \Carbon\Carbon::parse($shgb_expired)->format('d/m/Y');
             }
 
             $list_of_shgb_area = explode('; ', $request->shgb_area);
@@ -138,8 +138,8 @@ class LandSplitShgbController extends Controller
                 'shgb_no_bpn_split'     => $request->shgb_no_bpn_split,
                 'nop_no_split'          => $request->nop_no_split,
                 'nib_no_split'          => $request->nib_no_split,
-                'shgb_date_split'       => \Carbon\Carbon::parse($request->shgb_date_split)->format('d F Y'),
-                'shgb_expired_split'    => \Carbon\Carbon::parse($request->shgb_expired_split)->format('d F Y'),
+                'shgb_date_split'       => \Carbon\Carbon::parse($request->shgb_date_split)->format('d/m/Y'),
+                'shgb_expired_split'    => \Carbon\Carbon::parse($request->shgb_expired_split)->format('d/m/Y'),
                 'shgb_area_split'       => number_format((float)$request->shgb_area_split, 2, '.', ','),
                 'remaining_area'        => number_format((float)$request->remaining_area, 2, '.', ','),
                 'split_status_hd'       => $split_status_hd_data,
