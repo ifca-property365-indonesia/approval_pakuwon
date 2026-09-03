@@ -50,8 +50,8 @@
 
         <!-- Main Container -->
         <table role="presentation" align="center" cellpadding="0" cellspacing="0" border="0"
-  width="600"
-  style="width:600px; max-width:2048px; background-color:#ffffff; border-collapse:collapse;">
+  width="860"
+  style="width:860px; max-width:2048px; background-color:#ffffff; border-collapse:collapse;">
 
           
           <!-- Header -->
@@ -66,15 +66,37 @@
           <tr>
             <td class="content" style="background-color:#e0e0e0; padding:30px; color:#000000; font-size:14px; line-height:22px;">
               <h5 style="font-size:20px; font-weight:400; margin:0 0 15px;">Dear {{ $dataArray['user_name'] }},</h5>
-              <p style="margin:0 0 15px;">Tolong berikan persetujuan untuk Proses Pengukuran BPN, dengan detail :</p>
+              <p style="margin:0 0 15px;">{{ $dataArray['detail_text'] }}</p>
 
               <!-- Detail Table -->
               <table role="presentation" cellpadding="4" cellspacing="0" border="0" width="100%" style="font-size:14px; color:#000000;">
-                <tr><td width="40%">Nomor Dokumen</td><td width="2%">:</td><td>{{ $dataArray['doc_no'] }}</td></tr>
-                <tr><td>No. Berkas</td><td>:</td><td>{{ $dataArray['kloter'] }}</td></tr>
-                <tr><td>Nomor Induk Bidang</td><td>:</td><td>{{ $dataArray['nib_no'] }}</td></tr>
-                <tr><td>Tanggal Pengukuran</td><td>:</td><td>{{ $dataArray['transaction_date'] }}</td></tr>
-                <tr><td>Biaya PNBP Pengukuran</td><td>:</td><td align="right">Rp. {{ $dataArray['measuring_amt'] }}</td></tr>
+                <tr>
+                  <th style="border: 1px solid #000000;text-align: center;padding: 8px;">Nomor Dokumen</th>
+                  <th style="border: 1px solid #000000;text-align: center;padding: 8px;">Rincian Pengajuan</th>
+                  <th style="border: 1px solid #000000;text-align: center;padding: 8px;">Nominal Pengajuan</th>
+                </tr>
+               @if(isset($dataArray['type']) && is_array($dataArray['type']) && count($dataArray['type']) > 0)
+                  <!-- Find and display the first merge -->
+
+                  @if(isset($dataArray['type'][0]))
+                      <tr>
+                          <td style="border: 1px solid #000;padding: 5px;"> {{ $dataArray['doc_no'] }} </td>
+                          <td style="border: 1px solid #000;padding: 5px;"> {{ $dataArray['type'][0] }} </td>
+                          <td style="border: 1px solid #000;padding: 5px;"> {{ $dataArray['request_amt'][0] }} </td>
+                      </tr>    
+                  @endif
+
+                  <!-- Display other merges -->
+                  @for($i = 1; $i < count($dataArray['type']); $i++)
+                      @if(isset($dataArray['type'][$i]))
+                          <tr>
+                            <td style="border: 1px solid #000;padding: 5px;"> {{ $dataArray['doc_no'] }} </td>
+                            <td style="border: 1px solid #000;padding: 5px;"> {{ $dataArray['type'][$i] }} </td>
+                            <td style="border: 1px solid #000;padding: 5px;"> {{ $dataArray['request_amt'][$i] }} </td>
+                          </tr>
+                      @endif
+                  @endfor
+              @endif
               </table>
 
               <!-- Attachments -->
@@ -86,35 +108,6 @@
                       </a><br>
                   @endforeach
               @endif
-
-              <!-- Buttons -->
-              <div style="text-align:center; margin:20px 0; font-size:0;">
-                <a href="{{ config('app.url') }}/api/{{ $dataArray['link'] }}/A/{{ $encryptedData }}"
-                  style="display:inline-block; width:32%; max-width:32%;
-                          font-size:13px; font-weight:600; text-transform:uppercase;
-                          text-decoration:none; background-color:#1ee0ac; color:#ffffff;
-                          padding:12px 0; border-radius:3px; margin:0 0.5%;">
-                  Approve
-                </a>
-
-                <a href="{{ config('app.url') }}/api/{{ $dataArray['link'] }}/R/{{ $encryptedData }}"
-                  style="display:inline-block; width:32%; max-width:32%;
-                          font-size:13px; font-weight:600; text-transform:uppercase;
-                          text-decoration:none; background-color:#f4bd0e; color:#ffffff;
-                          padding:12px 0; border-radius:3px; margin:0 0.5%;">
-                  Revise
-                </a>
-
-                <a href="{{ config('app.url') }}/api/{{ $dataArray['link'] }}/C/{{ $encryptedData }}"
-                  style="display:inline-block; width:32%; max-width:32%;
-                          font-size:13px; font-weight:600; text-transform:uppercase;
-                          text-decoration:none; background-color:#e85347; color:#ffffff;
-                          padding:12px 0; border-radius:3px; margin:0 0.5%;">
-                  Reject
-                </a>
-              </div>
-
-
 
               <p style="margin:15px 0;">In case you need some clarification, kindly approach:<br>
                 <a href="mailto:{{ $dataArray['clarify_email'] }}" style="color:#026735;">{{ $dataArray['clarify_user'] }}</a>

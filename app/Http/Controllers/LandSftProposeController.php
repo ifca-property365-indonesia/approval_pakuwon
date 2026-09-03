@@ -71,6 +71,7 @@ class LandSftProposeController extends Controller
                 'approve_list'      => $approve_data,
                 'ref_no'            => $request->ref_no,
                 'sk_no'             => $request->sk_no,
+                'nib_no'             => $request->nib_no,
                 'sk_amt'            => $sk_amt,
                 'transaction_date'  => \Carbon\Carbon::parse($request->transaction_date)->format('d F Y'),
                 'clarify_user'		=> $request->sender_name,

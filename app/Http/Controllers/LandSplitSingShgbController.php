@@ -13,7 +13,7 @@ use App\Mail\SendLandMail;
 use Exception;
 use Carbon\Carbon;
 
-class LandSplitShgbController extends Controller
+class LandSplitSingShgbController extends Controller
 {
     public function index(Request $request)
     {
@@ -25,27 +25,6 @@ class LandSplitShgbController extends Controller
         ];
 
         try {
-            // ====== Persiapan data ======
-            // Ambil dan bersihkan URL
-            $urlArray = array_filter(array_map('trim', explode(';', $request->url_link)), function($item) {
-                return strtoupper($item) !== 'EMPTY' && $item !== '';
-            });
-
-            // Ambil file name yang sesuai dengan URL
-            $fileArray = array_filter(array_map('trim', explode(';', $request->file_name)), function($item) {
-                return strtoupper($item) !== 'EMPTY' && $item !== '';
-            });
-
-            // Jika jumlah URL dan file_name tidak sama, pastikan pasangannya sama
-            $attachments = [];
-            foreach ($urlArray as $key => $url) {
-                if (isset($fileArray[$key])) {
-                    $attachments[] = [
-                        'url' => $url,
-                        'file_name' => $fileArray[$key]
-                    ];
-                }
-            }
 
             $list_of_approve = explode('; ', $request->approve_exist);
             $approve_data = [];
@@ -53,65 +32,43 @@ class LandSplitShgbController extends Controller
                 $approve_data[] = $approve;
             }
 
-            $list_of_shgb_no = explode('; ', $request->shgb_no);
+            $list_shgb_no = explode('; ', $request->shgb_no);
             $shgb_no_data = [];
-            foreach ($list_of_shgb_no as $shgb_no) {
+            foreach ($list_shgb_no as $shgb_no) {
                 $shgb_no_data[] = $shgb_no;
             }
 
-            $list_of_shgb_no_bpn = explode('; ', $request->shgb_no_bpn);
-            $shgb_no_bpn_data = [];
-            foreach ($list_of_shgb_no_bpn as $shgb_no_bpn) {
-                $shgb_no_bpn_data[] = $shgb_no_bpn;
+            $list_lot_descs = explode('; ', $request->lot_descs);
+            $lot_descs_data = [];
+            foreach ($list_lot_descs as $lot_descs) {
+                $lot_descs_data[] = $lot_descs;
             }
 
-            $list_of_nop_no = explode('; ', $request->nop_no);
-            $nop_no_data = [];
-            foreach ($list_of_nop_no as $nop_no) {
-                $nop_no_data[] = $nop_no;
+            $list_shgb_no_split = explode('; ', $request->shgb_no_split);
+            $shgb_no_split_data = [];
+            foreach ($list_shgb_no_split as $shgb_no_split) {
+                $shgb_no_split_data[] = $shgb_no_split;
             }
 
-            $list_of_nib_no = explode('; ', $request->nib_no);
-            $nib_no_data = [];
-            foreach ($list_of_nib_no as $nib_no) {
-                $nib_no_data[] = $nib_no;
+            $list_land_area_aloc = explode('; ', $request->land_area_aloc);
+            $land_area_aloc_data = [];
+            foreach ($list_land_area_aloc as $land_area_aloc) {
+                $land_area_aloc_data[] = $land_area_aloc;
             }
 
-            $list_of_shgb_date = explode('; ', $request->shgb_date);
-            $shgb_date_data = [];
-            foreach ($list_of_shgb_date as $shgb_date) {
-                $shgb_date_data[] = \Carbon\Carbon::parse($shgb_date)->format('d/m/Y');
+            $list_payment_descs = explode('; ', $request->payment_descs);
+            $payment_descs_data = [];
+            foreach ($list_payment_descs as $payment_descs) {
+                $payment_descs_data[] = $payment_descs;
             }
 
-            $list_of_shgb_expired = explode('; ', $request->shgb_expired);
-            $shgb_expired_data = [];
-            foreach ($list_of_shgb_expired as $shgb_expired) {
-                $shgb_expired_data[] = \Carbon\Carbon::parse($shgb_expired)->format('d/m/Y');
+            $list_payment_amount = explode('; ', $request->payment_amount);
+            $payment_amount_data = [];
+            foreach ($list_payment_amount as $payment_amount) {
+                $payment_amount_data[] = $payment_amount;
             }
 
-            $list_of_shgb_area = explode('; ', $request->shgb_area);
-            $shgb_area_data = [];
-            foreach ($list_of_shgb_area as $shgb_area) {
-                $shgb_area_data[] = number_format((float)$shgb_area, 2, '.', ',');
-            }
-
-            $list_of_split_status_hd = explode(';', $request->split_status_hd);
-            $split_status_hd_data = [];
-            foreach ($list_of_split_status_hd as $split_status_hd) {
-                $split_status_hd_data[] = $split_status_hd;
-            }
             
-            $list_of_split_status_hdstr = explode(';', $request->split_status_hdstr);
-            $split_status_hdstr_data = [];
-            foreach ($list_of_split_status_hdstr as $split_status_hdstr) {
-                $split_status_hdstr_data[] = $split_status_hdstr;
-            }
-            
-            $list_of_split_status_dtstr = explode('; ', $request->split_status_dtstr);
-            $split_status_dtstr_data = [];
-            foreach ($list_of_split_status_dtstr as $split_status_dtstr) {
-                $split_status_dtstr_data[] = $split_status_dtstr;  // ✅ benar: isi ke variabel yang sama
-            }
 
             $dataArray = [
                 'user_id'               => $request->user_id,
@@ -124,31 +81,25 @@ class LandSplitShgbController extends Controller
                 'sender_addr'           => $request->sender_addr,
                 'sender_name'           => $request->sender_name,
                 'entity_name'           => $request->entity_name,
-                'attachments'           => $attachments,
                 'descs'                 => $request->descs,
                 'approve_list'          => $approve_data,
+                'hd_doc_no'             => $request->hd_doc_no,
+                'skrk_no'               => $request->skrk_no,
+                'splitsing_date'        => \Carbon\Carbon::parse($request->splitsing_date)->format('d F Y'),
+                'splitsing_end_date'    => \Carbon\Carbon::parse($request->splitsing_end_date)->format('d F Y'),
+                'project_name_epr'      => $request->project_name_epr,
+                'project_area_epr'      => number_format((float)$request->project_area_epr, 0, ',', '.'),
+                'allocation_area'       => number_format((float)$request->allocation_area, 0, ',', '.'),
                 'shgb_no'               => $shgb_no_data,
-                'shgb_no_bpn'           => $shgb_no_bpn_data,
-                'nop_no'                => $nop_no_data,
-                'nib_no'                => $nib_no_data,
-                'shgb_date'             => $shgb_date_data,
-                'shgb_expired'          => $shgb_expired_data,
-                'shgb_area'             => $shgb_area_data,
-                'shgb_no_split'         => $request->shgb_no_split,
-                'shgb_no_bpn_split'     => $request->shgb_no_bpn_split,
-                'nop_no_split'          => $request->nop_no_split,
-                'nib_no_split'          => $request->nib_no_split,
-                'shgb_date_split'       => \Carbon\Carbon::parse($request->shgb_date_split)->format('d/m/Y'),
-                'shgb_expired_split'    => \Carbon\Carbon::parse($request->shgb_expired_split)->format('d/m/Y'),
-                'shgb_area_split'       => number_format((float)$request->shgb_area_split, 2, '.', ','),
-                'remaining_area'        => number_format((float)$request->remaining_area, 2, '.', ','),
-                'split_status_hd'       => $split_status_hd_data,
-                'split_status_hdstr'    => $split_status_hdstr_data,
-                'split_status_dtstr'    => $split_status_dtstr_data,
+                'lot_descs'             => $lot_descs_data,
+                'shgb_no_split'         => $shgb_no_split_data,
+                'land_area_aloc'        => $land_area_aloc_data,
+                'payment_descs'         => $payment_descs_data,
+                'payment_amount'        => $payment_amount_data,
                 'clarify_user'		    => $request->sender_name,
                 'clarify_email'		    => $request->sender_addr,
                 'subject'               => "Need Approval for ".$request->doc_no,
-                'link'                  => 'landsplitshgb',
+                'link'                  => 'landsplitsingshgb',
             ];
 
             // dd($dataArray);
@@ -160,9 +111,9 @@ class LandSplitShgbController extends Controller
                 'approve_seq'   => $request->approve_seq,
                 'doc_no'        => $request->doc_no,
                 'entity_name'   => $request->entity_name,
-                'type'          => 'Q',
+                'type'          => '3',
                 'type_module'   => 'LM',
-                'text'          => 'Land Split SHGB',
+                'text'          => 'Land Splitsing SHGB',
             ];
 
             $encryptedData = Crypt::encrypt($data2Encrypt);
@@ -182,7 +133,7 @@ class LandSplitShgbController extends Controller
 
             if (!empty($email_address)) {
                 $cacheFile = 'email_sent_' . $approve_seq . '_' . $entity_cd . '_' . $doc_no . '_' . $level_no . '.txt';
-                $cacheFilePath = storage_path('app/mail_cache/send_Land_Split_SHGB/' . date('Ymd') . '/' . $cacheFile);
+                $cacheFilePath = storage_path('app/mail_cache/send_Land_Splitsing_SHGB/' . date('Ymd') . '/' . $cacheFile);
                 $cacheDirectory = dirname($cacheFilePath);
 
                 if (!file_exists($cacheDirectory)) {
@@ -201,14 +152,14 @@ class LandSplitShgbController extends Controller
                     Mail::to($email_address)->send(new SendLandMail($encryptedData, $dataArray));
 
                     file_put_contents($cacheFilePath, 'sent');
-                    Log::channel('sendmailapproval')->info("Email Land Split SHGB doc_no $doc_no Entity $entity_cd berhasil dikirim ke: $email_address");
+                    Log::channel('sendmailapproval')->info("Email Land Splitsing SHGB doc_no $doc_no Entity $entity_cd berhasil dikirim ke: $email_address");
 
                     $callback['Pesan'] = "Email berhasil dikirim ke: $email_address";
                     $callback['Error'] = false;
                     $callback['Status']= 200;
 
                 } else {
-                    Log::channel('sendmailapproval')->info("Email Land Split SHGB doc_no $doc_no Entity $entity_cd sudah pernah dikirim ke: $email_address");
+                    Log::channel('sendmailapproval')->info("Email Land Splitsing SHGB doc_no $doc_no Entity $entity_cd sudah pernah dikirim ke: $email_address");
 
                     $callback['Pesan'] = "Email sudah pernah dikirim ke: $email_address";
                     $callback['Error'] = false;
@@ -346,7 +297,7 @@ class LandSplitShgbController extends Controller
                     "name"      => $name,
                     "bgcolor"   => $bgcolor,
                     "valuebt"   => $valuebt,
-                    "link"      => "landsplitshgb",
+                    "link"      => "landsplitsingshgb",
                     "entity_name"   => $data["entity_name"],
                 );
                 return view('email/passcheckwithremark', $data);
@@ -388,7 +339,8 @@ class LandSplitShgbController extends Controller
             $imagestatus = "reject.png";
         }
         $pdo = DB::connection('pakuwon')->getPdo();
-        $sth = $pdo->prepare("EXEC mgr.xrl_send_mail_approval_land_split_shgb ?, ?, ?, ?, ?");
+
+        $sth = $pdo->prepare("EXEC mgr.xrl_send_mail_approval_land_splitsing_shgb ?, ?, ?, ?, ?");
         $success = $sth->execute([
             $data["entity_cd"],
             $data["doc_no"],
@@ -397,12 +349,12 @@ class LandSplitShgbController extends Controller
             $reason
         ]);
         if ($success) {
-            $msg = "You Have Successfully ".$descstatus." the Land Split SHGB No. ".$data["doc_no"];
+            $msg = "You Have Successfully ".$descstatus." the Land Splitsing SHGB No. ".$data["doc_no"];
             $notif = $descstatus." !";
             $st = 'OK';
             $image = $imagestatus;
         } else {
-            $msg = "You Failed to ".$descstatus." the Land Split SHGB No.".$data["doc_no"];
+            $msg = "You Failed to ".$descstatus." the Land Splitsing SHGB No.".$data["doc_no"];
             $notif = 'Fail to '.$descstatus.' !';
             $st = 'FAIL';
             $image = "reject.png";

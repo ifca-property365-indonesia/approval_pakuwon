@@ -46,12 +46,12 @@
     <tr>
       <td align="center" style="padding:40px 0;">
 
-        <!-- Outlook Wrapper Fixed 600px --> <!--[if mso]> <table role="presentation" width="1024" cellpadding="0" cellspacing="0" border="0" align="center"> <tr><td> <![endif]-->
+        <!-- Outlook Wrapper Fixed 800 --> <!--[if mso]> <table role="presentation" width="800" cellpadding="0" cellspacing="0" border="0" align="center"> <tr><td> <![endif]-->
 
         <!-- Main Container -->
         <table role="presentation" align="center" cellpadding="0" cellspacing="0" border="0"
-  width="600"
-  style="width:600px; max-width:2048px; background-color:#ffffff; border-collapse:collapse;">
+  width="800"
+  style="width:800; max-width:2048px; background-color:#ffffff; border-collapse:collapse;">
 
           
           <!-- Header -->
@@ -65,8 +65,8 @@
           <!-- Content -->
           <tr>
             <td class="content" style="background-color:#e0e0e0; padding:30px; color:#000000; font-size:14px; line-height:22px;">
-              <h5 style="font-size:20px; font-weight:400; margin:0 0 15px;">Dear {{ $dataArray['user_name'] }},</h5>
-              <p style="margin:0 0 15px;">Tolong berikan persetujuan untuk proses Pemecahan SHGB {{ $dataArray['shgb_no_split'] }} dengan detail :</p>
+              <h5 style="font-size:20px; font-weight:400; margin:0 0 15px;">Untuk Bapak/Ibu {{ $dataArray['user_name'] }},</h5>
+              Tolong berikan persetujuan untuk proses Splitsing SHGB {{ $dataArray['doc_no'] }} dengan detail :</p>
 
               @php
                   // Helper kecil untuk menghindari htmlspecialchars error
@@ -76,101 +76,105 @@
               @endphp
 
               <!-- Detail Table -->
-              <table role="presentation"
-                    cellpadding="0"
-                    cellspacing="0"
-                    border="0"
-                    width="100%"
-                    style="font-size:14px;
-                            color:#000000;
-                            border-collapse:collapse;">
-
-                <!-- OUTLOOK FRIENDLY COLUMN WIDTH -->
-                <colgroup>
-                  <col width="140">
-                  <col width="180">
-                  <col width="180">
-                  <col width="140">
-                  <col width="110">
-                  <col width="110">
-                  <col width="90">
-                  <col width="90">
-                  <col width="110">
-                </colgroup>
-
+              <table role="presentation" cellpadding="4" cellspacing="0" border="0" width="100%" style="font-size:14px; color:#000000;">
                 <tr>
-                  <th style="border:1px solid #000;padding:8px;text-align:center;">No. SHGB</th>
-                  <th style="border:1px solid #000;padding:8px;text-align:center;">No. SHGB BPN</th>
-                  <th style="border:1px solid #000;padding:8px;text-align:center;">No. SPPT</th>
-                  <th style="border:1px solid #000;padding:8px;text-align:center;">No. NIB</th>
-                  <th style="border:1px solid #000;padding:8px;text-align:center;">Tanggal Terbit</th>
-                  <th style="border:1px solid #000;padding:8px;text-align:center;">Tanggal Expired</th>
-                  <th style="border:1px solid #000;padding:8px;text-align:center;">Luas Awal (M²)</th>
-                  <th style="border:1px solid #000;padding:8px;text-align:center;">Luas Akhir (M²)</th>
-                  <th style="border:1px solid #000;padding:8px;text-align:center;">Induk / Pecahan</th>
+                  <td width="30%">No. Internal Memo</td><td width="2%">:</td><td>{{ $dataArray['hd_doc_no'] }}</td>
                 </tr>
-
-                <!-- INDUK -->
                 <tr>
-                  <td style="border:1px solid #000;padding:8px;text-align:center;white-space:nowrap;">
-                    {{ safeVal($dataArray['shgb_no_split']) }}
-                  </td>
-                  <td style="border:1px solid #000;padding:8px;text-align:center;white-space:nowrap;">
-                    {{ safeVal($dataArray['shgb_no_bpn_split']) }}
-                  </td>
-                  <td style="border:1px solid #000;padding:8px;text-align:center;white-space:nowrap;">
-                    {{ safeVal($dataArray['nop_no_split']) }}
-                  </td>
-                  <td style="border:1px solid #000;padding:8px;text-align:center;white-space:nowrap;">
-                    {{ safeVal($dataArray['nib_no_split']) }}
-                  </td>
-                  <td style="border:1px solid #000;padding:8px;text-align:center;">
-                    {{ safeVal($dataArray['shgb_date_split']) }}
-                  </td>
-                  <td style="border:1px solid #000;padding:8px;text-align:center;">
-                    {{ safeVal($dataArray['shgb_expired_split']) }}
-                  </td>
-                  <td style="border:1px solid #000;padding:8px;text-align:center;">
-                    {{ safeVal($dataArray['shgb_area_split']) }}
-                  </td>
-                  <td style="border:1px solid #000;padding:8px;text-align:center;">
-                    {{ safeVal($dataArray['remaining_area']) }}
-                  </td>
-                  <td style="border:1px solid #000;padding:8px;text-align:center;">
-                    {{ safeVal($dataArray['split_status_hdstr']) }}
-                  </td>
+                  <td width="30%">No. SKRK</td><td width="2%">:</td><td>{{ $dataArray['skrk_no'] }}</td>
                 </tr>
-
-                <!-- PECAHAN -->
-                @foreach($dataArray['shgb_no'] as $i => $no)
                 <tr>
-                  <td style="border:1px solid #000;padding:8px;text-align:center;white-space:nowrap;">
-                    {{ safeVal($no) }}
-                  </td>
-                  <td style="border:1px solid #000;padding:8px;text-align:center;white-space:nowrap;">
-                    {{ safeVal($dataArray['shgb_no_bpn'][$i]) }}
-                  </td>
-                  <td style="border:1px solid #000;padding:8px;text-align:center;white-space:nowrap;">
-                    {{ safeVal($dataArray['nop_no'][$i]) }}
-                  </td>
-                  <td style="border:1px solid #000;padding:8px;text-align:center;white-space:nowrap;">
-                    {{ safeVal($dataArray['nib_no'][$i]) }}
-                  </td>
-                  <td style="border:1px solid #000;padding:8px;text-align:center;">
-                    {{ safeVal($dataArray['shgb_date'][$i]) }}
-                  </td>
-                  <td style="border:1px solid #000;padding:8px;text-align:center;">
-                    {{ safeVal($dataArray['shgb_expired'][$i]) }}
-                  </td>
-                  <td style="border:1px solid #000;padding:8px;text-align:center;"></td>
-                  <td style="border:1px solid #000;padding:8px;text-align:center;">
-                    {{ safeVal($dataArray['shgb_area'][$i]) }}
-                  </td>
-                  <td style="border:1px solid #000;padding:8px;text-align:center;">
-                    {{ safeVal($dataArray['split_status_dtstr'][$i]) }}
-                  </td>
+                  <td width="30%">Tanggal Pengajuan</td><td width="2%">:</td><td>{{ $dataArray['splitsing_date'] }}</td>
                 </tr>
+                <tr>
+                  <td width="30%">Tanggal Selesai</td><td width="2%">:</td><td>{{ $dataArray['splitsing_end_date'] }}</td>
+                </tr>
+                <tr>
+                  <td width="30%">Project</td><td width="2%">:</td><td>{{ $dataArray['project_name_epr'] }}</td>
+                </tr>
+                <tr>
+                  <td width="30%">Luas Efektif Project</td>
+                  <td width="2%">:</td>
+                  <td>{{ $dataArray['project_area_epr'] }} m²</td>
+                </tr>
+                <tr>
+                  <td width="30%">Luas Alokasi Splitsing</td>
+                  <td width="2%">:</td>
+                  <td>{{ $dataArray['allocation_area'] }} m²</td>
+                </tr>
+                @php
+                  $count = count($dataArray['payment_descs']);
+                  $total = 0;
+                @endphp
+
+                @foreach ($dataArray['payment_descs'] as $index => $desc)
+                  @php
+                    $amount = (float) ($dataArray['payment_amount'][$index] ?? 0);
+                    $total += $amount;
+                  @endphp
+
+                  <tr>
+                    <td width="30%">
+                      {{ $index === 0 ? 'Rincian Biaya' : '' }}
+                    </td>
+                    <td width="2%">
+                        {{ $index === 0 ? ':' : '' }}
+                    </td>
+                    <td>
+                        <table role="presentation" cellpadding="4" cellspacing="0" border="0" width="100%" style="font-size:14px; color:#000000;">
+                            <tr>
+                                <td width="5%">{{ $index + 1 }}</td>
+                                <td width="70%">{{ $desc }}</td>
+                                <td align="right" width="25%">
+                                    Rp. {{ number_format($amount, 0, ',', '.') }}
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                  </tr>
                 @endforeach
+
+                {{-- Jika ada lebih dari 1 item, tampilkan total --}}
+                @if ($count > 1)
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td>
+                      <table role="presentation" cellpadding="4" cellspacing="0" border="0" width="100%" style="font-size:14px; font-weight:bold; color:#000000;">
+                          <tr>
+                              <td width="5%"></td>
+                              <td width="70%">Total</td>
+                              <td align="right" width="25%">
+                                  Rp. {{ number_format($total, 0, ',', '.') }}
+                              </td>
+                          </tr>
+                      </table>
+                  </td>
+                </tr>
+                @endif
+              </table>
+              <br>
+              <!-- Detail Table -->
+              <table role="presentation" cellpadding="4" cellspacing="0" border="0" width="100%" style="font-size:14px; color:#000000;">
+                  <tr>
+                      <th style="border: 1px solid #000;text-align: center;padding: 8px;">No. SHGB / NIB Induk</th>
+                      <th style="border: 1px solid #000;text-align: center;padding: 8px;">Keterangan Unit</th>
+                      <th style="border: 1px solid #000;text-align: center;padding: 8px;">No. SHGB / NIB Unit</th>
+                      <th style="border: 1px solid #000;text-align: center;padding: 8px;">Luas SHGB / NIB Unit</th>
+                  </tr>
+
+                  <!-- Detail Rows -->
+                  @if(isset($dataArray['shgb_no']) && is_array($dataArray['shgb_no']) && count($dataArray['shgb_no']) > 0)
+                      @foreach($dataArray['shgb_no'] as $i => $no)
+                          <tr>
+                              <td style="border: 1px solid #000;padding: 5px;">{{ safeVal($dataArray['shgb_no'][$i] ?? '') }}</td>
+                              <td style="border: 1px solid #000;padding: 5px;">{{ safeVal($dataArray['lot_descs'][$i] ?? '') }}</td>
+                              <td style="border: 1px solid #000;padding: 5px;">{{ safeVal($dataArray['shgb_no_split'][$i] ?? '') }}</td>
+                              <td style="border: 1px solid #000;padding: 5px;">{{ safeVal($dataArray['land_area_aloc'][$i] ?? '') }}</td>
+                          </tr>
+                      @endforeach
+                  @endif
+
               </table>
 
               <!-- Attachments -->

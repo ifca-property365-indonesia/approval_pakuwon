@@ -66,7 +66,7 @@
           <tr>
             <td class="content" style="background-color:#e0e0e0; padding:30px; color:#000000; font-size:14px; line-height:22px;">
               <h5 style="font-size:20px; font-weight:400; margin:0 0 15px;">Dear {{ $dataArray['user_name'] }},</h5>
-              <p style="margin:0 0 15px;">Tolong berikan persetujuan untuk proses balik nama sertifikat {{ $dataArray['change_no'] }} dengan detail :</p>
+              <p style="margin:0 0 15px;">Tolong berikan persetujuan untuk proses balik nama sertifikat {{ $dataArray['doc_no'] }} dengan detail :</p>
 
               <!-- Detail Table -->
               <table role="presentation" cellpadding="4" cellspacing="0" border="0" width="100%" style="font-size:14px; color:#000000;">
@@ -121,9 +121,9 @@
 
               <!-- Buttons -->
               <div style="text-align: center; margin: 20px 0;">
-                pakuwon<a href="{{ config('app.url') }}/api/{{ $dataArray['link'] }}/A/{{ $encryptedData }}" class="button" style="display:inline-block; font-size:13px; font-weight:600; text-transform:uppercase; text-decoration:none; background-color:#1ee0ac; color:#ffffff; padding:10px 30px; border-radius:3px;">Approve</a>
-                pakuwon<a href="{{ config('app.url') }}/api/{{ $dataArray['link'] }}/R/{{ $encryptedData }}" class="button" style="display:inline-block; font-size:13px; font-weight:600; text-transform:uppercase; text-decoration:none; background-color:#f4bd0e; color:#ffffff; padding:10px 30px; border-radius:3px;">Revise</a>
-                pakuwon<a href="{{ config('app.url') }}/api/{{ $dataArray['link'] }}/C/{{ $encryptedData }}" class="button" style="display:inline-block; font-size:13px; font-weight:600; text-transform:uppercase; text-decoration:none; background-color:#e85347; color:#ffffff; padding:10px 30px; border-radius:3px;">Reject</a>
+                <a href="{{ config('app.url') }}/api/{{ $dataArray['link'] }}/A/{{ $encryptedData }}" class="button" style="display:inline-block; font-size:13px; font-weight:600; text-transform:uppercase; text-decoration:none; background-color:#1ee0ac; color:#ffffff; padding:10px 30px; border-radius:3px;">Approve</a>
+                <a href="{{ config('app.url') }}/api/{{ $dataArray['link'] }}/R/{{ $encryptedData }}" class="button" style="display:inline-block; font-size:13px; font-weight:600; text-transform:uppercase; text-decoration:none; background-color:#f4bd0e; color:#ffffff; padding:10px 30px; border-radius:3px;">Revise</a>
+                <a href="{{ config('app.url') }}/api/{{ $dataArray['link'] }}/C/{{ $encryptedData }}" class="button" style="display:inline-block; font-size:13px; font-weight:600; text-transform:uppercase; text-decoration:none; background-color:#e85347; color:#ffffff; padding:10px 30px; border-radius:3px;">Reject</a>
               </div>
 
               <p style="margin:15px 0;">In case you need some clarification, kindly approach:<br>

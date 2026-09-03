@@ -25,8 +25,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // Route::POST('/getaccess', [MailData::class, 'getAccess']);
 
 use App\Http\Controllers\StaffActionController as StaffAction;
-Route::POST('/fileexist', [StaffAction::class, 'fileexist']);
+// Route::POST('/fileexist', [StaffAction::class, 'fileexist']);
 Route::POST('/feedbackland', [StaffAction::class, 'feedback_land']);
+Route::POST('/feedbacklandrequest', [StaffAction::class, 'feedback_land_request']);
 
 use App\Http\Controllers\GetApprControllers as GetAppr;
 Route::POST('/getappr', [GetAppr::class, 'Index']);
@@ -130,3 +131,8 @@ use App\Http\Controllers\LandExtensionShgbController as LandExtensionShgb;
 Route::POST('/landextensionshgb', [LandExtensionShgb::class, 'index']);
 Route::GET('/landextensionshgb/{status}/{encrypt}', [LandExtensionShgb::class, 'processData']);
 Route::POST('/landextensionshgb/getaccess', [LandExtensionShgb::class, 'getaccess']);
+
+use App\Http\Controllers\LandSplitSingShgbController as LandSplitSingShgb;
+Route::POST('/landsplitsingshgb', [LandSplitSingShgb::class, 'index']);
+Route::GET('/landsplitsingshgb/{status}/{encrypt}', [LandSplitSingShgb::class, 'processData']);
+Route::POST('/landsplitsingshgb/getaccess', [LandSplitSingShgb::class, 'getaccess']);
