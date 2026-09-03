@@ -215,6 +215,7 @@ class GetApprControllers extends Controller
                     'a.entity_cd',
                     'a.level_no',
                     'a.type',
+                    'a.descs',
                     'a.status',
                     'a.module',
                     'a.ref_no',
@@ -305,7 +306,7 @@ class GetApprControllers extends Controller
 
             // Ambil hasil GROUP BY yang unik (Status P)
             $groupedPendingData = $query_pending
-            ->select('a.doc_no', 'a.entity_cd', 'a.level_no', 'a.type', 'a.module')
+            ->select('a.doc_no', 'a.entity_cd', 'a.level_no', 'a.type', 'a.module', 'a.ref_no', 'a.trx_type', 't.descs')
             ->groupBy('a.doc_no', 'a.entity_cd', 'a.level_no', 'a.type', 'a.module', 'a.ref_no', 'a.trx_type', 't.descs')
             ->get();
 
